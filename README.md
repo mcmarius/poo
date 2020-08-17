@@ -1,4 +1,4 @@
-oo# Programare Orientată pe Obiecte
+# Programare Orientată pe Obiecte
 
 * [ ] [Laborator 1](https://github.com/mcmarius/poo/tree/master/laborator-1)
 * [ ] [Laborator 2](https://github.com/mcmarius/poo/tree/master/laborator-2)
