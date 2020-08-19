@@ -4,14 +4,34 @@
 #### Semnalați orice fel de greșeli găsiți!
 
 # Cuprins
+## [Configurarea mediului de lucru](#configurarea-mediului-de-lucru-1)
 ## [Programe introductive](#programe-introductive-1)
 ## [Exerciții](#exerciții-1)
 ## [Întrebări, erori și orice nu a fost acoperit deja](#întrebări-erori-diverse)
 ## [Resurse recomandate](#resurse-recomandate-1)
 
+## Configurarea mediului de lucru
+
+Vom folosi următoarele opțiuni de compilator: `-Wall -Wextra -pedantic -Weffc++` și, eventual, `-std=c++11` (sau alte versiuni). Ca versiuni de compilator, sunt de preferat acelea mai noi. Dacă folosiți MinGW, optați pentru varianta pe 64 de biți.
+
 ## Programe introductive
 
+### [Cel mai simplu program](#cel-mai-simplu-program-1)
 
+
+### Cel mai simplu program
+
+Cel mai simplu program nu este cel cu "Hello World", ci acesta:
+```c++
+int main() {}
+```
+De ce? Pentru că, implicit, dacă se ajunge la sfârșitul funcției `main`, se returnează automat zero (detalii [aici](https://stackoverflow.com/a/204483)). Această regulă este valabilă **doar** pentru funcția `main`. Pentru toate celelalte funcții, este **obligatoriu** să specificăm valoarea de retur pe toate ramurile. Și este bine să punem `return 0;` și în `main`, mai ales dacă avem ramuri pe care returnăm alte valori (pentru a semnala un eșec).
+
+Ce putem învăța din acest exemplu? Două lucruri: tipuri de date și funcții.
+
+#### Tipuri de date
+
+În limbajul C++, putem clasifica [tipurile de date](https://en.cppreference.com/w/cpp/language/type) în două mari categorii: simple și compuse.
 
 ## Exerciții
 [Înapoi la cuprins](#cuprins)
