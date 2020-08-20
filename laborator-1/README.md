@@ -17,7 +17,7 @@ Vom folosi următoarele opțiuni de compilator: `-Wall -Wextra -pedantic -Weffc+
 ## Programe introductive
 
 ### [Cel mai simplu program](#cel-mai-simplu-program-1)
-
+### ["Hello, world!"](#hello-world-1)
 
 ### Cel mai simplu program
 
@@ -32,6 +32,23 @@ Ce putem învăța din acest exemplu? Două lucruri: tipuri de date și funcții
 #### Tipuri de date
 
 În limbajul C++, putem clasifica [tipurile de date](https://en.cppreference.com/w/cpp/language/type) în două mari categorii: simple și compuse.
+
+#### Funcții
+
+
+
+### "Hello, world!"
+
+```c++
+#include <iostream>
+
+int main() {
+    std::cout << "Hello, world!" << std::endl;
+    return 0;
+}
+```
+
+De ce nu am folosit `using namespace std;`? Pentru că acest namespace conține *extrem de multe* funcții cu care am putea intra în conflict de nume. Dacă alegeți să folosiți această instrucțiune, trebuie să fiți conștienți de consecințele pe care le are. Scopul acestor namespace-uri tocmai acesta ar fi, să prefixăm numele funcțiilor cu numele namespace-ului pentru a evita complet coliziunile de nume. Mai multe detalii puteți citi [aici](https://isocpp.org/wiki/faq/coding-standards#using-namespace-std) și [aici](https://stackoverflow.com/q/1452721/).
 
 ## Exerciții
 [Înapoi la cuprins](#cuprins)
