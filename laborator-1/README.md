@@ -29,13 +29,80 @@ De ce? Pentru că, implicit, dacă se ajunge la sfârșitul funcției `main`, se
 
 Ce putem învăța din acest exemplu? Două lucruri: tipuri de date și funcții.
 
-#### Tipuri de date
+**Tipuri de date**
 
 În limbajul C++, putem clasifica [tipurile de date](https://en.cppreference.com/w/cpp/language/type) în două mari categorii: simple și compuse.
 
-#### Funcții
+Prin tipuri de date simple înțelegem `int`, `double`, `char`, `void`, `bool` și altele asemenea, cu `short`/`long`/`unsigned` unde e cazul.
 
+Prin tipuri de date compuse înțelegem vectori, pointeri, referințe, enumerări, uniuni, structuri, clase, funcții. Acestea două din urmă sunt folosite cu ajutorul șabloanelor pentru a scrie cod cât mai generic.
 
+Astfel, putem răspunde la întrebarea pe care (nu) v-ați pus-o deja:
+
+**De ce învățăm la OOP C++ și nu altceva (de exemplu Java)?**
+
+Pentru că este mai simplu să treci de la ceva complicat la ceva simplu, iar limbajul C++ este mai general în ceea ce privește conceptele de OOP (cel puțin cele predate în facultate).
+
+Pe de altă parte, dacă întâi înveți ceva simplu, poate fi dificil să scapi de anumite preconcepții atunci când treci de la acel ceva simplu la ceva complex (de exemplu o trecere de la Java la C++).
+
+~Pentru că programa nu e actualizată~. Dacă ne limităm la versiunile de C++ dinainte de 2011, afirmația anterioară este adevărată ☹
+
+C++ din 2011 încoace este cunoscut ca C++ modern și poate fi considerat relevant și în prezent. Versiunile mai vechi nu sunt relevante decât dacă aveți ghinionul să nimeriți pe proiecte vechi care nu pot fi actualizate ușor.
+
+**Ce oferă C++ pentru a continua să fie relevant?**
+
+Pe scurt, siguranța tipurilor de date. Se verifică *la compilare* dacă toate operațiile pe care le facem respectă constrângerile tipurilor de date. Acest fapt ne ajută să obținem programe mai sigure și cu mai puține bug-uri. Cel puțin în teorie. Dezavantajul? Compilarea poate să dureze destul de mult în cazul proiectelor de mari dimensiuni.
+
+**Dar asta nu era valabil și înainte de C++11?**
+
+Parțial. În C++ modern au fost introduse multe funcționalități care îmbunătățesc în mod semnificativ situația:
+- deducerea automată a tipurilor (cu `auto`)
+- elemente de programare funcțională (funcții anonime)
+- administrarea automată a memoriei (evitarea pe cât posibil a alocărilor dinamice explicite)
+- șabloane cu număr variabil de argumente (variadic templates)
+- multithreading
+- aserțiuni la compilare
+- și altele, dar cele de mai sus sunt printre cele mai importante
+
+TL;DR: multe dintre funcționalitățile de mai sus ne ajută să scriem cod mai sigur, deoarece lăsăm compilatorul să efectueze verificări de tipuri de date și să se ocupe de alocări/dezalocări de memorie *la momentul compilării*.
+
+Limbajele ca Java sau Python folosesc GC (garbage collection), operație de eliberare a memoriei *la execuție*. Chiar dacă în cazul limbajului Java situația nu mai este atât de dramatică, încă nu are tipuri de date cu adevărat generice. Succesul limbajului Java este dat de faptul că este mai simplu de învățat decât C++ și de faptul că, la momentul apariției sale, oferea administrarea automată a memoriei și verificări mai stricte de tipuri.
+
+**Este mai bun C++ decât Java sau invers?**
+
+Nici, nici. Depinde foarte mult de ce anume vrem să facem. Trebuie să alegem tehnologiile potrivite pentru problema respectivă pe care vrem să o rezolvăm, nu să folosim ceva doar că ne place, deși există altceva "consacrat".
+
+**Concluzia?**
+
+Verificarea tipurilor de date este importantă pentru prevenirea bug-urilor.
+
+**Funcții**
+
+Momentan nu voi detalia acest subiect. De aceea, ne interesează doar două aspecte ale funcțiilor:
+- parametrii
+- tipul de retur
+
+Orice funcție are zero sau mai mulți parametri și un tip de retur. Dacă nu întoarcem nimic, folosim tipul `void`.
+
+Parametrii se transmit prin valoare sau prin referință (cu `&`). Dacă transmitem prin valoare, se efectuează o **copie**. Exemplu:
+```c++
+int aduna(int a, int b) {
+    return a + b;
+}
+// exemplu de apelare: int x = aduna(3, 5);
+// alt exemplu: int x = 1, y = 2; int z = aduna(x, y);
+
+// presupunem ca am inclus <iostream>
+void citire(int a, int &b) {
+    std::cin >> a >> b;
+}
+// apelare: int x = 1, y = 2; citire(x, y); std::cout << x << " " << y << "\n";
+// presupunem ca am introdus 4 si 5
+// se va afisa 1 5: de ce?
+// in cazul lui `a` se transmite prin valoare si se face o copie care se distruge la iesirea din apelul functiei
+// in cazul lui `b` se transmite prin referinta si nu se face nicio copie
+```
+Observație: în limbajul C++, este bine să evităm pe cât putem pointerii, deoarece ei există mai mult pentru a oferi compatibilitate cu limbajul C. Spre deosebire de pointeri, referințele au proprietatea că nu pot fi nule. Detalii [aici](https://isocpp.org/wiki/faq/references#refs-vs-ptrs).
 
 ### "Hello, world!"
 
@@ -48,7 +115,7 @@ int main() {
 }
 ```
 
-De ce nu am folosit `using namespace std;`? Pentru că acest namespace conține *extrem de multe* funcții cu care am putea intra în conflict de nume. Dacă alegeți să folosiți această instrucțiune, trebuie să fiți conștienți de consecințele pe care le are. Scopul acestor namespace-uri tocmai acesta ar fi, să prefixăm numele funcțiilor cu numele namespace-ului pentru a evita complet coliziunile de nume. Mai multe detalii puteți citi [aici](https://isocpp.org/wiki/faq/coding-standards#using-namespace-std) și [aici](https://stackoverflow.com/q/1452721/).
+De ce nu am folosit `using namespace std;`? Pentru că acest namespace conține *extrem de multe* funcții cu care am putea intra în conflict de nume. Dacă alegeți să folosiți această instrucțiune, trebuie să fiți conștienți de consecințele pe care le are. Scopul acestor namespace-uri tocmai acesta ar fi, să prefixăm numele funcțiilor cu numele namespace-ului pentru a evita complet coliziunile de nume. Mai multe detalii despre acest subiect puteți citi [aici](https://isocpp.org/wiki/faq/coding-standards#using-namespace-std) și [aici](https://stackoverflow.com/q/1452721/).
 
 ## Exerciții
 [Înapoi la cuprins](#cuprins)
