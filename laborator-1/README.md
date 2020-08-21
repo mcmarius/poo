@@ -14,6 +14,8 @@
 
 Vom folosi următoarele opțiuni de compilator: `-Wall -Wextra -pedantic -Weffc++` și, eventual, `-std=c++11` (sau alte versiuni). Ca versiuni de compilator, sunt de preferat acelea mai noi. Dacă folosiți MinGW, optați pentru varianta pe 64 de biți.
 
+Folosiți orice editor doriți. Dacă sunteți nehotărâți, vă recomand [CLion](https://www.jetbrains.com/clion/download/). Folosiți adresa de mail de la facultate pentru licență gratuită.
+
 ## Programe introductive
 
 ### [Cel mai simplu program](#cel-mai-simplu-program-1)
@@ -47,7 +49,7 @@ Pe de altă parte, dacă întâi înveți ceva simplu, poate fi dificil să scap
 
 ~Pentru că programa nu e actualizată~. Dacă ne limităm la versiunile de C++ dinainte de 2011, afirmația anterioară este adevărată ☹
 
-C++ din 2011 încoace este cunoscut ca C++ modern și poate fi considerat relevant și în prezent. Versiunile mai vechi nu sunt relevante decât dacă aveți ghinionul să nimeriți pe proiecte vechi care nu pot fi actualizate ușor.
+C++ din 2011 încoace este cunoscut ca C++ modern și poate fi considerat relevant și în prezent. Versiunile mai vechi nu sunt relevante decât dacă aveți ghinionul să nimeriți pe proiecte vechi care nu pot fi actualizate ușor. Puteți arunca o privire [aici](https://www.jetbrains.com/lp/devecosystem-2020/cpp/).
 
 **Ce oferă C++ pentru a continua să fie relevant?**
 
