@@ -20,6 +20,7 @@ Folosiți orice editor doriți. Dacă sunteți nehotărâți, vă recomand [CLio
 
 ### [Cel mai simplu program](#cel-mai-simplu-program-1)
 ### ["Hello, world!"](#hello-world-1)
+### ["Hello, world!" cu clase](#hello-world-cu-clase-1)
 
 ### Cel mai simplu program
 
@@ -118,6 +119,51 @@ int main() {
 ```
 
 De ce nu am folosit `using namespace std;`? Pentru că acest namespace conține *extrem de multe* funcții cu care am putea intra în conflict de nume. Dacă alegeți să folosiți această instrucțiune, trebuie să fiți conștienți de consecințele pe care le are. Scopul acestor namespace-uri tocmai acesta ar fi, să prefixăm numele funcțiilor cu numele namespace-ului pentru a evita complet coliziunile de nume. Mai multe detalii despre acest subiect puteți citi [aici](https://isocpp.org/wiki/faq/coding-standards#using-namespace-std) și [aici](https://stackoverflow.com/q/1452721/).
+
+### "Hello, world!" cu clase
+
+```c++
+#include <iostream>
+
+class Persoana {
+public:
+    Persoana() {
+        std::cout << "In constructor!\n";
+    }
+
+    ~Persoana() {
+        std::cout << "In destructor!\n";
+    }
+
+    void saluta() {
+        std::cout << "In functie membru publica!\n";
+    }
+
+private:
+    void secret() {
+        std::cout << "In functie membru privata!\n"
+    }
+};
+
+int main() {
+    Persoana p;
+    p.saluta();
+    // p.secret();  // eroare: nu putem apela functii membru private
+    return 0;
+}
+```
+Observații:
+- încercați să decomentați linia comentată
+  - apelați funcția membru privată din funcția membru publică: se poate?
+- în clasele din C++, orice funcție/operator/atribut este implicit considerat `private` (adică ascuns)
+  - folosim [specificatori de acces](https://en.cppreference.com/w/cpp/language/access) `public`/`protected`/`private` pentru a schimba acest comportament
+  - un specificator de acces este "valabil" până la sfârșitul definiției clasei sau până este întâlnit alt specificator de acces
+  - este doar ceva de gust dacă declarăm întâi elementele publice și apoi pe cele private sau invers
+  - în al doilea caz, putem omite primul specificator `private`, întrucât acesta va fi implicit
+- constructorii și destructorul se apelează în mod **automat**!
+- convențiile de denumire a claselor și a funcțiilor (membru) nu contează dpdv tehnic
+  - cel mai important este să folosiți aceleași convenții peste tot la nivel de program/proiect
+  - puteți citi mai multe [aici](https://isocpp.org/wiki/faq/coding-standards) (același link din secțiunea anterioară) 
 
 ## Exerciții
 [Înapoi la cuprins](#cuprins)
