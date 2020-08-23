@@ -21,6 +21,7 @@ Folosiți orice editor doriți. Dacă sunteți nehotărâți, vă recomand [CLio
 ### [Cel mai simplu program](#cel-mai-simplu-program-1)
 ### ["Hello, world!"](#hello-world-1)
 ### ["Hello, world!" cu clase](#hello-world-cu-clase-1)
+### [Atribute](#atribute-1)
 
 ### Cel mai simplu program
 
@@ -164,6 +165,41 @@ Observații:
 - convențiile de denumire a claselor și a funcțiilor (membru) nu contează dpdv tehnic
   - cel mai important este să folosiți aceleași convenții peste tot la nivel de program/proiect
   - puteți citi mai multe [aici](https://isocpp.org/wiki/faq/coding-standards) (același link din secțiunea anterioară) 
+
+### Atribute
+```c++
+#include <iostream>
+
+class Persoana {
+public:
+    Persoana(std::string nume) {
+        this->nume = nume;
+        std::cout << "In constructor!\n";
+    }
+
+    ~Persoana() {
+        std::cout << "In destructor!\n";
+    }
+
+    void saluta() {
+        std::cout << "Sunt " << nume << "!\n";
+    }
+
+private:
+    std::string nume;
+
+    void secret() {
+        std::cout << "In functie membru privata!\n"
+    }
+};
+
+int main() {
+    Persoana p("Marius");
+    p.saluta();
+    // p.secret();  // eroare: nu putem apela functii membru private
+    return 0;
+}
+```
 
 ## Exerciții
 [Înapoi la cuprins](#cuprins)
