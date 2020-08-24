@@ -22,6 +22,7 @@ Folosiți orice editor doriți. Dacă sunteți nehotărâți, vă recomand [CLio
 ### ["Hello, world!"](#hello-world-1)
 ### ["Hello, world!" cu clase](#hello-world-cu-clase-1)
 ### [Atribute](#atribute-1)
+### [Moșteniri](#moșteniri-1)
 
 ### Cel mai simplu program
 
@@ -142,7 +143,7 @@ public:
 
 private:
     void secret() {
-        std::cout << "In functie membru privata!\n"
+        std::cout << "In functie membru privata!\n";
     }
 };
 
@@ -164,7 +165,7 @@ Observații:
 - constructorii și destructorul se apelează în mod **automat**!
 - convențiile de denumire a claselor și a funcțiilor (membru) nu contează dpdv tehnic
   - cel mai important este să folosiți aceleași convenții peste tot la nivel de program/proiect
-  - puteți citi mai multe [aici](https://isocpp.org/wiki/faq/coding-standards) (același link din secțiunea anterioară) 
+  - puteți citi mai multe [aici](https://isocpp.org/wiki/faq/coding-standards) (același link din secțiunea anterioară)
 
 ### Atribute
 ```c++
@@ -172,34 +173,74 @@ Observații:
 
 class Persoana {
 public:
-    Persoana(std::string nume) {
-        this->nume = nume;
-        std::cout << "In constructor!\n";
-    }
+    Persoana(std::string nume);
+    ~Persoana();
 
-    ~Persoana() {
-        std::cout << "In destructor!\n";
-    }
-
-    void saluta() {
-        std::cout << "Sunt " << nume << "!\n";
-    }
+    void saluta();
 
 private:
     std::string nume;
 
-    void secret() {
-        std::cout << "In functie membru privata!\n"
-    }
+    void secret();
 };
+
+Persoana::Persoana(std::string nume) {
+    this->nume = nume;
+    std::cout << "In constructor!\n";
+}
+
+Persoana::~Persoana() {
+    std::cout << "In destructor!\n";
+}
+
+void Persoana::saluta() {
+    std::cout << "Sunt " << nume << "!\n";
+}
+
+void Persoana::secret() {
+    std::cout << "In functie membru privata!\n";
+}
 
 int main() {
     Persoana p("Marius");
     p.saluta();
     // p.secret();  // eroare: nu putem apela functii membru private
+    // std::cout << p.nume;  // eroare: nu putem accesa atribute private
+    // Persoana pers;  // eroare: nu exista constructorul Persoana::Persoana()
     return 0;
 }
 ```
+Observații:
+- **important**: declarăm orice fel de atribute ca fiind `private`, deoarece câteva dintre principiile programării orientate pe obiecte sunt încapsularea și ascunderea datelor:
+  - ideea este să abstractizăm detaliile de reprezentare a datelor prin funcții membru cu scopul de a putea schimba în viitor modul de reprezentare al datelor fără să stricăm codul existent
+  - acest lucru este posibil cât timp reușim să avem *aceeași interfață publică*, deoarece este mai important rezultatul final decât detaliile de implementare
+    - (în ideea că implementarea nu este extrem de ineficientă)
+- am *definit* funcțiile membru în afara clasei, deoarece așa avem o privire de ansamblu asupra membrilor clasei și nu suntem distrași de detaliile de implementare
+  - atunci când definim funcțiile în altă parte decât în locul în care au fost definite, este necesară utilizarea operatorului de rezoluție de scop `::`
+    - de ce? pentru că este posibil ca o funcție cu același nume să fie declarată în alt loc din program:
+      - fie avem un mecanism prin care putem să facem diferența între două funcții declarate cu același nume în locuri diferite din program
+      - fie trebuie să folosim nume unice *la nivel de program*: ca exemplu, această restricție este valabilă în limbajul C
+    - aplicarea operatorului `::` se face asupra *numelui funcției*, iar tipul de retur rămâne la fel (`void` în exemplu)
+- am *declarat* funcțiile membru în interiorul clasei (altfel nu se poate)
+- dacă definim o funcție în interiorul clasei, declarația este în același loc cu definiția
+- există unele operații repetitive care sunt identice pentru majoritatea claselor:
+  - pentru exemplul de mai sus, este vorba de constructorul de inițializare și destructor
+  - aceste funcții (membru) pot fi generate automat de către editor (de exemplu CLion)
+  - iar noi ar trebui să adăugăm doar mesajele de afișare...
+  - ... pe care le-am adăugat doar cu scop ilustrativ ca să înțelegeți ordinea de apelare a constructorilor și a destructorilor; vom reveni asupra acestui subiect
+  - se poate începe cu scrierea funcției `main`, iar restul codului să fie generat de editor și abia apoi modificat unde este cazul
+- putem avea mai mulți constructori, mai ales dacă avem mai multe atribute
+  - înlocuiți constructorul cu `Persoana::Persoana(std::string nume = "(lipsa)")`
+    - în limbajul C++ este permisă supraîncărcarea funcțiilor (constructorii sunt niște funcții mai speciale)
+    - o modalitate de a supraîncărca functii este prin utilizarea valorilor implicite (`= "(lipsa)"`)
+    - astfel, avem doi constructori, iar declarația `Persoana pers;` va fi validă
+- destructorul este unul singur: de ce?
+  - deoarece este apelat automat de compilator și nu ar trebui să avem vreun motiv să eliberăm resursele în moduri diferite pentru același tip de obiect
+  - dacă vi se pare că ar fi nevoie de doi destructori, cel mai probabil ar trebui să aveți două clase, întrucât aveți nevoie de două abstractizări diferite
+
+### Moșteniri
+
+
 
 ## Exerciții
 [Înapoi la cuprins](#cuprins)
