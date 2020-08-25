@@ -168,6 +168,7 @@ Observații:
   - puteți citi mai multe [aici](https://isocpp.org/wiki/faq/coding-standards) (același link din secțiunea anterioară)
 
 ### Atribute
+
 ```c++
 #include <iostream>
 
@@ -240,7 +241,15 @@ Observații:
 
 ### Moșteniri
 
+La programul anterior adăugăm următoarea clasă:
+```c++
+class Angajat : Persoana {
+    int salary;
 
+public:
+    Angajat(int salary) : salary{salary} {}
+};
+```
 
 ## Exerciții
 [Înapoi la cuprins](#cuprins)
