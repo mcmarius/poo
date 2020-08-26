@@ -166,6 +166,7 @@ Observații:
 - convențiile de denumire a claselor și a funcțiilor (membru) nu contează dpdv tehnic
   - cel mai important este să folosiți aceleași convenții peste tot la nivel de program/proiect
   - puteți citi mai multe [aici](https://isocpp.org/wiki/faq/coding-standards) (același link din secțiunea anterioară)
+- în cazul structurilor (cu `struct`), specificatorul de acces implicit este `public` pentru a păstra compatibilitatea cu limbajul C
 
 ### Atribute
 
@@ -248,6 +249,29 @@ class Angajat : Persoana {
 
 public:
     Angajat(int salary) : salary{salary} {}
+};
+```
+Observații:
+- în cazul claselor, moștenirea este implicit `private`
+- în cazul structurilor, moștenirea este implicit `public`, pentru a păstra consistența cu specificatorii de acces
+- moștenirea înseamnă că toate atributele și funcțiile membru ale clasei de bază `Persoana` sunt preluate de clasa derivată `Angajat`
+- `salary{salary}` se numește listă de inițializare
+  - înainte de C++11, exista doar sintaxa `salary(salary)`
+  - primul `salary` se referă la atributul `salary` al clasei
+  - al doilea `salary` se referă la parametrul trimis constructorului
+  - dacă doream să modificăm parametrul primit, scriam `salary{salary * 10}`
+  - este de preferat sintaxa cu acolade dacă putem folosi C++ modern, deoarece aceasta nu permite conversii implicite cu posibile pierderi de informație: de exemplu, o conversie implicită de la `long long` la `int`
+- nu mai facem nimic în corpul constructorului, dar este necesar să fie prezent pentru ca programul să fie corect dpdv sintactic
+
+**Putem apela constructorii clasei de bază din clasa derivată?**
+
+Da. Aceștia se vor apela în ordinea în care apar în definiția clasei și nu în ordinea apelării din lista de inițializare:
+```c++
+class Angajat : Persoana {
+    int salary;
+
+public:
+    Angajat(std::string nume, int salary) : Persoana(nume), salary{salary} {}
 };
 ```
 
