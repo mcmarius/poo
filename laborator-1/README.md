@@ -22,7 +22,8 @@ Folosiți orice editor doriți. Dacă sunteți nehotărâți, vă recomand [CLio
 ### ["Hello, world!"](#hello-world-1)
 ### ["Hello, world!" cu clase](#hello-world-cu-clase-1)
 ### [Atribute](#atribute-1)
-### [Moșteniri](#moșteniri-1)
+### [Moștenire](#moștenire-1)
+### [Compunere](#compunere-1)
 
 ### Cel mai simplu program
 
@@ -240,7 +241,7 @@ Observații:
   - deoarece este apelat automat de compilator și nu ar trebui să avem vreun motiv să eliberăm resursele în moduri diferite pentru același tip de obiect
   - dacă vi se pare că ar fi nevoie de doi destructori, cel mai probabil ar trebui să aveți două clase, întrucât aveți nevoie de două abstractizări diferite
 
-### Moșteniri
+### Moștenire
 
 La programul anterior adăugăm următoarea clasă:
 ```c++
@@ -255,6 +256,7 @@ Observații:
 - în cazul claselor, moștenirea este implicit `private`
 - în cazul structurilor, moștenirea este implicit `public`, pentru a păstra consistența cu specificatorii de acces
 - moștenirea înseamnă că toate atributele și funcțiile membru ale clasei de bază `Persoana` sunt preluate de clasa derivată `Angajat`
+- moștenirea clasei B din clasa A se folosește atunci când are sens să spunem că B este un fel de A (relație "IS-A(N)": B is an A)
 - `salary{salary}` se numește listă de inițializare
   - înainte de C++11, exista doar sintaxa `salary(salary)`
   - primul `salary` se referă la atributul `salary` al clasei
@@ -262,7 +264,6 @@ Observații:
   - dacă doream să modificăm parametrul primit, scriam `salary{salary * 10}`
   - este de preferat sintaxa cu acolade dacă putem folosi C++ modern, deoarece aceasta nu permite conversii implicite cu posibile pierderi de informație: de exemplu, o conversie implicită de la `long long` la `int`
 - nu mai facem nimic în corpul constructorului, dar este necesar să fie prezent pentru ca programul să fie corect dpdv sintactic
-
 **Putem apela constructorii clasei de bază din clasa derivată?**
 
 Da. Aceștia se vor apela în ordinea în care apar în definiția clasei și nu în ordinea apelării din lista de inițializare:
@@ -272,6 +273,30 @@ class Angajat : Persoana {
 
 public:
     Angajat(std::string nume, int salary) : Persoana(nume), salary{salary} {}
+};
+```
+
+### Compunere
+
+Compunerea are sens atunci când clasa B face parte din clasa A (relație "HAS-A(N)": A has a B). Exemplu:
+```c++
+struct Dorinta {
+    std::string nume;
+    Dorinta(const std::string& nume = "") : nume{nume} {}
+};
+
+class Persoana {
+public:
+    Persoana(std::string nume);
+    ~Persoana();
+
+    void saluta();
+
+private:
+    std::string nume;
+    Dorinta dorinta;
+
+    void secret();
 };
 ```
 
