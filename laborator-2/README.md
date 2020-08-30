@@ -17,7 +17,63 @@
 ### [Constructori de copiere](#constructori-de-copiere-1)
 
 ### Tema 1
+
+<!--
+Grupare muzicală/artistică
+Orchestră
+Trupă
+Artist solo
+Album
+Piesă
+-->
+
 ### Constructori de inițializare
+
+```c++
+#include <iostream>
+
+class mancare {
+protected:
+    std::string nume;
+public:
+    mancare(const std::string& nume) : nume{nume} {
+        std::cout << "In constructorul din clasa mancare";
+    }
+};
+
+struct felie {
+    enum { ALBA, INTEGRALA } tip;
+
+    felie() {
+        std::cout << "In constructorul din structura felie";
+    }
+};
+
+struct ingredient {
+    std::string nume;
+
+    ingredient(const std::string& nume) : nume{nume} {
+        std::cout << "In constructorul din structura ingredient";
+    }
+};
+
+class sandwich : public mancare {
+    felie f[2];
+    std::vector<ingredient>
+public:
+    sandwich(const std::string& nume) : mancare{nume} {
+        std::cout << "In constructorul din clasa sandwich";
+    }
+};
+
+int main() {
+    sandwich s("simplu");
+    {
+        sandwich m = sandwich("mare");
+    }
+}
+```
+
 ### Destructori
 ### Constructori de copiere
 
