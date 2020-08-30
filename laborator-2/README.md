@@ -59,7 +59,7 @@ struct ingredient {
 
 class sandwich : public mancare {
     felie f[2];
-    std::vector<ingredient>
+    std::vector<ingredient> ingrediente;
 public:
     sandwich(const std::string& nume) : mancare{nume} {
         std::cout << "In constructorul din clasa sandwich";
