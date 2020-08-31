@@ -70,6 +70,7 @@ int main() {
     sandwich s("simplu");
     {
         sandwich m = sandwich("mare");
+        sandwich g = "gol";
     }
 }
 ```
