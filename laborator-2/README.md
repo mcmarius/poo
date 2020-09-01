@@ -18,6 +18,15 @@
 
 ### Tema 1
 
+Cerințe comune:
+- constructori (expliciți) de inițializare și de copiere
+- destructor
+- `operator=`
+- funcții membru publice
+- atribute și altceva obligatoriu `private`
+- testarea *tuturor* funcțiilor publice în `main`
+- GitHub Actions sau ceva similar (pentru Continuous Integration)
+
 <!--
 Grupare muzicală/artistică
 Orchestră
@@ -25,6 +34,36 @@ Trupă
 Artist solo
 Album
 Piesă
+----------
+Organizator
+Participant
+Invitație
+Eveniment
+----------
+Dispozitiv inteligent
+Smartphone
+Smartwatch
+SmartTV
+Sisteme de operare: Android, iOS
+----------
+Drum: rutier, forestier, potecă
+Turist: amator, expert
+Hartă - mai multe drumuri și obiective
+Obiectiv (turistic)
+----------
+Sportiv
+Probă
+Concurs
+Premii
+Palmares
+Clasament
+----------
+Muzeu
+Sală
+Lucrare: desen, tablou, sculptură
+Expoziție: permanentă, temporară
+----------
+Alte variante: școală/liceu/facultate (orar, examene, rechizite, echipamente), magazin (aprovizionare, livrări, service), companie (angajați, recrutări), jocuri, structuri de date, software: seturi de date
 -->
 
 ### Constructori de inițializare
