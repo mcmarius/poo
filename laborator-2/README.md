@@ -23,7 +23,7 @@ Cerințe comune:
 - destructor
 - `operator=`
 - funcții membru publice
-- atribute și altceva obligatoriu `private`
+- atribute și alte funcții vor fi obligatoriu `private`
 - testarea *tuturor* funcțiilor publice în `main`
 - GitHub Actions sau ceva similar (pentru Continuous Integration)
 
