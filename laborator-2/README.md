@@ -24,8 +24,11 @@ Cerințe comune:
 - `operator=`
 - funcții membru publice
 - atribute și alte funcții vor fi obligatoriu `private`
-- testarea *tuturor* funcțiilor publice în `main`
 - GitHub Actions sau ceva similar (pentru Continuous Integration)
+  - fără warnings: `-Wall -Wextra -pedantic -Weffc++`, eventual cu `-Werror` și un linter (`cppcheck`)
+  - fără memory leaks: vom folosi `valgrind` sau `-fsanitize`
+  - testarea *tuturor* funcțiilor publice în `main`: vom folosi `gcovr`
+- ideal, implementarea unei funcționalități mai dificile
 
 <!--
 Grupare muzicală/artistică
