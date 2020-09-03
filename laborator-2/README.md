@@ -118,6 +118,14 @@ int main() {
 ```
 
 ### Destructori
+
+Sunt apelați în mod automat de către compilator atunci când obiectul își încetează existența:
+- la ieșirea din "scope"-ul în care a fost creat obiectul, adică atunci când execuția ajunge la `}` corespunzătoare acoladei de început a acelui "scope"
+- la folosirea operatorilor `delete` și `delete[]`
+- la sfârșitul programului pentru obiecte alocate static sau global
+
+Se pot apela explicit destructorul, dar nu vrem asta! De ce? Deoarece se va apela de două ori!
+
 ### Constructori de copiere
 
 ## Exerciții
