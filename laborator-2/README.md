@@ -124,7 +124,7 @@ Sunt apelați în mod automat de către compilator atunci când obiectul își �
 - la folosirea operatorilor `delete` și `delete[]`
 - la sfârșitul programului pentru obiecte alocate static sau global
 
-Se pot apela explicit destructorul, dar nu vrem asta! De ce? Deoarece se va apela de două ori!
+Se poate apela explicit destructorul, dar nu vrem asta! De ce? Deoarece se va apela de două ori!
 
 ### Constructori de copiere
 
