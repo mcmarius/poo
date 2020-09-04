@@ -18,6 +18,8 @@
 
 ### Tema 1
 
+Scopul acestei teme este familiarizarea cu limbajul C++ și cu unele concepte OOP de bază.
+
 Cerințe comune:
 - constructori (expliciți) de inițializare și de copiere
 - destructor
@@ -66,7 +68,31 @@ Sală
 Lucrare: desen, tablou, sculptură
 Expoziție: permanentă, temporară
 ----------
-Alte variante: școală/liceu/facultate (orar, examene, rechizite, echipamente), magazin (aprovizionare, livrări, service), companie (angajați, recrutări), jocuri, structuri de date, software: seturi de date
+Furnizor
+Mobilă
+Dulap
+Bibliotecă
+Birou
+Vitrină
+Masă
+----------
+Dispozitiv de iluminat
+Bec clasic
+Bec cu LED
+Neon
+Lampă cu gaz
+Lumânare
+Făclie
+----------
+Editură
+Publicație
+Ziar
+Revistă
+Carte
+Dicționar
+Manual
+----------
+Alte variante: școală/liceu/facultate (orar, examene, rechizite, echipamente), magazin (aprovizionare, livrări, service), companie (angajați, recrutări), jocuri, structuri de date (stivă -> vector/listă, coadă -> vector/listă, listă simplu/dublu înlănțuită eventual circulară), software: seturi de date, misc (cuaternioni)
 -->
 
 ### Constructori de inițializare
