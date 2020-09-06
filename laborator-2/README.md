@@ -92,6 +92,13 @@ Carte
 Dicționar
 Manual
 ----------
+Reminder
+To-do list
+Listă de cumpărături
+Alarmă
+Zi de naștere/onomastică
+Factură
+----------
 Alte variante: școală/liceu/facultate (orar, examene, rechizite, echipamente), magazin (aprovizionare, livrări, service), companie (angajați, recrutări), jocuri, structuri de date (stivă -> vector/listă, coadă -> vector/listă, listă simplu/dublu înlănțuită eventual circulară), software: seturi de date, misc (cuaternioni)
 -->
 
