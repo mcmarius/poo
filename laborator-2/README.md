@@ -40,6 +40,15 @@ Artist solo
 Album
 Piesă
 ----------
+Instrument muzical
+- de suflat
+  - din lemn
+  - de alamă
+- de percuție
+- cu coarde
+  - lovite
+  - ciupite
+----------
 Organizator
 Participant
 Invitație
@@ -98,6 +107,28 @@ Listă de cumpărături
 Alarmă
 Zi de naștere/onomastică
 Factură
+----------
+Mijloc de transport/Vehicul
+Bicicletă
+Trotinetă
+Mașină
+Dubă
+Autobuz
+Camion
+----------
+Locuință
+Apartament
+Casă
+Castel
+Cort
+Casă în copac
+Rulotă
+----------
+Ceas
+Ceas deșteptător
+Ceas cu pendul
+Ceas cu cuc
+Ceas digital
 ----------
 Alte variante: școală/liceu/facultate (orar, examene, rechizite, echipamente), magazin (aprovizionare, livrări, service), companie (angajați, recrutări), jocuri, structuri de date (stivă -> vector/listă, coadă -> vector/listă, listă simplu/dublu înlănțuită eventual circulară), software: seturi de date, misc (cuaternioni)
 -->
