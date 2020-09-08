@@ -130,6 +130,14 @@ Ceas cu pendul
 Ceas cu cuc
 Ceas digital
 ----------
+Reclamă
+- Produs
+Anunț la ziar
+Plasare de produs
+- Colaborator/Influensăr
+Rețele de socializare
+Recomandare personală
+----------
 Alte variante: școală/liceu/facultate (orar, examene, rechizite, echipamente), magazin (aprovizionare, livrări, service), companie (angajați, recrutări), jocuri, structuri de date (stivă -> vector/listă, coadă -> vector/listă, listă simplu/dublu înlănțuită eventual circulară), software: seturi de date, misc (cuaternioni)
 -->
 
