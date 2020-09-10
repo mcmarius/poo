@@ -146,6 +146,19 @@ Test psihologic
 Test fizic
 Test tehnic
 ----------
+Suprafață
+Hârtie
+Carton
+Tablă de sticlă
+Tablă de plastic
+Instrument de scris
+Creion
+Stilou
+Pix simplu
+Pix cu gel
+Marker
+Cretă
+----------
 Alte variante: școală/liceu/facultate (orar, examene, rechizite, echipamente), magazin (aprovizionare, livrări, service), companie (angajați, recrutări), jocuri, structuri de date (stivă -> vector/listă, coadă -> vector/listă, listă simplu/dublu înlănțuită eventual circulară), software: seturi de date, misc (cuaternioni)
 -->
 
