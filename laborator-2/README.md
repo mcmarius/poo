@@ -29,7 +29,9 @@ Cerințe comune:
 - GitHub Actions sau ceva similar (pentru Continuous Integration)
   - fără warnings: `-Wall -Wextra -pedantic -Weffc++`, eventual cu `-Werror` și un linter (`cppcheck`)
   - fără memory leaks: vom folosi `valgrind` sau `-fsanitize`
-  - testarea *tuturor* funcțiilor publice în `main`: vom folosi `gcovr`
+  - testarea *tuturor* funcțiilor publice în `main`
+    - vom folosi `gcovr` pentru a ne da seama ce părți din program (nu) se execută
+    - vom folosi instrucțiuni `assert`/`static_assert` pentru testarea în sine
 - ideal, implementarea unei funcționalități mai dificile
 
 <!--
