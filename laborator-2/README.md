@@ -171,6 +171,14 @@ Mâini
 Picioare
 Mixt
 ----------
+Cofetărie
+Produs/Desert
+Tort
+Prăjitură
+Produs de patiserie: chec, cozonac, fursec, altele
+Comandă
+Personal
+----------
 Alte variante: școală/liceu/facultate (orar, examene, rechizite, echipamente), magazin (aprovizionare, livrări, service), companie (angajați, recrutări), jocuri, structuri de date (stivă -> vector/listă, coadă -> vector/listă, listă simplu/dublu înlănțuită eventual circulară), software: seturi de date, misc (cuaternioni)
 -->
 
