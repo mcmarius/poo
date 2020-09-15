@@ -41,6 +41,11 @@ Trupă
 Artist solo
 Album
 Piesă
+- Single
+- Cover
+- Colaborare
+- Remaster
+- Colind
 ----------
 Instrument muzical
 - de suflat
