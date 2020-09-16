@@ -191,6 +191,16 @@ Ploaie
 Ninsoare
 Caniculă
 ----------
+Model de plată
+Subscripție/Abonament
+- nominal
+- pentru un grup de persoane
+- posibilitate de demo: timp sau număr de utilizări
+Donație (pay what you want)
+Achiziție
+- individuală
+- bundle
+----------
 Alte variante: școală/liceu/facultate (orar, examene, rechizite, echipamente), magazin (aprovizionare, livrări, service), companie (angajați, recrutări), jocuri, structuri de date (stivă -> vector/listă, coadă -> vector/listă, listă simplu/dublu înlănțuită eventual circulară), software: seturi de date, misc (cuaternioni)
 -->
 
