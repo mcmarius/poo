@@ -261,6 +261,8 @@ Sunt apelați în mod automat de către compilator atunci când obiectul își �
 
 Se poate apela explicit destructorul, dar nu vrem asta! De ce? Deoarece se va apela de două ori!
 
+Dacă totuși insistați, există (cel puțin) [un caz particular](https://isocpp.org/wiki/faq/dtors#placement-new) în care destructorul chiar trebuie apelat în mod explicit.
+
 ### Constructori de copiere
 
 ## Exerciții
