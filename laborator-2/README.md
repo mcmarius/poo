@@ -15,6 +15,7 @@
 ### [Constructori de inițializare](#constructori-de-inițializare-1)
 ### [Destructori](#destructori-1)
 ### [Constructori de copiere](#constructori-de-copiere-1)
+### [`operator=` și regula celor trei](#operator-și-regula-celor-trei)
 
 ### Tema 1
 
@@ -254,7 +255,9 @@ int main() {
 
 ### Destructori
 
-Sunt apelați în mod automat de către compilator atunci când obiectul își încetează existența:
+Sunt generați de compilator dacă nu îi definim explicit.
+
+Sunt apelați în mod automat de compilator atunci când obiectul își încetează existența:
 - la ieșirea din "scope"-ul în care a fost creat obiectul, adică atunci când execuția ajunge la `}` corespunzătoare acoladei de început a acelui "scope"
 - la folosirea operatorilor `delete` și `delete[]`
 - la sfârșitul programului pentru obiecte alocate static sau global
@@ -264,6 +267,15 @@ Se poate apela explicit destructorul, dar nu vrem asta! De ce? Deoarece se va ap
 Dacă totuși insistați, există (cel puțin) [un caz particular](https://isocpp.org/wiki/faq/dtors#placement-new) în care destructorul chiar trebuie apelat în mod explicit.
 
 ### Constructori de copiere
+
+Sunt generați de compilator dacă nu îi definim explicit.
+
+Sunt apelați în mod automat de compilator atunci când este nevoie de copiere. Când este nevoie?
+- la apelarea explicită a acestui constructor (evident)
+- la transmiterea prin valoare a parametrilor funcțiilor
+- la întoarcerea unui obiect prin valoare dintr-o funcție
+
+### `operator=` și regula celor trei
 
 ## Exerciții
 [Înapoi la cuprins](#cuprins)
