@@ -15,7 +15,7 @@
 ### [Constructori de inițializare](#constructori-de-inițializare-1)
 ### [Destructori](#destructori-1)
 ### [Constructori de copiere](#constructori-de-copiere-1)
-### [`operator=` și regula celor trei](#operator-și-regula-celor-trei)
+### [`operator=` și regula celor trei](#operator-și-regula-celor-trei-1)
 
 ### Tema 1
 
