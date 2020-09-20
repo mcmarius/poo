@@ -277,6 +277,20 @@ Sunt apelați în mod automat de compilator atunci când este nevoie de copiere.
 
 ### `operator=` și regula celor trei
 
+Orice clasă are definit `operator=` de compilator dacă nu îl definim explicit.
+
+Acest operator, numit operator de atribuire, se apelează atunci când facem atribuiri. Excepție:
+```c++
+class cls {};
+cls ob1, ob2 = ob1; // se apeleaza cc, nu op=
+cls ob3;
+ob3 = ob1; // se apeleaza op=
+```
+
+De ce există distincția între constructorul de copiere și operatorul de atribuire?
+- în primul caz, obiectul nu există
+- în al doilea caz, obiectul există și putem avea resurse alocate pe care le-am putea refolosi
+
 ## Exerciții
 [Înapoi la cuprins](#cuprins)
 
