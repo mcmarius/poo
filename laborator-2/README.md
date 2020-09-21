@@ -291,6 +291,10 @@ De ce există distincția între constructorul de copiere și operatorul de atri
 - în primul caz, obiectul nu există
 - în al doilea caz, obiectul există și putem avea resurse alocate pe care le-am putea refolosi
 
+**Ce înseamnă "regula celor trei"?**
+
+Dacă a fost nevoie să definim în mod *explicit* constructorul de copiere, operatorul de atribuire *sau* destructorul, înseamnă că **trebuie** să le definim pe toate trei.
+
 ## Exerciții
 [Înapoi la cuprins](#cuprins)
 
