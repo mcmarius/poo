@@ -202,6 +202,16 @@ Achiziție
 - individuală
 - bundle
 ----------
+Participant
+- admin
+- membru
+- spectator/vizitator
+Tichet
+Propunere/Feature
+Defect/Bug
+Întrebare
+Dezbatere/Discuție
+----------
 Alte variante: școală/liceu/facultate (orar, examene, rechizite, echipamente), magazin (aprovizionare, livrări, service), companie (angajați, recrutări), jocuri, structuri de date (stivă -> vector/listă, coadă -> vector/listă, listă simplu/dublu înlănțuită eventual circulară), software: seturi de date, misc (cuaternioni)
 -->
 
