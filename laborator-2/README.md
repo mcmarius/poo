@@ -307,8 +307,10 @@ Dacă a fost nevoie să definim în mod *explicit* constructorul de copiere, ope
 
 ## Exerciții
 [Înapoi la cuprins](#cuprins)
-
-
+- constructori
+- destructori
+- constructori de copiere
+- conversii și constructori expliciți (?)
 
 ## Întrebări, erori, diverse
 [Înapoi la cuprins](#cuprins)
