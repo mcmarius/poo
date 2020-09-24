@@ -305,6 +305,10 @@ De ce există distincția între constructorul de copiere și operatorul de atri
 
 Dacă a fost nevoie să definim în mod *explicit* constructorul de copiere, operatorul de atribuire *sau* destructorul, înseamnă că **trebuie** să le definim pe toate trei.
 
+**De discutat mai târziu**
+- copy-and-swap
+- excepții
+
 ## Exerciții
 [Înapoi la cuprins](#cuprins)
 - constructori
