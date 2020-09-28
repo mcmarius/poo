@@ -307,7 +307,8 @@ Dacă a fost nevoie să definim în mod *explicit* constructorul de copiere, ope
 
 **De discutat mai târziu**
 - copy-and-swap
-- excepții
+- excepții (chiar sunt necesare?)
+- static
 
 ## Exerciții
 [Înapoi la cuprins](#cuprins)
