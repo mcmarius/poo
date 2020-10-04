@@ -12,7 +12,7 @@
 
 ## Configurarea mediului de lucru
 
-Vom folosi următoarele opțiuni de compilator: `-Wall -Wextra -pedantic -Weffc++` și, eventual, `-std=c++11` (sau alte versiuni). Ca versiuni de compilator, sunt de preferat acelea mai noi. Dacă folosiți MinGW, optați pentru varianta pe 64 de biți.
+Vom folosi următoarele opțiuni de compilator: `-Wall -Wextra -pedantic -Weffc++` și, eventual, `-std=c++11` (sau alte versiuni mai noi). Ca versiuni de compilator, sunt de preferat acelea mai noi. Dacă folosiți MinGW, optați pentru varianta pe 64 de biți.
 
 Folosiți orice editor doriți. Dacă sunteți nehotărâți, vă recomand [CLion](https://www.jetbrains.com/clion/download/). Folosiți adresa de mail de la facultate pentru licență gratuită.
 
