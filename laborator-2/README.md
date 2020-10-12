@@ -34,6 +34,7 @@ Cerințe comune:
     - vom folosi `gcovr` pentru a ne da seama ce părți din program (nu) se execută
     - vom folosi instrucțiuni `assert`/`static_assert` pentru testarea în sine
     - dacă o funcție publică nu este folosită, probabil nu avem nevoie de acea funcție; o ștergem sau o facem `private`
+  - `.gitignore` ca să fie mai ușor de văzut diferențele
 - ideal, implementarea unei funcționalități mai dificile
 
 #### Teme propuse
