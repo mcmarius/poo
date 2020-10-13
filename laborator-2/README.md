@@ -28,6 +28,7 @@ Cerințe comune:
 - funcții membru publice
 - atribute și alte funcții vor fi obligatoriu `private` (și, evident, fără variabile globale; discutăm excepțiile)
 - cât mai multe `const`
+- codul trebuie să fie pe un repo la care să am acces (preferabil repo de `git`)
 - GitHub Actions sau ceva similar (pentru Continuous Integration)
   - fără warnings: `-Wall -Wextra -pedantic -Weffc++`, eventual cu `-Werror` și un linter (`cppcheck`)
   - fără memory leaks: vom folosi `valgrind` sau `-fsanitize`
