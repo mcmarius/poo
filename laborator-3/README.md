@@ -21,6 +21,7 @@ Un ospătar ține evidența mai multor comenzi. Ospătarii pot face schimb de co
 Situații de discutat:
 - se mai poate modifica o comandă după ce a fost trimisă la bucătărie?
   - dacă nu se pot modifica, trebuie să mai avem o clasă pentru nota de plată: obiectele de acest tip vor reține toate comenzile de la aceeași masă
+- moșteniri: tipuri de clienți, mod de servire (bacșiș diferit), feluri de mâncare (mod de preparare specific)
 
 Într-un scenariu mai modern, fișierele sunt înlocuite de o bază de date, iar chelnerii folosesc aplicații mobile.
 ```c++
