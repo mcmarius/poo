@@ -19,17 +19,19 @@
 
 ### Tema 1
 
-Scopul acestei teme este familiarizarea cu limbajul C++ și cu unele concepte OOP de bază.
+Scopul acestei teme este familiarizarea cu limbajul C++ și cu unele concepte OOP de bază. **Nu vă complicați!**
 
 Cerințe comune:
+- minim 2-3 clase folosind compunere; puteți adăuga și clase pentru moștenire, dar vor fi în plus față de acelea 2-3
 - constructori (expliciți) de inițializare și de copiere
 - destructor
 - `operator=`
+- `operator<<` (pentru afișare)
 - funcții membru publice
 - atribute și alte funcții vor fi obligatoriu `private` (și, evident, fără variabile globale; discutăm excepțiile)
 - cât mai multe `const`
 - codul trebuie să fie pe un repo la care să am acces (preferabil repo de `git`)
-- GitHub Actions sau ceva similar (pentru Continuous Integration) (exemplu: [aici](https://github.com/mcmarius/demo-poo/blob/47f94b632bd765c0612bb8baeefb77147ef0f435/.github/workflows/ccpp.yml))
+- GitHub Actions sau ceva similar (pentru Continuous Integration) (**exemplu [aici](https://github.com/mcmarius/demo-poo/blob/mcmarius-patch-1/.github/workflows/ccpp.yml)**)
   - fără warnings: `-Wall -Wextra -pedantic -Weffc++`, eventual cu `-Werror` și un linter (`cppcheck`)
   - fără memory leaks: vom folosi `valgrind` sau `-fsanitize`
   - testarea *tuturor* funcțiilor publice în `main`
