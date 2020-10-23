@@ -31,7 +31,7 @@ Cerințe comune:
 - atribute și alte funcții vor fi obligatoriu `private` (și, evident, fără variabile globale; discutăm excepțiile)
 - cât mai multe `const`
 - codul trebuie să fie pe un repo la care să am acces (preferabil repo de `git`)
-- GitHub Actions sau ceva similar (pentru Continuous Integration) (**exemplu [aici](https://github.com/mcmarius/demo-poo/blob/mcmarius-patch-1/.github/workflows/ccpp.yml)**)
+- GitHub Actions sau ceva similar (pentru Continuous Integration) (**exemplu [aici](https://github.com/mcmarius/demo-poo/blob/master/.github/workflows/ccpp.yml)**)
   - fără warnings: `-Wall -Wextra -pedantic -Weffc++`, eventual cu `-Werror` și un linter (`cppcheck`)
   - fără memory leaks: vom folosi `valgrind` sau `-fsanitize`
   - testarea *tuturor* funcțiilor publice în `main`
