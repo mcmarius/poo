@@ -26,6 +26,7 @@ Cerințe comune:
 - constructori (expliciți) de inițializare și de copiere
 - destructor
 - `operator=`
+- este suficient să implementați cc, op= și destructor (regula celor trei) pentru o singură clasă
 - `operator<<` (pentru afișare)
 - funcții membru publice
 - atribute și alte funcții vor fi obligatoriu `private` (și, evident, fără variabile globale; discutăm excepțiile)
