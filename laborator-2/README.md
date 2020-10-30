@@ -19,7 +19,7 @@
 
 ### Tema 1
 
-Scopul acestei teme este familiarizarea cu limbajul C++ și cu unele concepte OOP de bază. **Nu vă complicați!**
+Scopul acestei teme este familiarizarea cu limbajul C++ și cu unele concepte OOP de bază. **Nu vă complicați!** Sau nu excesiv 😄
 
 Cerințe comune:
 - minim 2-3 clase folosind compunere; puteți adăuga și clase pentru moștenire, dar vor fi în plus față de acelea 2-3
