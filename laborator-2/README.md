@@ -350,6 +350,10 @@ Dacă a fost nevoie să definim în mod *explicit* constructorul de copiere, ope
 ## Întrebări, erori, diverse
 [Înapoi la cuprins](#cuprins)
 
+**Am o funcție virtuală, iar compilatorul meu face automat și destructorul virtual. De ce pe alt compilator/alt sistem de operare îmi crapă programul?**
+
+Acel compilator pe acel sistem de operare nu e de treabă și nu face automat destructorul virtual. Cel mai bine e să spunem noi în mod explicit că destructorul este virtual dacă vrem asta, deoarece nu pare să fie specificată nicăieri obligativitatea pentru compilatoare de a marca destructorul ca virtual în cazul în care avem o funcție virtuală.
+
 * 🚧
 
 ## Resurse recomandate
