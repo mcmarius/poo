@@ -41,6 +41,7 @@ Cerințe comune:
     - dacă o funcție publică nu este folosită, probabil nu avem nevoie de acea funcție; o ștergem sau o facem `private`
     - veți putea vedea nivelul de acoperire al codului pe `https://{nume_user_github}.github.io/{nume_repo}/coverage`
       - exemplu: https://mcmarius.github.io/demo-poo/coverage
+      - trebuie să selectați branch-ul `gh-pages` din repository settings pentru deploy cu Github Pages
   - `.gitignore` ca să fie mai ușor de văzut diferențele
 - ideal, implementarea unei funcționalități mai dificile
 
