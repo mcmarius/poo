@@ -42,6 +42,10 @@ Cerințe comune:
     - veți putea vedea nivelul de acoperire al codului pe `https://{nume_user_github}.github.io/{nume_repo}/coverage`
       - exemplu: https://mcmarius.github.io/demo-poo/coverage
       - trebuie să selectați branch-ul `gh-pages` din repository settings pentru deploy cu Github Pages
+      - debugging:
+        - creăm manual branch-ul `gh-pages`
+        - verificăm dacă deploy-ul actualizează acest branch
+        - dacă nu se actualizează branch-ul, dar pipeline-ul reușește, cel mai probabil nu am mutat fișierele necesare în folder-ul `public`
   - `.gitignore` ca să fie mai ușor de văzut diferențele
 - ideal, implementarea unei funcționalități mai dificile
 
