@@ -58,6 +58,10 @@ Observații:
 - unele biblioteci sunt de tip header-only, deci nu sunt necesari decât pașii 1, 3 și 4 (sau doar 1 și 4 dacă adăugăm sursa în repo)
 - unele biblioteci sunt gândite să fie legate doar static, altele doar dinamic, iar altele în ambele feluri (adică au o parte cu fișiere statice și alta cu fișiere dinamice)
 
+**Care este diferența dintre bibliotecile legate static și cele legate dinamic?**
+
+Bibliotecile statice sunt necesare atunci când compilăm codul, ceea ce înseamnă că vor crește dimensiunea executabilului. Bibliotecile dinamice sunt necesare numai atunci când rulăm programul.
+
 ### Biblioteci recomandate
 
 În această secțiune, aș vrea să vă recomand doar biblioteci care sunt **portabile**.
