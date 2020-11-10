@@ -71,6 +71,12 @@ Bibliotecile statice sunt necesare atunci când compilăm codul, ceea ce înseam
 - am mai reușit să folosesc [libpqxx](https://github.com/jtv/libpqxx), [GLFW](https://www.glfw.org/download.html), [SOIL](https://github.com/kbranigan/Simple-OpenGL-Image-Library) (nu sunt sigur dacă asta e), [SOIL2](https://github.com/SpartanJ/SOIL2)
 - la SIGIL nu mi-a mers sunetul (și are nevoie de un DLL din MSYS2)
 
+De încercat:
+- Boost (??)
+- ICU (??)
+- https://github.com/agauniyal/rang
+
+
 ## Resurse recomandate
 - [cppreference.com](https://en.cppreference.com/w/cpp)
 - [StackOverflow](https://stackoverflow.com/questions/tagged/cpp?tab=Votes)
