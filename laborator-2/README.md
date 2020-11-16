@@ -28,6 +28,7 @@ Cerințe comune:
 - `operator=`
 - este suficient să implementați cc, op= și destructor (regula celor trei) pentru o singură clasă
 - `operator<<` (pentru afișare)
+  - de ce? pentru că este ceva standard; dacă facem afișarea cu o funcție, aceasta poate fi numită în foarte multe feluri: `afis`, `afiseaza`, `afisare` etc.
 - funcții membru publice
 - atribute și alte funcții vor fi obligatoriu `private` (și, evident, fără variabile globale; discutăm excepțiile)
 - cât mai multe `const`
