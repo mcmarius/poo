@@ -16,6 +16,7 @@ Cerințe comune:
 - moșteniri, funcții virtuale (care vor fi și folosite!)
 - excepții C++
 - fișiere separate (!) `.h` și `.cpp` pentru fiecare clasă (dacă sunt clase mici cu același scop, le puteți pune în același fișier)
+- `git tag` cu o versiune preliminară; ideea ar fi să aveți tag-ul `v1.0.0` atunci când e 99% gata, spre sfârșitul semestrului
 - FĂRĂ using namespace std în fișiere .h la nivel global
   - pot fi declarații locale *[necesită verificare]*
 - cod indentat consistent!
