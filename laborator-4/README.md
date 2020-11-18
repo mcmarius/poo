@@ -25,6 +25,6 @@ Cerințe comune:
 - fără variabile globale (discutăm excepțiile🇷🇴)
 - se aplică toate cerințele de la tema 1 care nu au fost deja îndeplinite
   - exemple: cât mai multe `const`, testat/apelat tot codul public de interes din `main` (iar ce e public și nu e apelat ar trebui șters)
-- citirea datelor de intrare obligatoriu din fișier!! (discutăm excepțiile🇷🇴, dar și acolo va fi necesar așa ceva)
+- citirea datelor de intrare obligatoriu din fișier sau creat obiecte în `main`!! (discutăm excepțiile🇷🇴, dar și acolo va fi necesar așa ceva)
 - hard deadline: **6 decembrie**
 
