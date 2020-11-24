@@ -46,13 +46,14 @@ class bucatar {
 Pașii sunt următorii:
 - descărcarea bibliotecii
 - dacă nu există fișiere binare (sau acestea nu funcționează), compilarea codului sursă
+  - **⚠ atenție!** Codul obiect nu este portabil între sisteme de operare diferite!
 - adăugarea căii către fișierele header (cu opțiunea `-Inume_folder_cu_headere`)
 - includerea fișierului/fișierelor header în codul nostru sursă
 - adăugarea căii către fișierele de bibliotecă compilate (cu opțiunea `-Lnume_folder_cu_libs`)
   - extensii posibile: `.a` (archive), `.lib`, `.so` (shared object), `.dll` (dynamic linked library)
   - numele pot începe cu `lib`, dar nu este obligatoriu
 - legarea/link-uirea (linking-ul?) efectiv a bibliotecilor statice de care avem nevoie (cu opțiunnea `-lnume_biblioteca` - este litera L mic)
-- adăugarea bibliotecilor dinamice
+- adăugarea bibliotecilor dinamice: trebuie să existe în directorul curent sau în `PATH`
 
 Observații:
 - unele biblioteci sunt de tip header-only, deci nu sunt necesari decât pașii 1, 3 și 4 (sau doar 1 și 4 dacă adăugăm sursa în repo)
