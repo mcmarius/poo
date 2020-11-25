@@ -16,6 +16,8 @@
 
 **Punct de plecare**
 
+Puteți ignora secțiunea asta. 🚧
+
 Un ospătar ține evidența mai multor comenzi. Ospătarii pot face schimb de comenzi. Comenzile sunt preluate de bucătari. Pentru simplitate, folosim fișiere.
 
 Situații de discutat:
