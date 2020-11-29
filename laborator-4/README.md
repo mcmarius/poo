@@ -14,7 +14,7 @@ Scopul acestei teme este familiarizarea cu limbajul C++ (din nou) și cu unele c
 
 Cerințe comune:
 - moșteniri, funcții virtuale (care vor fi și folosite!)
-- excepții C++
+- excepții C++ ([`std::optional`](https://en.cppreference.com/w/cpp/utility/optional)?)
 - fișiere separate (!) `.h` și `.cpp` pentru fiecare clasă (dacă sunt clase mici cu același scop, le puteți pune în același fișier)
 - `git tag` cu o versiune preliminară; ideea ar fi să aveți tag-ul `v1.0.0` atunci când e 99% gata, spre sfârșitul semestrului
 - FĂRĂ using namespace std în fișiere .h la nivel global
@@ -27,4 +27,3 @@ Cerințe comune:
   - exemple: cât mai multe `const`, testat/apelat tot codul public de interes din `main` (iar ce e public și nu e apelat ar trebui șters)
 - citirea datelor de intrare obligatoriu din fișier sau creat obiecte în `main`!! (discutăm excepțiile🇷🇴, dar și acolo va fi necesar așa ceva)
 - hard deadline: **6 decembrie**
-
