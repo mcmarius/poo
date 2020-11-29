@@ -76,7 +76,8 @@ Bibliotecile statice sunt necesare atunci când compilăm codul, ceea ce înseam
 
 De încercat:
 - Boost (??)
-- ICU (??)
+- ~ICU~ (nope, e foarte nașpa, nu merită efortul, deși funcționalitatea e ce trebuie) (??)
+- [tiny-utf8](https://github.com/DuffsDevice/tiny-utf8) pare mult mai ok, dar încă n-am încercat
 - https://github.com/agauniyal/rang
 
 
