@@ -60,6 +60,7 @@ Pașii sunt următorii:
 Observații:
 - unele biblioteci sunt de tip header-only, deci nu sunt necesari decât pașii 1, 3 și 4 (sau doar 1 și 4 dacă adăugăm sursa în repo)
 - unele biblioteci sunt gândite să fie legate doar static, altele doar dinamic, iar altele în ambele feluri (adică au o parte cu fișiere statice și alta cu fișiere dinamice)
+- de verificat că licențele bibliotecilor pe care le folosim sunt compatibile cu licența proiectului nostru
 
 **Care este diferența dintre bibliotecile legate static și cele legate dinamic?**
 
@@ -71,6 +72,7 @@ Bibliotecile statice sunt necesare atunci când compilăm codul, ceea ce înseam
 
 - [SFML](https://www.sfml-dev.org/): grafică, sunete (trebuie schimbat un DLL pe Windows)
 - 🚧 secțiune incompletă
+- [rlutil](https://github.com/tapio/rlutil) pentru text colorat
 - am mai reușit să folosesc [libpqxx](https://github.com/jtv/libpqxx), [GLFW](https://www.glfw.org/download.html), [SOIL](https://github.com/kbranigan/Simple-OpenGL-Image-Library) (nu sunt sigur dacă asta e), [SOIL2](https://github.com/SpartanJ/SOIL2)
 - la SIGIL nu mi-a mers sunetul (și are nevoie de un DLL din MSYS2)
 
