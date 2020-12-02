@@ -54,7 +54,7 @@ Pașii sunt următorii:
 - adăugarea căii către fișierele de bibliotecă compilate (cu opțiunea `-Lnume_folder_cu_libs`)
   - extensii posibile: `.a` (archive), `.lib`, `.so` (shared object), `.dll` (dynamic linked library)
   - numele pot începe cu `lib`, dar nu este obligatoriu
-- legarea/link-uirea (linking-ul?) efectiv a bibliotecilor statice de care avem nevoie (cu opțiunnea `-lnume_biblioteca` - este litera L mic)
+- legarea/link-uirea (linking-ul?) efectivă a bibliotecilor statice de care avem nevoie (cu opțiunnea `-lnume_biblioteca` - este litera L mic)
 - adăugarea bibliotecilor dinamice: trebuie să existe în directorul curent sau în `PATH`
 
 Observații:
@@ -70,10 +70,10 @@ Bibliotecile statice sunt necesare atunci când compilăm codul, ceea ce înseam
 
 În această secțiune, aș vrea să vă recomand doar biblioteci care sunt **portabile**.
 
-- [SFML](https://www.sfml-dev.org/): grafică, sunete (trebuie schimbat un DLL pe Windows)
+- [SFML](https://www.sfml-dev.org/): grafică, sunete (posibil să trebuiască schimbat DLL-ul de OpenAL pe Windows... sau nu)
 - 🚧 secțiune incompletă
 - [rlutil](https://github.com/tapio/rlutil) pentru text colorat
-- am mai reușit să folosesc [libpqxx](https://github.com/jtv/libpqxx), [GLFW](https://www.glfw.org/download.html), [SOIL](https://github.com/kbranigan/Simple-OpenGL-Image-Library) (nu sunt sigur dacă asta e), [SOIL2](https://github.com/SpartanJ/SOIL2)
+- am mai reușit să folosesc [libpqxx](https://github.com/jtv/libpqxx), [GLFW](https://www.glfw.org/download.html), [SOIL](https://github.com/kbranigan/Simple-OpenGL-Image-Library) (nu sunt sigur dacă asta e), [SOIL2](https://github.com/SpartanJ/SOIL2), [indicators](https://github.com/p-ranav/indicators) (bară de progres)
 - la SIGIL nu mi-a mers sunetul (și are nevoie de un DLL din MSYS2)
 
 De încercat:
