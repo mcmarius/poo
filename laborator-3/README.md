@@ -77,6 +77,7 @@ Bibliotecile statice sunt necesare atunci când compilăm codul, ceea ce înseam
 - la SIGIL nu mi-a mers sunetul (și are nevoie de un DLL din MSYS2)
 
 De încercat:
+- [cpr](https://github.com/whoshuu/cpr)
 - Boost (??)
 - ~ICU~ (nope, e foarte nașpa, nu merită efortul, deși funcționalitatea e ce trebuie) (??)
 - [tiny-utf8](https://github.com/DuffsDevice/tiny-utf8) pare mult mai ok, dar încă n-am încercat
