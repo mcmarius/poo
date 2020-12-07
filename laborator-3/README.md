@@ -83,6 +83,9 @@ De încercat:
 - [tiny-utf8](https://github.com/DuffsDevice/tiny-utf8) pare mult mai ok, dar încă n-am încercat
 - https://github.com/agauniyal/rang
 
+### Alte sfaturi
+
+Pentru fișiere mari (minim câțiva MB), este recomandat să folosiți [`git-lfs`](https://git-lfs.github.com/). Astfel, dacă le modificați, pe repository-ul local veți avea o singură copie a acestor fișiere mari, însă istoricul complet al modificărilor se va afla pe repository-ul remote (desigur, trebuie ca acesta să știe de lfs).
 
 ## Resurse recomandate
 - [cppreference.com](https://en.cppreference.com/w/cpp)
