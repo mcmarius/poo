@@ -21,6 +21,9 @@ Cerințe comune:
   - pot fi declarații locale *[necesită verificare]*
 - cod indentat consistent!
 - obligatoriu smart pointers pentru alocările dinamice (discutăm excepțiile🇷🇴)
+  - pentru că sunt ceva mai siguri decât pointerii obișnuiți în contextul în care folosim excepții C++
+  - dezavantajul este că nu sunt atât de eficienți; orice abstractizare are un cost
+  - [cu un pic de efort](https://stackoverflow.com/questions/54336422/), putem avea memory leaks și cu smart pointers
 - compilat cu `-Wall -Wextra -pedantic -Weffc++` (`-Werror` pentru 10+) `-g`
 - fără variabile globale (discutăm excepțiile🇷🇴)
 - se aplică toate cerințele de la tema 1 care nu au fost deja îndeplinite
