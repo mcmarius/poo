@@ -12,8 +12,7 @@ Exemple de design patterns care s-ar putea potrivi și care nu sunt foarte compl
 - object pool
 
 
-
-Moșteniri multiple și virtuale
+#### Moșteniri multiple și virtuale
 
 C++ permite moșteniri multiple:
 ```c++
@@ -35,7 +34,7 @@ class tabletă : public dispozitiv {
     // moștenește ecranul
 };
 
-class laptop : public {
+class laptop : public dispozitiv {
     // moștenește ecranul
 };
 
@@ -52,11 +51,11 @@ class dispozitiv {
     ecran e;
 };
 
-class tabletă : virtual public dispozitiv {
+class tabletă : public virtual dispozitiv {
     // moștenește ecranul
 };
 
-class laptop : virtual public {
+class laptop : public virtual dispozitiv {
     // moștenește ecranul
 };
 
@@ -64,12 +63,10 @@ class two_in_one : public tabletă, public laptop {
     // moștenește un singur ecran!
 };
 ```
-
-Putem face moștenirea virtuală și "la sfârșit" (în clasa `two_in_one`), însă nu e recomandat (de adăugat de ce).
-
+Dacă facem moștenirea virtuală "la sfârșit" (în clasa `two_in_one`), vom avea în continuare două `ecrane`.
 
 
-Templates
+#### Templates
 - funcții template
 - clase template
 - supraîncărcare operatori friend în clase template
