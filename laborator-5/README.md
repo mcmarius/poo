@@ -23,7 +23,7 @@ Exemplu: un obiect care gestionează o aplicație/un joc
 class application {
 private:
     application() = default;
-    application* app = nullptr;
+    static application* app;
 public:
     application(const application&) = delete;
     application& operator=(const application&) = delete;
@@ -33,8 +33,10 @@ public:
     }
 };
 
-// peste tot unde avem nevoie de obiect
-application::get_app()
+application* application::app = nullptr;
+
+// mod de utilizare
+auto x = application::get_app();
 ```
 Desigur, putem folosi smart pointers. Dacă folosim `std::unique_ptr`, atunci constructorul de copiere și op= vor fi implicit șterse.
 
