@@ -253,6 +253,8 @@ Pentru exemple, motivație etc, citiți cursul. Această secțiune arată modul 
 
 Singurul dezavantaj atunci când folosim fișiere separate este acela că trebuie să declarăm în mod explicit funcțiile/clasele toate tipurile de date pentru care avem nevoie de templates.
 
+Pentru situațiile întâlnite aici, putem folosi fie `<class T>`, fie `<typename T>`, este același lucru. Există situații când merge doar cu `typename` sau doar cu `class`, însă nu ne vom întâlni cu ele (sper). Important este să le folosim în mod consistent, peste tot la fel.
+
 **Funcții template**
 
 ```c++
