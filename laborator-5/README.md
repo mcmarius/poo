@@ -348,4 +348,61 @@ Observații:
 
 **Supraîncărcare operatori friend în clase template**
 
+```c++
+// sursa.h
+#ifndef SURSA_H
+#define SURSA_H
 
+#include <iostream>
+
+template <typename T>
+class cls;
+
+template <typename T>
+std::ostream& operator<<(std::ostream& o, const cls<T>& c);
+
+template <typename T>
+class cls {
+    T info;
+public:
+    cls(const T& x);
+    friend std::ostream& operator<< <>(std::ostream&, const cls<T>&);
+};
+
+#endif
+
+/////////////////////////
+
+// sursa.cpp
+#include "sursa.h"
+
+template <typename T>
+cls<T>::cls(const T& x) : info(x) {}
+
+template <typename T>
+std::ostream& operator<<(std::ostream& o, const cls<T>& c) {
+    o << c.info;
+    return o;
+}
+
+/////////////////////////
+
+// sursa_impl.cpp
+#include "sursa.cpp"
+
+template class
+cls<int>;
+
+template
+std::ostream& operator<< <>(std::ostream& o, const cls<int>& x);
+
+/////////////////////////
+
+// main.cpp
+#include "sursa.h"
+
+int main() {
+    cls<int> c(5);
+    std::cout << c;
+}
+```
