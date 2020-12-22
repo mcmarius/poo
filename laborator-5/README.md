@@ -251,13 +251,100 @@ Dacă facem moștenirea virtuală "la sfârșit" (în clasa `two_in_one`), vom a
 #### Templates
 Pentru exemple, motivație etc, citiți cursul. Această secțiune arată modul în care putem folosi fișiere separate pentru templates.
 
+Singurul dezavantaj atunci când folosim fișiere separate este acela că trebuie să declarăm în mod explicit funcțiile/clasele toate tipurile de date pentru care avem nevoie de templates.
+
 **Funcții template**
 
+```c++
+// sursa.h
+#ifndef SURSA_H
+#define SURSA_H
 
+template <class T>
+void f(T x);
+
+#endif
+
+/////////////////////////
+
+// sursa.cpp
+#include "sursa.h"
+#include <iostream>
+
+template <class T>
+void f(T x) {
+    std::cout << x;
+}
+
+/////////////////////////
+
+// sursa_impl.cpp
+#include "sursa.cpp"
+
+template
+void f<int>(int x);
+
+/////////////////////////
+
+// main.cpp
+#include "sursa.h"
+
+int main() {
+    f<int>(5);
+}
+```
+
+Observații:
+- în `sursa_impl.cpp` trebuie să adăugăm declarații pentru toate tipurile pe care le folosim peste tot unde includem `sursa.h`
 
 **Clase template**
 
+```c++
+// sursa.h
+#ifndef SURSA_H
+#define SURSA_H
 
+
+template <class T>
+class cls {
+public:
+    void f(T x);
+};
+
+#endif
+
+/////////////////////////
+
+// sursa.cpp
+#include "sursa.h"
+#include <iostream>
+
+template <class T>
+void cls<T>::f(T x) {
+    std::cout << x;
+}
+
+/////////////////////////
+
+// sursa_impl.cpp
+#include "sursa.cpp"
+
+template
+class cls<int>;
+
+/////////////////////////
+
+// main.cpp
+#include "sursa.h"
+
+int main() {
+    cls<int> c;
+    c.f(5);
+}
+```
+
+Observații:
+- toate funcțiile unei clase template sunt la rândul lor funcții template
 
 **Supraîncărcare operatori friend în clase template**
 
