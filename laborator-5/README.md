@@ -3,7 +3,7 @@
 Scopul acestei teme este utilizarea unor concepte mai avansate de OOP (design patterns) și a programării generice, dacă este posibil.
 
 Cerințe:
-- minim o funcție/o clasă șablon (template)
+- minim o funcție/o clasă șablon (template); dacă nu se poate, renunțăm la această cerință ☹
 - minim un design pattern (sau 2 dacă aveți singleton sau ceva la fel de simplu și proiectul e simplu); **utilizarea acestor design patterns ar trebui să aibă sens**
 
 Observații:
