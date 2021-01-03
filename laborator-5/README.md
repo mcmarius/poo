@@ -12,6 +12,8 @@ Observații:
 - puteți folosi și alte design patterns pe lângă cele prezentate aici
 - aceste patterns se pot combina între ele și au numeroase variațiuni
 
+**Deadline: 9 ianuarie (inclusiv)** (dar prelungim atât cât se poate)
+
 În continuare, prezint câteva exemple de design patterns care s-ar putea potrivi și care nu sunt foarte complicate.
 
 **Singleton**
