@@ -14,6 +14,10 @@ Observații:
 
 **Deadline: 9 ianuarie (inclusiv)** (dar prelungim atât cât se poate)
 
+Orice funcționalitate în plus e luată în considerare pentru puncte bonus, inclusiv la temele din urmă. Nota maximă este 12.
+
+-----
+
 În continuare, prezint câteva exemple de design patterns care s-ar putea potrivi și care nu sunt foarte complicate.
 
 **Singleton**
