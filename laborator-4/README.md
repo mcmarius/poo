@@ -13,7 +13,7 @@
 Scopul acestei teme este familiarizarea cu limbajul C++ (din nou) și cu unele concepte OOP de bază, pe lângă cele de la prima temă. **Nu vă complicați!** Sau nu excesiv 😄
 
 Cerințe comune:
-- moșteniri, funcții virtuale (care vor fi și folosite!)
+- moșteniri, funcții virtuale (care vor fi și folosite!) apelate prin pointeri la clasa de bază
 - excepții C++ ([`std::optional`](https://en.cppreference.com/w/cpp/utility/optional)?)
 - fișiere separate (!) `.h` și `.cpp` pentru fiecare clasă (dacă sunt clase mici cu același scop, le puteți pune în același fișier)
 - `git tag` cu o versiune preliminară; ideea ar fi să aveți tag-ul `v1.0.0` atunci când e 99% gata, spre sfârșitul semestrului
