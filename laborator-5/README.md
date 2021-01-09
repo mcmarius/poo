@@ -12,7 +12,7 @@ Observații:
 - puteți folosi și alte design patterns pe lângă cele prezentate aici
 - aceste patterns se pot combina între ele și au numeroase variațiuni
 
-**Deadline: 9 ianuarie (inclusiv)** (dar prelungim atât cât se poate)
+**Deadline: ~9~ 18 ianuarie (inclusiv) feature freeze** (dar prelungim atât cât se poate pt mici modificări); după această dată, cel mult reparat bug-uri
 
 Orice funcționalitate în plus e luată în considerare pentru puncte bonus, inclusiv la temele din urmă. Nota maximă este 12.
 
