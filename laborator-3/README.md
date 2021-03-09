@@ -78,6 +78,9 @@ Bibliotecile statice sunt necesare atunci când compilăm codul, ceea ce înseam
 
 De încercat:
 - [cpr](https://github.com/whoshuu/cpr)
+- json parsing:
+  - [nlohmann/json](https://github.com/nlohmann/json) (am aflat de la @MihaiVoinea 👍)
+  - dacă vreți performanță, recomand [OjC](https://github.com/ohler55/ojc)
 - Boost (??)
 - ~ICU~ (nope, e foarte nașpa, nu merită efortul, deși funcționalitatea e ce trebuie) (??)
 - [tiny-utf8](https://github.com/DuffsDevice/tiny-utf8) pare mult mai ok, dar încă n-am încercat
