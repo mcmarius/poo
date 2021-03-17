@@ -34,20 +34,13 @@ Cerințe comune:
 - cât mai multe `const`
 - ⚠ datele ar trebui să fie direct în main sau citite dintr-un fișier: cât mai puține citiri de la tastatură (discutăm excepțiile)
 - codul trebuie să fie pe un repo la care să am acces (preferabil repo de `git`)
-- GitHub Actions sau ceva similar (pentru Continuous Integration) (**exemplu [aici](https://github.com/mcmarius/demo-poo/blob/master/.github/workflows/ccpp.yml)**)
+- opțional, GitHub Actions sau ceva similar (pentru Continuous Integration) (**exemplu [aici](https://github.com/mcmarius/demo-poo/blob/master/.github/workflows/ccpp.yml)** - mai trebuie actualizat)
   - fără warnings: `-Wall -Wextra -pedantic -Weffc++`, eventual cu `-Werror` și un linter (`cppcheck`)
   - fără memory leaks: vom folosi `valgrind` sau `-fsanitize`
   - testarea *tuturor* funcțiilor publice în `main`
-    - vom folosi `gcovr` pentru a ne da seama ce părți din program (nu) se execută
+    - vom folosi un feature sau plugin din IDE (sau `gcovr`) pentru a ne da seama ce părți din program (nu) se execută
     - vom folosi instrucțiuni `assert`/`static_assert` pentru testarea în sine
     - dacă o funcție publică nu este folosită, probabil nu avem nevoie de acea funcție; o ștergem sau o facem `private`
-    - veți putea vedea nivelul de acoperire al codului pe `https://{nume_user_github}.github.io/{nume_repo}/coverage`
-      - exemplu: https://mcmarius.github.io/demo-poo/coverage
-      - trebuie să selectați branch-ul `gh-pages` din repository settings pentru deploy cu Github Pages
-      - debugging:
-        - creăm manual branch-ul `gh-pages`
-        - verificăm dacă deploy-ul actualizează acest branch
-        - dacă nu se actualizează branch-ul, dar pipeline-ul reușește, cel mai probabil nu am mutat fișierele necesare în folder-ul `public`
   - `.gitignore` ca să fie mai ușor de văzut diferențele
 - ideal, implementarea unei funcționalități mai dificile
 
