@@ -75,6 +75,7 @@ Bibliotecile statice sunt necesare atunci când compilăm codul, ceea ce înseam
 - [rlutil](https://github.com/tapio/rlutil) pentru text colorat
 - am mai reușit să folosesc [libpqxx](https://github.com/jtv/libpqxx), [GLFW](https://www.glfw.org/download.html), [SOIL](https://github.com/kbranigan/Simple-OpenGL-Image-Library) (nu sunt sigur dacă asta e), [SOIL2](https://github.com/SpartanJ/SOIL2), [indicators](https://github.com/p-ranav/indicators) (bară de progres)
 - la SIGIL nu mi-a mers sunetul (și are nevoie de un DLL din MSYS2)
+- [portable-file-dialogs](https://github.com/samhocevar/portable-file-dialogs): pop-ups, notificări; e nevoie de mici modificări pt a merge pe windows cu gcc
 
 De încercat:
 - [cpr](https://github.com/whoshuu/cpr)
