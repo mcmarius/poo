@@ -12,7 +12,7 @@ Observații:
 - puteți folosi și alte design patterns pe lângă cele prezentate aici
 - aceste patterns se pot combina între ele și au numeroase variațiuni
 
-**Deadline: ~9~ 18 ianuarie (inclusiv) feature freeze** (dar prelungim atât cât se poate pt mici modificări); după această dată, cel mult reparat bug-uri
+**Deadline: 3 iunie (inclusiv) feature freeze** (dar prelungim atât cât se poate pt mici modificări); după această dată, cel mult reparat bug-uri
 
 Orice funcționalitate în plus e luată în considerare pentru puncte bonus, inclusiv la temele din urmă. Nota maximă este 12.
 
@@ -44,7 +44,7 @@ application* application::app = nullptr;
 // mod de utilizare
 auto x = application::get_app();
 ```
-Desigur, putem folosi smart pointers. Dacă folosim `std::unique_ptr`, atunci constructorul de copiere și op= vor fi implicit șterse.
+Putem folosi smart pointers, însă nu este necesar, având în vedere că dorim ca variabila statică să trăiască pe toată durata programului în cazul singleton.
 
 **Object pool**
 
