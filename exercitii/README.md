@@ -435,6 +435,8 @@ ut::suite t_lista_simpla = [] {
 int main() {}
 ```
 
+În folderul `laborator-1` aveți adăugate teste și pentru funcțiile de adăugare/eliminare/modificare pe care nu le-am implementat. Implementați voi aceste funcții și verificați să treacă toate testele 😄 trebuie să scoateți acele `skip / ` din fața testelor pentru că altfel acele teste nu se execută.
+
 -----
 
 Exerciții liste simplu înlănțuite:
