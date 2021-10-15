@@ -34,7 +34,7 @@ Cerințe comune:
 - cât mai multe `const`
 - ⚠ datele ar trebui să fie direct în main sau citite dintr-un fișier: cât mai puține citiri de la tastatură (discutăm excepțiile)
 - codul trebuie să fie pe un repo la care să am acces (preferabil repo de `git`)
-- opțional, GitHub Actions sau ceva similar (pentru Continuous Integration) (**exemplu [aici](https://github.com/mcmarius/demo-poo/blob/master/.github/workflows/ccpp.yml)** - mai trebuie actualizat)
+- opțional, GitHub Actions sau ceva similar (pentru Continuous Integration) (**exemplu [aici](https://github.com/mcmarius/demo-poo/blob/master/.github/workflows/cmake.yml)** - în același repo e și o variantă mai veche)
   - fără warnings: `-Wall -Wextra -pedantic -Weffc++`, eventual cu `-Werror` și un linter (`cppcheck`)
   - fără memory leaks: vom folosi `valgrind` sau `-fsanitize`
   - testarea *tuturor* funcțiilor publice în `main`
