@@ -48,21 +48,25 @@ Bibliotecile statice sunt necesare atunci când compilăm codul, ceea ce înseam
 
 - [SFML](https://www.sfml-dev.org/): grafică, sunete (posibil să trebuiască schimbat DLL-ul de OpenAL pe Windows... sau nu)
 - 🚧 secțiune incompletă
-- [rlutil](https://github.com/tapio/rlutil) pentru text colorat
+- [rlutil](https://github.com/tapio/rlutil) pentru text colorat și jocuri în consolă, [rang](https://github.com/agauniyal/rang) pt text colorat/subliniat
 - am mai reușit să folosesc [libpqxx](https://github.com/jtv/libpqxx), [GLFW](https://www.glfw.org/download.html), [SOIL](https://github.com/kbranigan/Simple-OpenGL-Image-Library) (nu sunt sigur dacă asta e), [SOIL2](https://github.com/SpartanJ/SOIL2), [indicators](https://github.com/p-ranav/indicators) (bară de progres)
 - la SIGIL nu mi-a mers sunetul (și are nevoie de un DLL din MSYS2)
 - [portable-file-dialogs](https://github.com/samhocevar/portable-file-dialogs): pop-ups, notificări; e nevoie de mici modificări pt a merge pe windows cu gcc
-
-De încercat:
 - [cpr](https://github.com/whoshuu/cpr)
 - json parsing:
-  - [nlohmann/json](https://github.com/nlohmann/json) (am aflat de la @MihaiVoinea 👍)
+  - [nlohmann/json](https://github.com/nlohmann/json) (am aflat de la [@MihaiVoinea](https://github.com/MihaiVoinea))
   - dacă vreți performanță, recomand [OjC](https://github.com/ohler55/ojc)
+- crypto: [digestpp](https://github.com/kerukuro/digestpp) pt hashing parole
+- date calendaristice: [date](https://github.com/HowardHinnant/date)
+
+De încercat:
 - Boost (??)
 - ~ICU~ (nope, e foarte nașpa, nu merită efortul, deși funcționalitatea e ce trebuie) (??)
 - [tiny-utf8](https://github.com/DuffsDevice/tiny-utf8) pare mult mai ok, dar încă n-am încercat
-- https://github.com/agauniyal/rang
-- [raylib-cpp](https://github.com/RobLoach/raylib-cpp) (recomandare din partea @meemknight)
+- [raylib-cpp](https://github.com/RobLoach/raylib-cpp) (recomandare din partea [@meemknight](https://github.com/meemknight))
+- [magic_enum](https://github.com/Neargye/magic_enum)
+
+De unde mai puteți găsi biblioteci: căutați awesome c++, de exemplu [aici](https://github.com/fffaraz/awesome-cpp)
 
 ### Alte sfaturi
 
