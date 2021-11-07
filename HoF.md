@@ -1,25 +1,37 @@
 ## Hall of Fame
 
+**2021-2022**: ?
+
 **2020-2021**:
 [ArcaneArts](https://github.com/AlexMincu/ArcaneArts) |
 [Reddit++](https://github.com/MaximTiberiu/OOProject) |
 [Sep7ica](https://github.com/VictorAndreiCotescu/Sep7ica) |
 [fantasyCraft](https://github.com/meemknight/fantasyCraft) |
 [Muzeu](https://github.com/DianaIfrosa/Lab-POO) |
-[Webshop backend API](https://github.com/Andrei0872/webshop-backend-api-oop) | ?
+[Webshop backend API](https://github.com/Andrei0872/webshop-backend-api-oop)
 
 **2019-2020**:
 [Game of Life](https://github.com/Stefan-Radu/lab-oop)
 
 ## Runner-ups
 
+**2021-2022**: ?
+
 **2020-2021**:
 [Clash Royale](https://github.com/TIPYexe/POO_ClashRoyale) |
 [F1 Arcade Game](https://github.com/DragosBalmau/Formula-1-Arcade-Game) |
 [Trasee montane](https://github.com/VMadalina/OOP) |
-[Simulation game](https://github.com/Al-Th-Ionescu/OOP_simulation_game) | ?
+[Simulation game](https://github.com/Al-Th-Ionescu/OOP_simulation_game) |
+[Reminders&Alarms](https://github.com/cimuletz/lab-poo) |
+[Bancă](https://github.com/alexandra-udristoiu/lab-oop) |
+[Formație muzicală](https://github.com/Ionescu-Ioan/Laborator-POO) |
+[Task tracker](https://github.com/deeaanghelache/POO_Laborator) |
+[Drinkeer](https://github.com/radu-filipescu/Drinkeer) |
+[Fitness](https://github.com/alexbrinza2001/Tema1-POO)
 
 ## Other mentions
+
+**2021-2022**: ?
 
 **2020-2021**:
 [MinecraftText](https://github.com/andrei-cerbulescu/MinecraftText) |
@@ -27,7 +39,8 @@
 [My Monopoly](https://github.com/alexandra-chivescu/Proiect-OOP) |
 [Șah](https://github.com/alexandru-peter/SAH_POO_1) |
 [Snake](https://github.com/Mihnea-Cristea/POO) |
-[Tower defense](https://github.com/opreageorges/POO) | ?
+[Tower defense](https://github.com/opreageorges/POO) |
+[AdventureIn10](https://github.com/Daria602/AdventureIn10)
 
 -----
 
