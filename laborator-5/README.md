@@ -5,8 +5,8 @@ Scopul acestei teme este utilizarea unor concepte mai avansate de OOP (design pa
 Cerințe:
 - minim o funcție șablon și o clasă șablon (template)
     - modificați o clasă existentă care este ceva mai izolată de celelalte (să nu aveți foarte mult de modificat) și transformați-o în clasă template
-    - adăugați (minim) un atribut `T` acestei clase
-    - adăugați (minim) o funcție membru care să depindă de `T` (sau de alt parametru template)
+    - adăugați (minim) un atribut de tip `T` sau care depinde de `T`
+    - adăugați (minim) o funcție membru care să depindă de `T` (sau de alt parametru template); idee: [expresii de tip fold](#expresii-de-tip-fold-c17)
     - adăugați (minim) o funcție normală/liberă template; poate să fie `friend`
 - minim 2 design patterns (3 dacă aveți singleton sau ceva la fel de simplu și proiectul e simplu); **utilizarea acestor design patterns ar trebui să aibă sens**
 
@@ -21,6 +21,8 @@ Observații:
   - sem 2: **3 iunie** (inclusiv)
 
 Orice funcționalitate în plus e luată în considerare pentru puncte bonus, inclusiv la temele din urmă. Nota maximă este 12.
+
+Dacă doriți să folosiți conceptele din C++20, am actualizat pipeline-ul de GitHub Actions. Puteți vedea modificările [aici](https://github.com/mcmarius/demo-poo/pull/19/files#diff-cdd48abbd3eb8d1c54077449fc74a8de1f29805d2be5d8e5232b7aab76ea7a6fL17).
 
 -----
 
@@ -354,7 +356,7 @@ Pentru situațiile întâlnite aici, putem folosi fie `<class T>`, fie `<typenam
 #ifndef SURSA_H
 #define SURSA_H
 
-template <class T>
+template <typename T>
 void f(T x);
 
 #endif
@@ -365,7 +367,7 @@ void f(T x);
 #include "sursa.h"
 #include <iostream>
 
-template <class T>
+template <typename T>
 void f(T x) {
     std::cout << x;
 }
@@ -398,7 +400,7 @@ O variantă un pic mai organizată, dar tot header-only:
 #ifndef SURSA_H
 #define SURSA_H
 
-template <class T>
+template <typename T>
 void f(T x);
 
 #include "sursa.cpp"
@@ -409,7 +411,7 @@ void f(T x);
 // sursa.cpp
 #include <iostream>
 
-template <class T>
+template <typename T>
 void f(T x) {
     std::cout << x;
 }
@@ -516,10 +518,9 @@ std::ostream& operator<<(std::ostream& os, const T& obj) {
 Dacă dorim să marcăm în mod explicit constrângerea pentru colecție, putem proceda în felul următor:
 ```c++
 template <typename T>
-concept Container = requires(T t)
-{
-    std::begin(t);
-    std::end(t);
+concept Container = requires(T v) {
+    std::begin(v);
+    std::end(v);
 };
 
 template <Container T> requires (!std::convertible_to<T, std::string>)
@@ -611,7 +612,7 @@ Observații:
   - de ce? parantezele ar zice pe dos; așa funcționează [operatorul virgulă](https://en.cppreference.com/w/cpp/language/operator_other#Built-in_comma_operator): întâi se evaluează expresia din stânga, abia apoi expresia din dreapta
 - detalii în documentație, link-ul este pe titlul secțiunii
 
-La ce vă puteți folosi de acest lucru la temele voastre?
+**La ce vă puteți folosi de acest lucru la temele voastre?**
 
 Vă puteți defini o funcție de adăugare a mai multor elemente simultan. Găsiți un exemplu și în documentație.
 
@@ -626,9 +627,9 @@ public:
 
 std::ostream& operator<<(std::ostream& os, const Base&) { os << "."; return os; }
 
-//template <class T>
+//template <typename T>
 //concept Derived = std::is_base_of_v<Base, T>;
-template <class T>
+template <typename T>
 concept Derived = std::derived_from<T, Base>;
 
 template <Derived... Args>
@@ -666,7 +667,7 @@ Observații:
 #define SURSA_H
 
 
-template <class T>
+template <typename T>
 class cls {
 public:
     void f(T x);
@@ -680,7 +681,7 @@ public:
 #include "sursa.h"
 #include <iostream>
 
-template <class T>
+template <typename T>
 void cls<T>::f(T x) {
     std::cout << x;
 }
