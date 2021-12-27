@@ -562,6 +562,8 @@ int main() {
 Observații:
 - poate fi util când avem mulți constructori, însă vrem să restricționăm crearea de obiecte (exemplu: object pool de mai sus)
 - smart pointerii funcționează similar pentru a putea apela constructorii
+- nu putem folosi fișiere separate deoarece nu este rezonabil să instanțiem în avans toate combinațiile de apeluri
+- dacă vreți totuși să lucrați cu fișiere separate, fie scrieți funcția cu nr variabil de argumente în header, fie includeți cpp-ul în header (vezi la începutul secțiunii cu funcții template)
 
 #### [Expresii de tip fold](https://en.cppreference.com/w/cpp/language/fold) (C++17)
 
@@ -615,6 +617,8 @@ Observații:
 **La ce vă puteți folosi de acest lucru la temele voastre?**
 
 Vă puteți defini o funcție de adăugare a mai multor elemente simultan. Găsiți un exemplu și în documentație.
+
+Alternativ, puteți folosi [liste explicite de inițializare](https://en.cppreference.com/w/cpp/utility/initializer_list) dacă argumentele au același tip (de exemplu pointeri la bază); cf [recomandărilor](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#t103-dont-use-variadic-templates-for-homogeneous-argument-lists), variadic templates ar fi overkill.
 
 Bonus: dacă vrem să restricționăm funcția de afișare doar pentru derivate ale anumitei clase, putem folosi din nou concepte (C++20):
 ```c++
