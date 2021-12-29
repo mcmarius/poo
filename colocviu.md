@@ -14,7 +14,7 @@ Câteva sfaturi pentru colocviu
   - `operator<<`, `static_cast`, `dynamic_cast`
   - funcții template
 - folosiți `std::string` în loc de `char*`, folosiți `std::vector` în loc de `A *vec = new A[nr]` (și `delete[]`)
-- recomandarea mea e să folosiți `std::shared_ptr`: așa primiți puncte pe smart pointeri și nu sunteți depunctați pt eventuale memory leaks
+- recomandarea mea e să folosiți `std::shared_ptr`: așa pot să dau puncte bonus pe smart pointeri și nu sunteți depunctați pt eventuale memory leaks
 
 Shortcuts pentru CLion (și alte editoare de la JetBrains):
 - <kbd>Shift</kbd>+<kbd>F6</kbd> redenumiri
