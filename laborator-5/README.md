@@ -54,6 +54,9 @@ application* application::app = nullptr;
 // mod de utilizare
 auto x = application::get_app();
 ```
+
+**⚠ Atenție!** Inițializarea atributelor statice trebuie pusă într-un **singur** fișier .cpp, deoarece inițializarea trebuie făcută o singură dată. Fișierele .cpp sunt compilate o singură dată, dar fișierele .h sunt incluse de alte fișiere .h/.cpp și atunci ar apărea inițializarea de mai multe ori.
+
 Putem folosi smart pointers, însă nu este necesar, având în vedere că dorim ca variabila statică să trăiască pe toată durata programului în cazul singleton.
 
 ### Object pool
