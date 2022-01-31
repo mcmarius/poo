@@ -237,17 +237,17 @@ Setările la nivel de repository sunt în fișierul `config` din folderul `.git`
 Din browser, de pe pagina principală a repository-ului, apăsați pe butonul "Code", iar apoi copiați
 URL-ul din tab-ul HTTPS:
 
-🚧
+![](img/clone_https.png)
 
 ```
-git clone https://github.com/mcmarius/oop-template.git
+git clone https://github.com/mcmarius/poo.git
 ```
 
 Comanda `clone` face mai multe lucuri: inițializează un repository local, face legătura dintre
 repository-ul local și cel remote (de pe GitHub) și aduce local conținutul de pe remote. Dacă
 nu specificăm și alte opțiuni, vom prelua local tot istoricul modificărilor.
 
-După aceasta, veți avea un folder cu numele repository-ului - `oop-template` pe exemplul de aici.
+După aceasta, veți avea un folder cu numele repository-ului - `poo` pe exemplul de aici.
 Dacă vă uitați la fișierele ascunse din acest folder, veți observa un folder `.git`. Aici își ține
 programul Git toate fișierele de care are nevoie.
 
