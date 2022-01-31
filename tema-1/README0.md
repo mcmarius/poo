@@ -3,13 +3,6 @@
 ### ⚠ Puneți cât mai multe întrebări! Nu există întrebări greșite.
 #### Semnalați orice fel de greșeli găsiți!
 
-# Cuprins
-## [Configurarea mediului de lucru](#configurarea-mediului-de-lucru-1)
-## [Programe introductive](#programe-introductive-1)
-## [Exerciții](#exerciții-1)
-## [Întrebări, erori și orice nu a fost acoperit deja](#întrebări-erori-diverse)
-## [Resurse recomandate](#resurse-recomandate-1)
-
 ## Configurarea mediului de lucru
 
 Vom folosi următoarele opțiuni de compilator: `-Wall -Wextra -pedantic -Weffc++` și, eventual, `-std=c++11` (sau alte versiuni mai noi). Ca versiuni de compilator, sunt de preferat acelea mai noi. Dacă folosiți MinGW, optați pentru varianta pe 64 de biți.
@@ -17,13 +10,6 @@ Vom folosi următoarele opțiuni de compilator: `-Wall -Wextra -pedantic -Weffc+
 Folosiți orice editor doriți. Dacă sunteți nehotărâți, vă recomand [CLion](https://www.jetbrains.com/clion/download/). Folosiți adresa de mail de la facultate pentru licență gratuită.
 
 ## Programe introductive
-
-### [Cel mai simplu program](#cel-mai-simplu-program-1)
-### ["Hello, world!"](#hello-world-1)
-### ["Hello, world!" cu clase](#hello-world-cu-clase-1)
-### [Atribute](#atribute-1)
-### [Moștenire](#moștenire-1)
-### [Compunere](#compunere-1)
 
 ### Cel mai simplu program
 

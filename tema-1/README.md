@@ -1,50 +1,49 @@
-# Laboratorul 2
+# Tema 1
 
 ### ⚠ Puneți cât mai multe întrebări! Nu există întrebări greșite.
 #### Semnalați orice fel de greșeli găsiți!
 
-# Cuprins
-## [Programe discutate](#programe-discutate-1)
-## [Exerciții](#exerciții-1)
-## [Întrebări, erori și orice nu a fost acoperit deja](#întrebări-erori-diverse)
-## [Resurse recomandate](#resurse-recomandate-1)
+Înainte de a parcurge aceste materiale, ar trebui să aveți configurat [mediul de lucru](https://github.com/mcmarius/poo/tree/master/env).
 
-## Programe discutate
+### Mod de notare
 
-### [Tema 1](#tema-1-1)
-### [Constructori de inițializare](#constructori-de-inițializare-1)
-### [Destructori](#destructori-1)
-### [Constructori de copiere](#constructori-de-copiere-1)
-### [`operator=` și regula celor trei](#operator-și-regula-celor-trei-1)
+Un singur proiect format din 3 teme/părți, nota maximă 12. Evaluarea se face _pe tot parcursul semestrului_. **NU veniți cu tema la sfârșitul semestrului pentru că nu veți intra în examen!**
 
-### Tema 1
+Aveți libertatea să vă alegeți tema de proiect. Trebuie să stabiliți ce vreți să implementați pe parcursul acestui semestru și să prioritizați implementarea funcționalităților pe care le considerați esențiale. Puteți folosi biblioteci externe, însă acestea **trebuie să fie portabile**. Ca să vă faceți o idee despre ce ați putea face, uitați-vă pe [proiectele din anii trecuți](https://github.com/mcmarius/poo/tree/master/HoF.md).
 
-Scopul acestei teme este familiarizarea cu limbajul C++ și cu unele concepte OOP de bază. **Nu vă complicați!** Sau nu excesiv 😄
+### Cerințe tema 1
+
+Scopul acestei teme este familiarizarea cu limbajul C++ și cu unele concepte OOP de bază. La sfârșitul săptămânii 4 ar trebui să aveți minim 3 funcționalități dintre cele de mai sus stabilite ca fiind esențiale.
 
 Cerințe comune:
-- minim 2-3 clase folosind compunere; puteți adăuga și clase pentru moștenire, dar vor fi în plus față de acelea 2-3
+- minim 3-4 clase folosind compunere; puteți adăuga și clase pentru moștenire, dar vor fi în plus față de acelea 3-4
 - constructori (expliciți) de inițializare și de copiere
-- destructor
 - `operator=`
-- este suficient să implementați cc, op= și destructor (regula celor trei) pentru o singură clasă
-- `operator<<` (pentru afișare)
+- destructor
+  - este suficient să implementați cc, op= și destructor (regula celor trei) pentru o singură clasă
+- `operator<<` pentru **toate** clasele
   - de ce? pentru că este ceva standard; dacă facem afișarea cu o funcție, aceasta poate fi numită în foarte multe feluri: `afis`, `afiseaza`, `afisare` etc.
-- funcții membru publice (pe lângă getters/setters/citiri/afișări)
-- atribute și alte funcții vor fi obligatoriu `private` (și, evident, fără variabile globale; discutăm excepțiile)
+- minim 3 funcții membru publice **în afară de** getters/setters/citiri/afișări/adăugări triviale de elemente în vectori
+- atribute și alte funcții vor fi obligatoriu `private`; **fără variabile globale**; discutăm excepțiile
 - cât mai multe `const`
-- ⚠ datele ar trebui să fie direct în main sau citite dintr-un fișier: cât mai puține citiri de la tastatură (discutăm excepțiile)
-- codul trebuie să fie pe un repo la care să am acces (preferabil repo de `git`)
-- opțional, GitHub Actions sau ceva similar (pentru Continuous Integration) (**exemplu [aici](https://github.com/mcmarius/demo-poo/blob/master/.github/workflows/cmake.yml)** - în același repo e și o variantă mai veche)
-  - fără warnings: `-Wall -Wextra -pedantic -Weffc++`, eventual cu `-Werror` și un linter (`cppcheck`)
-  - fără memory leaks: vom folosi `valgrind` sau `-fsanitize`
-  - testarea *tuturor* funcțiilor publice în `main`
-    - vom folosi un feature sau plugin din IDE (sau `gcovr`) pentru a ne da seama ce părți din program (nu) se execută
-    - vom folosi instrucțiuni `assert`/`static_assert` pentru testarea în sine
-    - dacă o funcție publică nu este folosită, probabil nu avem nevoie de acea funcție; o ștergem sau o facem `private`
-  - `.gitignore` ca să fie mai ușor de văzut diferențele
+- ⚠ obiectele trebuie să fie create în main sau citite dintr-un fișier: cât mai puține citiri de la tastatură (discutăm excepțiile)
+- apelarea/testarea *tuturor* funcțiilor publice în `main`
 - ideal, implementarea unei funcționalități mai dificile
 
+Cerințe comune (organizatorice):
+- codul trebuie să fie pe un repository de `git` la care să am acces (nu e obligatoriu să fie github dpmdv)
+- obligatoriu `.gitignore`
+- **NU faceți commit prin upload la fișiere din browser** deoarece nu se ia în considerare fișierul `.gitignore`; nu fiți leneși!
+- obligatoriu un serviciu de integrare continuă (CI) cu minim 2 sisteme de operare diferite și minim 2 compilatoare diferite
+  - recomand să folosiți GitHub Actions deoarece e inclus în repository-ul template și aveți un **exemplu [aici](https://github.com/mcmarius/demo-poo/blob/master/.github/workflows/cmake.yml)**
+  - fără warnings din partea compilatoarelor
+  - fără warnings din partea instrumentelor de analiză statică
+  - fără memory leaks
+
 #### Teme propuse
+
+Schițele de teme de mai jos propun niște clase pentru crearea unor compuneri și a unor ierarhii (pentru moșteniri - tema 2). Totuși, trebuie să stabiliți de la început o parte dintre funcționalitățile pe care vi le propuneți să le implementați.
+
 - Grupare muzicală/artistică
 - Orchestră
 - Trupă
@@ -242,7 +241,7 @@ Cerințe comune:
 - Dezbatere/Discuție
 
 ----------
-Alte variante: școală/liceu/facultate (orar, examene, rechizite, echipamente), magazin (aprovizionare, livrări, service), companie (angajați, recrutări), jocuri, structuri de date (stivă -> vector/listă, coadă -> vector/listă, listă simplu/dublu înlănțuită eventual circulară), software: seturi de date, misc (cuaternioni)
+Alte variante: școală/liceu/facultate (orar, examene, rechizite, echipamente), magazin (aprovizionare, livrări, service), companie (angajați, recrutări), jocuri
 
 
 ### Constructori de inițializare
@@ -356,13 +355,11 @@ Acel compilator pe acel sistem de operare nu e de treabă și nu face automat de
 
 * 🚧
 
-## Resurse recomandate
+## Resurse
 - [cppreference.com](https://en.cppreference.com/w/cpp)
-- [StackOverflow](https://stackoverflow.com/questions/tagged/cpp?tab=Votes)
 - [ISO C++ FAQ](https://isocpp.org/faq/)
+- [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
 - [Diverse standarde (draft) ale limbajului](https://en.cppreference.com/w/cpp/links) sau ca [HTML (neoficial)](https://github.com/timsong-cpp/cppwp) (sau [aici](https://stackoverflow.com/questions/81656/where-do-i-find-the-current-c-or-c-standard-documents#4653479))
-
-### Resurse de evitat
-- GeeksforGeeks: util pentru algoritmică (unele voci pe internet contestă și asta), dar la partea de programare trebuie **evitat**
-  - ca exemplu, încurajează utilizarea headerelor nestandard (`<bits/stdc++.h>`)
-  - aproape oricine poate scrie articole, nu este neapărat verificată corectitudinea soluțiilor
+  - faptul că nu (mai) găsim draft-uri disponibile pentru standardele C++98/C++03 ar trebui să ne transmită ceva 😉
+  - mai ales în contextul în care toate compilatoarele cunoscute au implementat C++11
+  - le-am adăugat mai mult ca să știți că există, nu e nevoie să vă uitați peste ele
