@@ -12,7 +12,7 @@ Compilatorul și editorul sunt în majoritatea situațiilor programe **complet i
 Editorul este folosit ca să scriem cod, compilatorul este folosit ca să transforme codul
 într-un fișier binar (executabil sau bibliotecă).
 
-Exemple de compilatoare: GCC (GNU Compiler Collection), LLVM Clang, Apple Clang,
+Exemple de compilatoare: GCC (GNU Compiler Collection), (LLVM) Clang, Apple Clang,
 MSVC (Microsoft Visual C++), Intel C++ Compiler, NVCC (Nvidia CUDA Compiler) etc.
 
 Exemple de editoare/IDE: Code::Blocks, CLion, VSCode, vim, emacs, nano, gedit, XCode,
@@ -62,19 +62,23 @@ avea versiuni de compilator diferite cu aceeași versiune de MinGW: puteți vede
 ## Configurarea compilatorului
 
 Indiferent de sistemul de operare, vă recomand să folosiți versiuni cât mai noi de compilator, ideal
-GCC minim versiunea 10 sau LLVM Clang minim versiunea 12.
+GCC minim versiunea 10 sau Clang minim versiunea 12.
 
 #### Windows
+
+Este necesar să adăugăm compilatorul în cale (variabila de mediu numită `%PATH%`)
+dacă vrem să îl accesăm mai ușor din linia de comandă.
+
+Dacă folosiți CLion ca IDE, versiunea de MinGW-w64/GCC inclusă este nouă și nu mai este necesar WinLibs.
 
 Pe Windows, vă recomand să folosiți GCC/Clang furnizate de [WinLibs](https://winlibs.com). Nu recomand
 compilatorul celor de la Microsoft dacă nu îl aveți deja instalat pentru că ocupă foarte mult spațiu
 pe disc. Celelalte variante cu MSYS2 și/sau Cygwin mi se par prea complicate pentru ce avem nevoie
-la acest laborator.
+la acest laborator, iar binarele de la MinGW-w64 sunt mai vechi.
 
 Ar fi de preferat să dezarhivați arhiva într-un loc unde calea absolută nu conține spații.
 
-Întrucât compilatorul de pe WinLibs este doar un simplu folder (nu se instalează), ar fi bine să
-adăugăm compilatorul în variabila de mediu numită `%PATH%`.
+**Adăugarea compilatorului în cale**
 
 🚧
 
@@ -96,12 +100,15 @@ Compilatorul ar trebui să fie deja adăugat în cale (variabila `$PATH`).
 
 #### macOS
 
-Pe macOS ar trebui să aveți deja instalat Apple Clang. Dacă aveți nevoie de versiuni mai noi,
-cred că cel mai ușor ar fi cu [`brew`](https://brew.sh).
+Pe macOS ar trebui să aveți deja instalat Apple Clang. Dacă aveți nevoie de versiuni mai noi
+sau de Clang/GCC, cred că cel mai ușor ar fi cu [brew](https://brew.sh).
+Apple Clang nu preia toate modificările din Clang.
 
 Compilatorul ar trebui să fie deja adăugat în cale (cred că variabila se numește tot `$PATH`).
 
 ### Verificarea versiunii compilatorului
+
+Dacă folosiți CLion, vedeți acest pas la secțiunea următoare.
 
 Indiferent de sistemul de operare, deschideți un terminal și introduceți comanda
 `g++ --version` sau `clang++ --version` sau `g++-11 --version` etc. (după caz).
@@ -114,19 +121,66 @@ Ar trebui să vă apară ceva de felul următor:
 
 Dacă nu vă apare versiunea corespunzătoare, încercați să schimbați ordinea căilor către
 compilatoare în `PATH`. Pentru a vedea unde se află compilatorul vechi, folosiți comanda
-`where` sau `whereis`. Exemplu pe Windows:
+`where` sau `whereis`.
+
+Exemplu pe Windows:
 
 🚧
+
+Exemplu pe Linux:
+
+![](img/whereis_g++-11_linux.png)
 
 ## Configurarea editorului
 
 Alegerea editorului/IDE-ului este complet subiectivă. La laborator nu le putem încerca pe toate.
-Eu vă recomand [CLion](https://www.jetbrains.com/clion/download/) pentru că așa m-am obișnuit.
-Pentru a primi licență gratuită, completați
+Eu vă recomand [CLion](https://www.jetbrains.com/clion/download/) pentru că are multe shortcuts
+gata configurate și m-am obișnuit să-l folosesc.
+Pentru a primi licență gratuită pe perioada studiilor, completați
 [acest formular](https://www.jetbrains.com/shop/eform/students/) cu adresa instituțională
 (`@s.unibuc.ro`).
 
-Pasul următor este să vă configurați editorul pentru a folosi compilatorul configurat mai sus.
+Nu vă recomand CLion dacă nu aveți destul RAM. Se poate reduce consumul de RAM limitând valorile
+parametrilor de [aici](https://www.jetbrains.com/help/clion/performance-tuning-tips.html).
+
+Dacă nu aveți un compilator relativ nou, pasul următor este să vă configurați editorul
+pentru a folosi compilatorul configurat mai sus.
+
+Pentru alte editoare, mă puteți ajuta să completez acest ghid.
+
+Pentru CLion: Customize -> All settings... -> Build, Execution, Deployment -> Toolchains
+
+Exemplu pe Linux:
+
+![](img/clion_linux_gcc-11.png)
+
+Apoi, ca să vedem versiunea compilatorului folosit, facem un proiect de test și
+ne uităm jos în tab-ul CMake:
+
+![](img/cmake_detect_linux.png)
+
+Dacă am făcut modificări la toolchain după ce a rulat CMake și nu apare versiunea pe care o vrem,
+trebuie să resetăm cache-ul:
+
+![](img/reset_cmake_cache.png)
+
+### Despre CMake
+
+CMake este un instrument care generează fișiere de configurare pentru sisteme de build.
+
+De ce e util un sistem de build? Ca să fie mai ușor să compilăm codul în paralel și
+să nu recompilăm fișierele care nu s-au modificat.
+
+Sistemul de build apelează compilatorul pentru a genera executabilul. Totuși, sistemele de build
+depind de sistemul de operare.
+
+CMake generează într-un mod portabil aceste fișiere de configurare și execută sistemul de build.
+Aș vrea să folosim CMake pentru că este mai ușor când adăugăm biblioteci externe.
+Multe biblioteci externe folosesc deja CMake.
+
+Las [aici](https://www.jetbrains.com/help/clion/quick-cmake-tutorial.html) un tutorial cu CLion și CMake.
+
+Dacă nu folosiți CLion, vă puteți uita pe CMakeLists.txt 🚧 din repository-ul template.
 
 ## Configurarea și utilizarea programului Git
 
@@ -152,6 +206,10 @@ puteți folosi și alte servicii care lucrează cu repository-uri de git.
 Pentru proiectul de POO, vă recomand să folosiți sau să vă inspirați din
 [acest repository template](https://github.com/mcmarius/oop-template) (chiar dacă nu folosiți GitHub).
 Apăsați pe butonul "Use this template". Dacă alegeți această variantă, puteți trece la pasul următor.
+
+Dacă nu folosiți repository-ul template, va trebui să vă configurați voi CMakeLists ca să vă apară
+warnings. De asemenea, va trebui să vă configurați voi serviciul de CI (GitHub Actions sau ceva similar).
+Cereți ajutor dacă nu vă iese ceva.
 
 TODO: de adăugat vim, emacs, ninja, gcov la gitignore && de ordonat alfabetic
 

@@ -1,1 +1,1 @@
-*.png filter=lfs diff=lfs merge=lfs -text
+ce_nu_este_compilator.png filter=lfs diff=lfs merge=lfs -text
