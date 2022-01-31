@@ -220,7 +220,7 @@ De cele mai multe ori, vom folosi `git` dintr-o interfață grafică. Totuși, e
 idee despre modul de utilizare din linia de comandă, deoarece interfețele grafice mai dau rateuri
 și atunci tot din linia de comandă va trebui să remediem situația.
 
-### **`git clone`**
+### `git clone`
 
 Pentru explicații, vedeți mai sus. Exemple: 
 - `git clone https://github.com/mcmarius/oop-template.git` clonează în folderul `oop-template`
@@ -228,7 +228,7 @@ Pentru explicații, vedeți mai sus. Exemple:
 - `git clone https://github.com/mcmarius/oop-template.git folder` clonează în folderul `folder`
 - `git clone --depth 2 https://github.com/mcmarius/oop-template.git` ia doar ultimele 2 commit-uri
 
-### **`git status`**
+### `git status`
 
 Una dintre cele mai utile comenzi. Arată informații despre starea curentă a repository-ului și ne
 indică ce comenzi uzuale putem da.
@@ -243,42 +243,264 @@ Ce putem vedea?
 - dacă avem commit-uri locale și nu le-am transmis la repository-ul remote
 - și nu numai
 
-### **`git diff`**
+### `git diff`
 
+Ne arată ce fișiere au fost modificate de la ultimul commit, dar care nu au fost adăugate pentru a fi
+incluse în următorul commit.
 
+E mult mai ușor și comod de lucrat cu diffs dintr-o interfață grafică, mai ales când avem de rezolvat
+conflicte. Totuși, pentru modificări mici, poate fi mai rapid din linia de comandă.
 
-### **`git add`**
+### `git add`
 
-### **`git diff --cached`** (sau `--staged`)
+Adaugă un fișier (sau mai multe) pentru ca modificările să fie incluse în următorul commit. Dacă Git
+nu "urmărește" deja modificările asupra fișierului, fișierul este marcat ca fiind "urmărit" de Git.
 
-### **`git pull`**
+**Atenție!** Dacă adăugăm un fișier și apoi îl modificăm, fișierul trebuie adăugat din nou dacă
+vrem ca toate modificările să fie incluse.
 
-### **`git commit`**
+Executați comenzile din următorul exemplu și încercați să înțelegeți ce se întâmplă:
+```shell
+git status
+# modificăm/adăugăm fișierul main.cpp
+git status
+git diff main.cpp
+git add main.cpp
+# modificăm din nou fișierul main.cpp
+git status
+git diff main.cpp
+# verificați ce se întâmplă
+git add main.cpp
+git status
+git diff main.cpp
+# dar acum?
+```
 
-### **`git pull`**
+Cum putem vedea modificările fișierelor adăugate pentru următorul commit? Cu opțiunea
+ `--cached` (sau `--staged`).
 
-### **`git push`**
+Opțiunea `-w` ignoră modificările spațiilor.
 
-### **`git fetch`**
+De asemenea, poate fi utilă opțiunea `--check` dacă avem conflicte (de verificat cu și fără `--cached`).
+Când modificăm aceleași fișiere și pe local, și pe remote, apar conflicte și Git adaugă niște markers
+în locul respectiv. Este responsabilitatea noastră să rezolvăm conflictele.
 
-### **`git tag`**
+### `git commit`
 
-## Alte comenzi de interes
+Creează un commit cu fișierele adăugate de `git add`. Un commit reprezintă un snapshot al
+repository-ului, adică starea fișierelor urmărite de Git la momentul respectiv.
 
-### **`git log`, `git show`**
+Înainte de a da un commit, este bine să verificăm ce fișiere/modificări vor face parte din acel commit
+folosind diff.
 
-### **`git stash`**
+Orice commit trebuie să aibă un mesaj. Ideal, mesajul ar trebui să respecte
+[anumite convenții](https://cbea.ms/git-commit/) ca să fie util și să ne ajute.
+Dacă nu, măcar să fie amuzant. Un istoric cu 20 de commit-uri cu mesajul "Tema 2" sau "modificări"
+sau chiar "." nu este prea util.
 
-### **`git branch`, `git checkout`**
+Dacă am făcut commit și încă nu am dat push, putem modifica ultimul commit dacă observăm ceva în
+neregulă:
+```shell
+# facem modificările
+git add fisiere
+git commit --amend
+```
+
+### `git pull`
+
+Aduce modificările de pe repository-ul remote pe repository-ul local. Dacă știm că am făcut
+modificări pe remote de la ultimul `git pull`/`git clone`, trebuie să avem acele modificări
+și local înainte de a putea duce modificările locale pe remote. Se va crea un commit de tip
+"merge" pentru a combina istoricul commit-urilor locale cu istoricul remote.
+
+Eu prefer să dau `git pull` înainte să dau commit pentru a nu se mai crea acel commit de tip "merge".
+Totuși, dacă aveți conflicte și nu folosiți o interfață grafică, mai trebuie folosită o comandă:
+
+```shell
+git stash
+git pull
+git stash pop
+# rezolvat conflicte
+git add fisiere_modificate
+git commit -m "Mesaj de commit"
+```
+
+IDE-urile se pot descurca să facă acest stash în mod automat.
+
+### `git push`
+
+După ce am făcut commit (și pull) și am verificat încă o dată că ultimul commit conține ce trebuie,
+vom face push la commit-urile locale pentru a ajunge pe repository-ul remote.
+
+Putem face push la mai multe commit-uri deodată. Este nevoie de un push separat dacă vrem să ducem
+pe remote un tag.
+
+### `git tag`
+
+Ce este un tag? Un tag este o etichetă pusă pe un commit, de exemplu `v0.1.0`. La laborator vom
+folosi tags din 2 motive:
+- pentru a marca un commit stabil (compilează și nu sunt prea multe bugs)
+- pentru a genera executabile și pentru a distribui proiectul pe mai multe sisteme de operare
+
+Dacă nu folosiți tags, nu am de unde să știu care este "commit-ul bun", așa că voi alege
+un commit la întâmplare. Dacă nu îmi compilează codul pe commit-ul respectiv
+
+Ar fi bine să puneți tags doar pe commit-uri care compilează.
+
+Cum facem un tag?
+```shell
+git tag v0.1.0
+git push v0.1.0
+```
+Se va face tag pe ultimul commit.
+
+Cu `git push --tags` facem push la toate tag-urile.
+
+Pentru a șterge un tag la care nu i-am făcut push, folosim `git tag -d v0.1.0`. Dacă i-am făcut
+deja push, în general nu e bine să îl mai ștergem. Dacă totuși avem prea multe tags și vrem să
+facem curat, mai bine le ștergem din browser, apoi le ștergem și local (cu fetch).
+
+## Alte aspecte de interes
+
+Pentru partea de configurat mediul de lucru și situații de zi cu zi puteți să săriți la sfârșit
+la utilizarea Git dintr-o interfață grafică.
+
+### `git fetch`
+
+Dacă dorim să aducem modificările fără să combinăm istoricul remote cu cel local, folosim fetch.
+Comanda "pull" face "fetch" și apoi "merge".
+
+Dacă nu mai dorim să avem branches locale care nu mai sunt pe remote, avem opțiunea `--prune`.
+
+Pentru a aduce tags, avem opțiunea `--tags`.
+Dacă folosim `pull`, se iau automat tags (mai sunt excepții, dar nu ne interesează.).
+
+Pentru a șterge tags locale care nu mai sunt pe remote, folosim opțiunile `--prune --prune-tags`.
+
+### `git log`, `git show`
+
+Cu `git log` putem vedea tot istoricul comenzilor, inclusiv un graf cu branches.
+
+Cu `git show` putem vedea modificările ultimului commit. Cu `git show <hash>` putem vedea modificările
+commit-ului dat de `<hash>` (sau primele 8-10 caractere din hash). Putem obține hash-ul commit-urilor
+folosind `git log`.
+
+Cu `git show -p` mai putem vedea modificările din stash.
+
+### `git stash`
+
+Ce este stash-ul? Este o stivă unde punem modificări de-o parte pentru a le folosi mai târziu.
+
+Mie mi se pare cel mai util dacă am făcut diverse modificări și nu vrem să le pierdem, însă nu
+sunt atât de esențiale încât să merite să facem un branch separat și apoi commit.
+
+Poate fi util și dacă am făcut modificările pe un branch și vrem să facem commit cu ele
+pe alt branch. Dacă cele 2 branches diferă foarte mult, nu ne putem muta direct. Totuși, cum am
+zis și mai sus, IDE-urile vor folosi stash în mod automat și în această situație.
+
+### `git branch`, `git checkout`
+
+Dacă vrem să dezvoltăm funcționalități (independente) în paralel, folosim ramuri (branches).
+
+Cu `git checkout -b branch-nou` creăm un nou branch și apoi ne mutăm pe acel branch.
+
+Cu `git checkout alt-branch` ne mutăm pe un branch deja existent.
+
+Cu `git branch` vedem branches locale. Cu opțiunea `-r` vedem branches remote
+(apărute până la ultimul pull/fetch). Cu opțiunea `-m nume-nou` redenumim branch-ul curent.
+Cu opțiunea `-d` ștergem un branch.
 
 ### gitconfig din nou
 
-### Utilizarea SSH (opțional)
+Pentru a lucra mai repede din linia de comandă, putem să configurăm Git în diverse feluri. Un pas
+simplu este să folosim aliasuri. În fișierul .gitconfig din folderul home mi-am adăugat următoarele:
+```
+[alias]
+	co = checkout
+	s  = status
+	d  = diff
+	dc = diff --cached
+	a  = add
+	cm = commit -m
+	sh = stash
+	sp = stash pop
+	sv = stash save
+	sw = stash show
+```
+
+Vă puteți configura ce (alte) aliasuri doriți. Pentru modificări mici, mi se pare mult mai rapid
+din linia de comandă decât dintr-o interfață grafică.
 
 ### `git remote`
 
-### Git LFS (opțional)
+Adăugăm/modificăm/eliminăm repositories remote.
+
+`git remote -v` pentru a vedea detaliile despre remotes.
+
+Opțiuni de interes: `add`, `rename`, `set-url`, `remove`. Exemple:
+```shell
+git remote add fork1 https://github.com/mcmarius/fork-oop.git
+git remote rename fork1 fork-marius
+git remote set-url origin git@github.com:mcmarius/poo.git
+```
+
+### Utilizarea SSH
+
+1. **Generarea unei perechi de chei publice/private**
+
+Pe Windows cel mai probabil va trebui să rulați comanda din git bash.
+```shell
+ssh-keygen -t ed25519 -C email_cont_github  # sau emailul serviciului respectiv
+```
+Puteți să nu puneți nimic la passphrase. Nu este obligatoriu să puneți adresa de mail, dar
+așa e mai ușor de identificat cheia respectivă și o să vă apară contribuțiile pe profil.
+
+Comanda de mai sus va crea în folderul home al userului un folder `.ssh` (dacă nu există), apoi
+cele 2 chei: `id_ed25519` (cheia privată) și `id_ed25519.pub` (cheia publică).
+
+Evident, dacă ați specificat altă cale și alt nume pentru chei, vor fi folosite numele respective.
+
+2. **Adăugarea cheii publice la contul de GitHub (sau al serviciului de Git hosting)**
+
+Deschideți cu un editor de text fișierul `id_ed25519.pub` și copiați tot conținutul.
+Conținutul trebuie să înceapă cu șirul de caractere `ssh-ed25519` (dacă ați generat cheia cu
+acest algoritm).
+
+NU LUAȚI CONȚINUTUL DIN FIȘIERUL CU CHEIA PRIVATĂ!
+
+Din browser: User -> Settings -> SSH and GPG keys -> New SSH key
+
+La titlu puneți ce doriți, dar să știți că aceea e cheia de pe calculatorul respectiv.
+
+3. **Testarea cheii de SSH**
+
+Pe Windows cel mai probabil va trebui să rulați comanda din git bash.
+```shell
+ssh -T git@github.com
+```
+Ar trebui să primiți un răspuns de felul
+"Hi mcmarius! You've successfully authenticated, but GitHub does not provide shell access."
+
+Dacă aveți cheia într-un loc nestandard sau cu o denumire nestandard, puteți furniza
+calea absolută către cheia privată cu `-i`:
+```sh
+ssh -i /home/marius/.ssh/cheia_mea -T git@github.com
+```
+
+4. **Modificarea remote-ului dacă am clonat inițial prin HTTPS**
+
+Vedeți mai sus cu `git remote set-url <noul_url>`, apoi cu `git remote -v` și `git fetch`/`git pull`.
+
+### Git LFS
+
+LFS = Large File Storage
+
+Util pt fișiere mari (de la câțiva MB în sus) și pt fișiere binare (medii/mari) care se schimbă des.
+Problematic pentru fișiere binare mici care nu se prea schimbă, deoarece fișierele stocate cu LFS
+trebuie clonate din altă parte.
+
+Găsiți instrucțiunile necesare [aici](https://git-lfs.github.com/).
 
 ### Din interfața grafică
 
-
+🚧
