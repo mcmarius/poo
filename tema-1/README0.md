@@ -3,12 +3,6 @@
 ### ⚠ Puneți cât mai multe întrebări! Nu există întrebări greșite.
 #### Semnalați orice fel de greșeli găsiți!
 
-## Configurarea mediului de lucru
-
-Vom folosi următoarele opțiuni de compilator: `-Wall -Wextra -pedantic -Weffc++` și, eventual, `-std=c++11` (sau alte versiuni mai noi). Ca versiuni de compilator, sunt de preferat acelea mai noi. Dacă folosiți MinGW, optați pentru varianta pe 64 de biți.
-
-Folosiți orice editor doriți. Dacă sunteți nehotărâți, vă recomand [CLion](https://www.jetbrains.com/clion/download/). Folosiți adresa de mail de la facultate pentru licență gratuită.
-
 ## Programe introductive
 
 ### Cel mai simplu program
@@ -17,7 +11,11 @@ Cel mai simplu program nu este cel cu "Hello World", ci acesta:
 ```c++
 int main() {}
 ```
-De ce? Pentru că, implicit, dacă se ajunge la sfârșitul funcției `main`, se returnează automat zero (detalii [aici](https://stackoverflow.com/a/204483)). Această regulă este valabilă **doar** pentru funcția `main`. Pentru toate celelalte funcții, este **obligatoriu** să specificăm valoarea de retur pe toate ramurile. Și este bine să punem `return 0;` și în `main`, mai ales dacă avem ramuri pe care returnăm alte valori (pentru a semnala un eșec).
+De ce? Pentru că, implicit, dacă se ajunge la sfârșitul funcției `main`, se returnează automat zero
+(detalii [aici](https://stackoverflow.com/a/204483)). Această regulă este valabilă **doar** pentru
+funcția `main`. Pentru toate celelalte funcții, este **obligatoriu** să specificăm valoarea de retur
+pe toate ramurile. Și este bine să punem `return 0;` și în `main`, mai ales dacă avem ramuri pe care
+returnăm alte valori (pentru a semnala un eșec).
 
 Ce putem învăța din acest exemplu? Două lucruri: tipuri de date și funcții.
 
@@ -29,44 +27,77 @@ Prin tipuri de date simple înțelegem `int`, `double`, `char`, `void`, `bool` �
 
 Prin tipuri de date compuse înțelegem vectori, pointeri, referințe, enumerări, uniuni, structuri, clase, funcții. Acestea două din urmă sunt folosite cu ajutorul șabloanelor pentru a scrie cod cât mai generic.
 
-Astfel, putem răspunde la întrebarea pe care (nu) v-ați pus-o deja:
+[//]: # (Astfel, putem răspunde la întrebarea pe care &#40;nu&#41; v-ați pus-o deja:)
 
-**De ce învățăm la OOP C++ și nu altceva (de exemplu Java)?**
+[//]: # (**De ce învățăm la OOP C++ și nu altceva &#40;de exemplu Java&#41;?**)
 
-Pentru că este mai simplu să treci de la ceva complicat la ceva simplu, iar limbajul C++ este mai general în ceea ce privește conceptele de OOP (cel puțin cele predate în facultate).
+[//]: # ()
+[//]: # (Pentru că este mai simplu să treci de la ceva complicat la ceva simplu, iar limbajul C++ este mai general în ceea ce privește conceptele de OOP &#40;cel puțin cele predate în facultate&#41;.)
 
-Pe de altă parte, dacă întâi înveți ceva simplu, poate fi dificil să scapi de anumite preconcepții atunci când treci de la acel ceva simplu la ceva complex (de exemplu o trecere de la Java la C++).
+[//]: # ()
+[//]: # (Pe de altă parte, dacă întâi înveți ceva simplu, poate fi dificil să scapi de anumite preconcepții atunci când treci de la acel ceva simplu la ceva complex &#40;de exemplu o trecere de la Java la C++&#41;.)
 
-~Pentru că programa nu e actualizată~. Dacă ne limităm la versiunile de C++ dinainte de 2011, afirmația anterioară este adevărată ☹
+[//]: # ()
+[//]: # (~Pentru că programa nu e actualizată~. Dacă ne limităm la versiunile de C++ dinainte de 2011, afirmația anterioară este adevărată ☹)
 
-C++ din 2011 încoace este cunoscut ca C++ modern și poate fi considerat relevant și în prezent. Versiunile mai vechi nu sunt relevante decât dacă aveți ghinionul să nimeriți pe proiecte vechi care nu pot fi actualizate ușor. Puteți arunca o privire [aici](https://www.jetbrains.com/lp/devecosystem-2020/cpp/).
+[//]: # ()
+[//]: # (C++ din 2011 încoace este cunoscut ca C++ modern și poate fi considerat relevant și în prezent.
+ Versiunile mai vechi nu sunt relevante decât dacă aveți ghinionul să nimeriți pe proiecte vechi care nu
+  pot fi actualizate ușor. Puteți arunca o privire
+   [aici]&#40;https://www.jetbrains.com/lp/devecosystem-2020/cpp/&#41;.)
 
-**Ce oferă C++ pentru a continua să fie relevant?**
+[//]: # ()
+[//]: # (**Ce oferă C++ pentru a continua să fie relevant?**)
 
-Pe scurt, siguranța tipurilor de date. Se verifică *la compilare* dacă toate operațiile pe care le facem respectă constrângerile tipurilor de date. Acest fapt ne ajută să obținem programe mai sigure și cu mai puține bug-uri. Cel puțin în teorie. Dezavantajul? Compilarea poate să dureze destul de mult în cazul proiectelor de mari dimensiuni.
+[//]: # ()
+[//]: # (Pe scurt, siguranța tipurilor de date. Se verifică *la compilare* dacă toate operațiile
+ pe care le facem respectă constrângerile tipurilor de date. Acest fapt ne ajută să obținem programe
+  mai sigure și cu mai puține bug-uri. Cel puțin în teorie. Dezavantajul? Compilarea poate să dureze
+   destul de mult în cazul proiectelor de mari dimensiuni.)
 
-**Dar asta nu era valabil și înainte de C++11?**
+[//]: # (**Dar asta nu era valabil și înainte de C++11?**)
 
-Parțial. În C++ modern au fost introduse multe funcționalități care îmbunătățesc în mod semnificativ situația:
-- deducerea automată a tipurilor (cu `auto`)
-- elemente de programare funcțională (funcții anonime)
-- administrarea automată a memoriei (evitarea pe cât posibil a alocărilor dinamice explicite)
-- șabloane cu număr variabil de argumente (variadic templates)
-- multithreading
-- aserțiuni la compilare
-- și altele, dar cele de mai sus sunt printre cele mai importante
+[//]: # ()
+[//]: # (Parțial. În C++ modern au fost introduse multe funcționalități care îmbunătățesc în mod semnificativ situația:)
 
-TL;DR: multe dintre funcționalitățile de mai sus ne ajută să scriem cod mai sigur, deoarece lăsăm compilatorul să efectueze verificări de tipuri de date și să se ocupe de alocări/dezalocări de memorie *la momentul compilării*.
+[//]: # (- deducerea automată a tipurilor &#40;cu `auto`&#41;)
 
-Limbajele ca Java sau Python folosesc GC (garbage collection), operație de eliberare a memoriei *la execuție*. Chiar dacă în cazul limbajului Java situația nu mai este atât de dramatică, încă nu are tipuri de date cu adevărat generice. Succesul limbajului Java este dat de faptul că este mai simplu de învățat decât C++ și de faptul că, la momentul apariției sale, oferea administrarea automată a memoriei și verificări mai stricte de tipuri.
+[//]: # (- elemente de programare funcțională &#40;funcții anonime&#41;)
 
-**Este mai bun C++ decât Java sau invers?**
+[//]: # (- administrarea automată a memoriei &#40;evitarea pe cât posibil a alocărilor dinamice explicite&#41;)
 
-Nici, nici. Depinde foarte mult de ce anume vrem să facem. Trebuie să alegem tehnologiile potrivite pentru problema respectivă pe care vrem să o rezolvăm, nu să folosim ceva doar că ne place, deși există altceva "consacrat".
+[//]: # (- șabloane cu număr variabil de argumente &#40;variadic templates&#41;)
 
-**Concluzia?**
+[//]: # (- multithreading)
 
-Verificarea tipurilor de date este importantă pentru prevenirea bug-urilor.
+[//]: # (- aserțiuni la compilare)
+
+[//]: # (- și altele, dar cele de mai sus sunt printre cele mai importante)
+
+[//]: # ()
+[//]: # (TL;DR: multe dintre funcționalitățile de mai sus ne ajută să scriem cod mai sigur,
+ deoarece lăsăm compilatorul să efectueze verificări de tipuri de date și să se ocupe de
+  alocări/dezalocări de memorie *la momentul compilării*.)
+
+[//]: # ()
+[//]: # (Limbajele ca Java sau Python folosesc GC &#40;garbage collection&#41;, operație de eliberare a
+ memoriei *la execuție*. Chiar dacă în cazul limbajului Java situația nu mai este atât de dramatică, încă
+  nu are tipuri de date cu adevărat generice. Succesul limbajului Java este dat de faptul că este mai simplu
+   de învățat decât C++ și de faptul că, la momentul apariției sale, oferea administrarea automată a memoriei
+    și verificări mai stricte de tipuri.)
+
+[//]: # (**Este mai bun C++ decât Java sau invers?**)
+
+[//]: # ()
+[//]: # (Nici, nici. Depinde foarte mult de ce anume vrem să facem. Trebuie să alegem tehnologiile
+ potrivite pentru problema respectivă pe care vrem să o rezolvăm, nu să folosim ceva doar că ne place,
+  deși există altceva "consacrat".)
+
+[//]: # ()
+[//]: # (**Concluzia?**)
+
+[//]: # ()
+[//]: # (Verificarea tipurilor de date este importantă pentru prevenirea bug-urilor.)
 
 **Funcții**
 
@@ -94,7 +125,9 @@ void citire(int a, int &b) {
 // in cazul lui `a` se transmite prin valoare si se face o copie care se distruge la iesirea din apelul functiei
 // in cazul lui `b` se transmite prin referinta si nu se face nicio copie
 ```
-Observație: în limbajul C++, este bine să evităm pe cât putem pointerii, deoarece ei există mai mult pentru a oferi compatibilitate cu limbajul C. Spre deosebire de pointeri, referințele au proprietatea că nu pot fi nule. Detalii [aici](https://isocpp.org/wiki/faq/references#refs-vs-ptrs).
+Observație: în limbajul C++, este bine să evităm pe cât putem pointerii, deoarece ei există mai mult
+pentru a oferi compatibilitate cu limbajul C. Spre deosebire de pointeri, referințele au proprietatea
+că nu pot fi nule. Detalii [aici](https://isocpp.org/wiki/faq/references#refs-vs-ptrs).
 
 ### "Hello, world!"
 
@@ -107,7 +140,13 @@ int main() {
 }
 ```
 
-De ce nu am folosit `using namespace std;`? Pentru că acest namespace conține *extrem de multe* funcții cu care am putea intra în conflict de nume. Dacă alegeți să folosiți această instrucțiune, trebuie să fiți conștienți de consecințele pe care le are. Scopul acestor namespace-uri tocmai acesta ar fi, să prefixăm numele funcțiilor cu numele namespace-ului pentru a evita complet coliziunile de nume. Mai multe detalii despre acest subiect puteți citi [aici](https://isocpp.org/wiki/faq/coding-standards#using-namespace-std) și [aici](https://stackoverflow.com/q/1452721/).
+De ce nu am folosit `using namespace std;`? Pentru că acest namespace conține *extrem de multe* funcții
+cu care am putea intra în conflict de nume. Dacă alegeți să folosiți această instrucțiune, trebuie să
+fiți conștienți de consecințele pe care le are. Scopul acestor namespace-uri tocmai acesta ar fi,
+să prefixăm numele funcțiilor cu numele namespace-ului pentru a evita complet coliziunile de nume.
+Mai multe detalii despre acest subiect puteți citi
+[aici](https://isocpp.org/wiki/faq/coding-standards#using-namespace-std)
+și [aici](https://stackoverflow.com/q/1452721/).
 
 ### "Hello, world!" cu clase
 
@@ -221,7 +260,7 @@ Observații:
 - putem avea mai mulți constructori, mai ales dacă avem mai multe atribute
   - înlocuiți constructorul cu `Persoana::Persoana(std::string nume = "(lipsa)")`
     - în limbajul C++ este permisă supraîncărcarea funcțiilor (constructorii sunt niște funcții mai speciale)
-    - o modalitate de a supraîncărca functii este prin utilizarea valorilor implicite (`= "(lipsa)"`)
+    - o modalitate de a supraîncărca funcții este prin utilizarea valorilor implicite (`= "(lipsa)"`)
     - astfel, avem doi constructori, iar declarația `Persoana pers;` va fi validă
 - destructorul este unul singur: de ce?
   - deoarece este apelat automat de compilator și nu ar trebui să avem vreun motiv să eliberăm resursele în moduri diferite pentru același tip de obiect
@@ -285,26 +324,3 @@ private:
     void secret();
 };
 ```
-
-## Exerciții
-[Înapoi la cuprins](#cuprins)
-
-
-
-## Întrebări, erori, diverse
-[Înapoi la cuprins](#cuprins)
-
-* 🚧
-
-## Resurse recomandate
-- [cppreference.com](https://en.cppreference.com/w/cpp)
-- [StackOverflow](https://stackoverflow.com/questions/tagged/cpp?tab=Votes)
-- [ISO C++ FAQ](https://isocpp.org/faq/)
-- [Diverse standarde (draft) ale limbajului](https://en.cppreference.com/w/cpp/links) sau ca [HTML (neoficial)](https://github.com/timsong-cpp/cppwp) (sau [aici](https://stackoverflow.com/questions/81656/where-do-i-find-the-current-c-or-c-standard-documents#4653479))
-  - faptul că nu (mai) găsim draft-uri disponibile pentru standardele C++98/C++03 ar trebui să ne transmită ceva 😉
-  - mai ales în contextul în care toate compilatoarele cunoscute au implementat C++11
-  - le-am adăugat mai mult ca să știți că există, nu e nevoie să vă uitați peste ele
-
-### Resurse de evitat
-- cărțile lui Herbert Schildt (de ce? [pentru că](https://www.seebs.net/c/c_tcn4e.html) și [pentru că](http://www.lysator.liu.se/c/schildt.html) și... [pentru că](https://web.archive.org/web/20000816131043/http://www.qnx.com/~glen/deadbeef/2764.html))
-- cplusplus.com (deoarece nu este actualizat sau are informații incomplete)

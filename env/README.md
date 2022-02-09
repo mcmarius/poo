@@ -62,19 +62,20 @@ avea versiuni de compilator diferite cu aceeași versiune de MinGW: puteți vede
 ## Configurarea compilatorului
 
 Indiferent de sistemul de operare, vă recomand să folosiți versiuni cât mai noi de compilator, ideal
-GCC minim versiunea 10 sau Clang minim versiunea 12.
+GCC minim versiunea 10 sau Clang minim versiunea 10.
 
 #### Windows
 
 Este necesar să adăugăm compilatorul în cale (variabila de mediu numită `%PATH%`)
 dacă vrem să îl accesăm mai ușor din linia de comandă.
 
-Dacă folosiți CLion ca IDE, versiunea de MinGW-w64/GCC inclusă este nouă și nu mai este necesar WinLibs.
+Dacă folosiți CLion ca IDE, versiunea de MinGW-w64/GCC inclusă este nouă și vine cu GCC 11 (ianuarie 2022).
+Totuși, dacă aveți probleme cu biblioteci externe, recomand să luați GCC 10 de pe WinLibs.
 
 Pe Windows, vă recomand să folosiți GCC/Clang furnizate de [WinLibs](https://winlibs.com). Nu recomand
 compilatorul celor de la Microsoft dacă nu îl aveți deja instalat pentru că ocupă foarte mult spațiu
 pe disc. Celelalte variante cu MSYS2 și/sau Cygwin mi se par prea complicate pentru ce avem nevoie
-la acest laborator, iar binarele de la MinGW-w64 sunt mai vechi.
+la acest laborator, iar binarele de la MinGW-w64 sunt mai vechi (GCC 8).
 
 Ar fi de preferat să dezarhivați arhiva într-un loc unde calea absolută nu conține spații.
 
@@ -408,7 +409,7 @@ Ar fi bine să puneți tags doar pe commit-uri care compilează.
 Cum facem un tag?
 ```shell
 git tag v0.1.0
-git push v0.1.0
+git push origin v0.1.0
 ```
 Se va face tag pe ultimul commit.
 
