@@ -1,6 +1,6 @@
-### Tema 3
+# Tema 3
 
-Scopul acestei teme este utilizarea unor concepte mai avansate de OOP (design patterns) și a programării generice.
+Scopul ultimei teme este utilizarea unor concepte mai avansate de OOP (design patterns) și a programării generice.
 
 Cerințe:
 - minim o funcție șablon și o clasă șablon (template)
@@ -16,9 +16,10 @@ Observații:
 - puteți folosi și alte design patterns pe lângă cele prezentate aici
 - aceste patterns se pot combina între ele și au numeroase variațiuni
 
-**Deadline feature freeze** (dar prelungim atât cât se poate pt mici modificări); după această dată, cel mult reparat bug-uri
-  - sem 1: **29 decembrie** (inclusiv)
-  - sem 2: **3 iunie** (inclusiv)
+#### Termen limită
+- săptămâna 11 (18 decembrie/7 mai): progres parțial
+- **săptămâna 12 (22 decembrie/14 mai): tema 3 gata**
+- săptămâna 13 (8 ianuarie/21 mai): (eventuale) modificări în urma feedback-ului
 
 Orice funcționalitate în plus e luată în considerare pentru puncte bonus, inclusiv la temele din urmă. Nota maximă este 12.
 
@@ -39,25 +40,21 @@ Exemplu: un obiect care gestionează o aplicație/un joc
 class application {
 private:
     application() = default;
-    static application* app;
 public:
     application(const application&) = delete;
     application& operator=(const application&) = delete;
-    static application* get_app() {
-        if(app == nullptr) { app = new application; }
+    static application& get_app() {
+        static application app;
         return app;
     }
 };
 
-application* application::app = nullptr;
-
 // mod de utilizare
-auto x = application::get_app();
+auto& x = application::get_app();
 ```
 
+[//]: # (TODO de mutat/adaptat observația în tema 2)
 **⚠ Atenție!** Inițializarea atributelor statice trebuie pusă într-un **singur** fișier .cpp, deoarece inițializarea trebuie făcută o singură dată. Fișierele .cpp sunt compilate o singură dată, dar fișierele .h sunt incluse de alte fișiere .h/.cpp și atunci ar apărea inițializarea de mai multe ori.
-
-Putem folosi smart pointers, însă nu este necesar, având în vedere că dorim ca variabila statică să trăiască pe toată durata programului în cazul singleton.
 
 ### Object pool
 
@@ -341,6 +338,9 @@ Dacă facem moștenirea virtuală "la sfârșit" (în clasa `two_in_one`), vom a
 
 Side note: dacă pun `virtual public` e același lucru, dar nu mai merge syntax highlight pe github.
 
+[//]: # (TODO mai multe detalii despre ce trebuie făcut, eventual un exemplu mai bun)
+[//]: # (de exemplu și de explicat că se apelează constr din bază o singură dată)
+
 ---
 
 ## Templates
@@ -351,6 +351,8 @@ Dezavantajul atunci când folosim fișiere separate este acela că trebuie să d
 Avantajul pentru împărțirea în fișiere este acela că dacă modificăm implementarea, nu trebuie să recompilăm toate clasele care includ header-ul.
 
 Pentru situațiile întâlnite aici, putem folosi fie `<class T>`, fie `<typename T>`, este același lucru. Există situații când merge doar cu `typename` sau doar cu `class`, însă nu ne vom întâlni cu ele (sper). Important este să le folosim pe cât posibil în mod consistent, peste tot la fel.
+
+[//]: # (TODO de adăugat erori de linker, ce trebuie pus în CMakeLists.txt)
 
 ### Funcții template
 
@@ -568,7 +570,7 @@ Observații:
 - nu putem folosi fișiere separate deoarece nu este rezonabil să instanțiem în avans toate combinațiile de apeluri
 - dacă vreți totuși să lucrați cu fișiere separate, fie scrieți funcția cu nr variabil de argumente în header, fie includeți cpp-ul în header (vezi la începutul secțiunii cu funcții template)
 
-#### [Expresii de tip fold](https://en.cppreference.com/w/cpp/language/fold) (C++17)
+#### [Expresii de tip fold (C++ 17)](https://en.cppreference.com/w/cpp/language/fold)
 
 ```c++
 #include <iostream>

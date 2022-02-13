@@ -474,6 +474,13 @@ int main() {
 }
 ```
 
+La întoarcerea din funcții prin valoare se efectuează o copie a variabilei din clauza `return`.
+
+La întoarcerea din funcții prin referință **nu se efectuează copieri. Prin urmare, NU întoarcem referințe
+la variabile locale, deoarece acele variabile nu vor mai exista!**
+
+Vom avea aceeași eroare și dacă întoarcem prin valoare un pointer care reține adresa unei variabile locale.  
+
 #### Definire vs declarare
 
 Prin definirea unei variabile, a unei funcții sau al unui tip de date, descriem complet
@@ -882,11 +889,19 @@ Biblioteca standard de C este de obicei furnizată de sistemul de operare. Exemp
 MSVCRT sau UCRT pe Windows. Din acest motiv, biblioteca de C nu este de obicei inclusă în executabile.
 Întrucât limbajul C este relativ simplu, există numeroase implementări alternative.
 
+Headerele standard pentru biblioteca C sunt denumite în C sub forma `<header.h>`: `<stdio.h>`, `<stdlib.h>` etc.
+
+În C++, headerele din biblioteca C de forma `<header.h>` sunt accesibile ca `<cheader>` deoarece sunt
+incluse în spațiul de nume `std`: `<cstdio>`, `<cstdlib>` etc.
+
+
 Pentru limbajul C++ nu există multe implementări "la zi" pentru C++ și biblioteca standard asociată.
 Compilatoarele de C++ vin de obicei la pachet cu biblioteca standard de C++. Exemple: libstdc++ sau
 libc++ pe Linux/macOS, libstdc++-6.dll pe MinGW și acele "Visual C++ Redistributable Runtime" pe MSVC.
 
 ### Despre compilarea în C și C++
+
+[//]: # (TODO)
 
 ## Concepte de bază de OOP în C++
 
@@ -1850,20 +1865,17 @@ Detalii [aici](https://en.cppreference.com/w/cpp/language/rule_of_three).
 
 ## Cerințe tema 1
 
-[//]: # (TODO: sincronizat cu cerințele din template repo)
+Scopul primei teme este familiarizarea cu limbajul C++ și cu unele concepte OOP de bază. La sfârșitul
+săptămânii 4 ar trebui să aveți implementate minim 3 funcționalități pe care le considerați esențiale.
 
-Scopul primei teme este familiarizarea cu limbajul C++ și cu unele concepte OOP de bază.
-La sfârșitul săptămânii 4 ar trebui să aveți minim 3 funcționalități dintre cele de mai
-sus stabilite ca fiind esențiale.
-
-**Nu vă apucați de implementat până nu ați primit OK-ul! Aș vrea să discut cu fiecare în parte după ce
-aveți stabilită interfața.**
+**Nu vă apucați de implementat până nu ați primit OK-ul! Aș vrea să discut cu fiecare în parte pentru
+a stabili interfața.**
 
 Cerințe comune:
 - minim 3-4 clase folosind compunere; puteți adăuga și clase pentru moștenire,
 dar vor fi în plus față de acele prime 3-4 clase
 - constructori (expliciți) de inițializare pentru fiecare clasă
-- regula celor 3: constructor de copiere, `operator=` de copiere și destructor pentru o singură clasă
+- regula celor trei pentru o clasă: constructor de copiere, `operator=` de copiere și destructor
 - `operator<<` pentru **toate** clasele
 - minim 3 funcții membru publice **în afară de** getters/citiri/afișări/adăugări triviale de elemente în vectori
   - nu ar trebui să aveți nevoie de setters; cât mai puțini getters
@@ -1873,6 +1885,8 @@ dar vor fi în plus față de acele prime 3-4 clase
 - ⚠ obiectele trebuie să fie create în main sau citite dintr-un fișier: cât mai puține citiri de la tastatură
 deoarece e pierdere de timp (discutăm excepțiile)
 - apelarea/testarea *tuturor* funcțiilor publice în `main`; dacă nu le apelăm, la ce le-am mai definit?
+  - apelarea se va face direct sau indirect: din `main` se pot apela funcții care construiesc obiecte
+  cu clasele definite și folosesc aceste obiecte
 - ideal, implementarea unei funcționalități mai dificile/complexe
 
 Cerințe comune (organizatorice):
@@ -1880,17 +1894,23 @@ Cerințe comune (organizatorice):
 - obligatoriu `.gitignore`
 - **NU faceți commit prin upload la fișiere din browser** deoarece nu se ia în considerare fișierul `.gitignore`;
 nu fiți leneși!
+- un tag de git pe un commit cu cod stabil
 - obligatoriu un serviciu de integrare continuă (CI) cu minim 2 sisteme de operare diferite și
 minim 2 compilatoare diferite
-  - recomand să folosiți GitHub Actions deoarece e inclus în repository-ul template; aveți un
-  **exemplu [aici](https://github.com/mcmarius/demo-poo/blob/master/.github/workflows/cmake.yml)**
+  - recomand să folosiți GitHub Actions deoarece e inclus în repository-ul template
   - fără warnings din partea compilatoarelor
   - fără warnings din partea instrumentelor de analiză statică
   - fără memory leaks
 
+#### Termen limită
+- săptămâna 3 (23 octombrie/5 martie): stabilirea claselor și implementarea parțială a acestora
+- **săptămâna 4 (30 octombrie/12 martie): tema 1 gata**
+- săptămâna 5 (6 noiembrie/19 martie): (eventuale) modificări în urma feedback-ului
+
+
 ### Cum putem testa funcțiile membru speciale?
 
-Ne definim operatorul `==` (îl generează editorul), apoi:
+Ne definim operatorul `==` (și `!=` dacă nu folosim C++20; îi poate genera editorul), apoi:
 ```c++
 #include <cassert>
 #include <iostream>

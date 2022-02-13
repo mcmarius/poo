@@ -16,11 +16,11 @@ chiar dacă se află în bibliografia de la curs.
   - sunt câteva excepții, dar prefer să îmi asum acest risc
 - cărțile lui Herbert Schildt: de ce? [pentru că](https://www.seebs.net/c/c_tcn4e.html)
 și [pentru că](https://www.lysator.liu.se/c/schildt.html) și...
-[pentru că](https://web.archive.org/web/20000816131043/http://www.qnx.com/~glen/deadbeef/2764.html))
+[pentru că](https://web.archive.org/web/20000816131043/http://www.qnx.com/~glen/deadbeef/2764.html)
 - cplusplus.com deoarece nu este actualizat și/sau are informații incomplete
 - GeeksforGeeks: util pentru algoritmică (unele voci pe internet contestă și asta),
 dar la partea de programare **trebuie evitat**
-  - ca exemplu, încurajează utilizarea headerelor nestandard (`<bits/stdc++.h>`)
+  - ca exemplu, încurajează utilizarea headerelor nonstandard (`<bits/stdc++.h>`)
   - aproape oricine poate scrie articole, nu este neapărat verificată corectitudinea soluțiilor
 
 Se poate observa că avem (mult) mai multe resurse de evitat decât resurse de încredere.

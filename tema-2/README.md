@@ -1,32 +1,55 @@
-# Laboratorul 4
+# Tema 2
 
 ### ⚠ Puneți cât mai multe întrebări! Nu există întrebări greșite.
 #### Semnalați orice fel de greșeli găsiți!
 
-# Cuprins
-## [Tema 2](#Tema-2-1)
-## [Întrebări, erori și orice nu a fost acoperit deja](#întrebări-erori-diverse)
-## [Resurse recomandate](#resurse-recomandate-1)
+### Moșteniri
 
-## Tema 2
+### Funcții virtuale
+#### Destructor
+#### Constructori virtuali
+#### Smart pointers
+#### Dynamic cast
 
-Scopul acestei teme este familiarizarea cu limbajul C++ (din nou) și cu unele concepte OOP de bază, pe lângă cele de la prima temă. **Nu vă complicați!** Sau nu excesiv 😄
+### Copy and swap
+
+### Excepții
+#### Motivație
+#### Excepții predefinite
+#### Ierarhie proprie
+
+### Funcții și atribute statice
+
+## Cerințe tema 2
+
+Continuăm familiarizarea cu limbajul C++ (din nou) și învățăm alte concepte OOP de bază: moșteniri și excepții.
 
 Cerințe comune:
-- moșteniri, funcții virtuale (care vor fi și folosite!) apelate prin pointeri la clasa de bază
-- excepții C++ ([`std::optional`](https://en.cppreference.com/w/cpp/utility/optional)?)
-- fișiere separate (!) `.h` și `.cpp` pentru fiecare clasă (dacă sunt clase mici cu același scop, le puteți pune în același fișier)
-- `git tag` cu o versiune preliminară; ideea ar fi să aveți tag-ul `v1.0.0` atunci când e 99% gata, spre sfârșitul semestrului
-- FĂRĂ using namespace std în fișiere .h la nivel global
-  - pot fi declarații locale *[necesită verificare]*
-- cod indentat consistent!
-- obligatoriu smart pointers pentru alocările dinamice (discutăm excepțiile🇷🇴)
-  - pentru că sunt ceva mai siguri decât pointerii obișnuiți în contextul în care folosim excepții C++
-  - dezavantajul este că nu sunt atât de eficienți; orice abstractizare are un cost
-  - [cu un pic de efort](https://stackoverflow.com/questions/54336422/), putem avea memory leaks și cu smart pointers
-- compilat cu `-Wall -Wextra -pedantic -Weffc++` (`-Werror` pentru 10+) `-g`
-- fără variabile globale (discutăm excepțiile🇷🇴)
-- se aplică toate cerințele de la tema 1 care nu au fost deja îndeplinite
-  - exemple: cât mai multe `const`, testat/apelat tot codul public de interes din `main` (iar ce e public și nu e apelat ar trebui șters)
-- citirea datelor de intrare obligatoriu din fișier sau creat obiecte în `main`!! (discutăm excepțiile🇷🇴, dar și acolo va fi necesar așa ceva)
-- deadline orientativ: **~17~ 21 aprilie**
+- separarea codului din clase în fișiere header (`.h`/`.hpp` etc.) și surse (`.cpp` etc.)
+  - clasele mici și legate între ele se pot afla în aceeași pereche de fișiere header-sursă
+  - FĂRĂ using namespace std în fișiere `.h` la nivel global
+    - pot fi declarații locale
+- moșteniri
+  - funcții virtuale (pure), constructori virtuali (clone)
+    - funcțiile virtuale vor fi apelate prin pointeri la clasa de bază
+    - pointerii la clasa de bază vor fi atribute ale altei clase, nu doar niște pointeri/referințe în main
+  - apelarea constructorului din clasa de bază
+  - smart pointers
+  - dynamic_cast
+- suprascris cc/op= pentru copieri/atribuiri corecte, copy and swap
+- excepții
+  - ierarhie proprie (cu baza std::exception sau derivată din std::exception)
+  - utilizare cu sens: de exemplu, throw în constructor, try/catch în main
+- funcții și atribute statice
+- STL
+- un tag de git pe un commit cu cod stabil
+- fără variabile globale
+- cât mai multe `const`, testat/apelat tot codul public de interes din `main`
+
+Cerințe specifice:
+- implementarea a două funcționalități noi specifice temei; pot fi folosite funcții virtuale în acest scop
+
+#### Termen limită
+- săptămâna 7 (20 noiembrie/2 aprilie): progres parțial
+- **săptămâna 8 (27 noiembrie/9 aprilie): tema 2 gata**
+- săptămâna 9 (4 decembrie/16 aprilie): (eventuale) modificări în urma feedback-ului

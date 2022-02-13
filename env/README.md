@@ -134,7 +134,7 @@ Exemplu pe Linux:
 
 ## Configurarea editorului
 
-Alegerea editorului/IDE-ului este complet subiectivă. La laborator nu le putem încerca pe toate.
+Alegerea editorului/IDE-ului este complet subiectivă. În cadrul laboratorului nu le putem încerca pe toate.
 Eu vă recomand [CLion](https://www.jetbrains.com/clion/download/) pentru că are multe shortcuts
 gata configurate și m-am obișnuit să-l folosesc.
 Pentru a primi licență gratuită pe perioada studiilor, completați
@@ -143,6 +143,8 @@ Pentru a primi licență gratuită pe perioada studiilor, completați
 
 Nu vă recomand CLion dacă nu aveți destul RAM. Se poate reduce consumul de RAM limitând valorile
 parametrilor de [aici](https://www.jetbrains.com/help/clion/performance-tuning-tips.html).
+
+Pe Windows, CLion vine cu o versiune nouă de GCC, deci nu mai aveți nimic de făcut.
 
 Dacă nu aveți un compilator relativ nou, pasul următor este să vă configurați editorul
 pentru a folosi compilatorul configurat mai sus.
@@ -195,7 +197,7 @@ Pe Linux probabil e suficient cu `sudo apt install git` sau ceva asemănător.
 
 Pe macOS, Git ar trebui să fie deja instalat.
 
-La fel ca mai sus, verificați dintr-un terminal că programul este instalat corect cu `git --version`:
+Verificați dintr-un terminal că programul este instalat corect cu `git --version`:
 
 🚧
 
@@ -212,8 +214,6 @@ Dacă nu folosiți repository-ul template, va trebui să vă configurați voi CM
 warnings. De asemenea, va trebui să vă configurați voi serviciul de CI (GitHub Actions sau ceva similar).
 Cereți ajutor dacă nu vă iese ceva.
 
-TODO: de adăugat vim, emacs, ninja, gcov la gitignore && de ordonat alfabetic
-
 Pentru a crea un repository pe GitHub, folosim butonul ➕ din dreapta sus, apoi "New repository".
 Pentru a putea folosi proiectul și local, ar fi bine să bifăm măcar una dintre opțiuni
 (de exemplu cea de "Add a README file") pentru ca repository-ul nostru să aibă cel puțin un commit.
@@ -221,7 +221,7 @@ Dacă un avem măcar un commit, putem întâmpina diverse erori.
 
 ### Configurare inițială
 
-La user puneți numele userului de GitHub. La email puteți pune
+La user puneți numele userului de GitHub sau numele din GitHub (ca să apară contribuțiile). La email puteți pune
 "your_github_username@users.noreply.github.com" dacă nu doriți ca adresa de email să fie publică.
 
 ```
@@ -256,8 +256,10 @@ Așadar, un repository este un folder normal, dar care conține acest folder spe
 
 ### gitignore
 
-Repository-ul template ar trebui să fie deja configurat cu un fișier `.gitignore`. Dacă ați pus bifa de
-.gitignore când ați creat repository-ul, atunci aveți deja creat acest fișier.
+Repository-ul template ar trebui să fie deja configurat cu un fișier `.gitignore`.
+
+Dacă l-ați creat separat, dar ați pus bifa de .gitignore când ați creat repository-ul,
+atunci aveți deja creat acest fișier.
 
 Altfel, va trebui să creați fișierul cu ajutorul editorului sau din linia de comandă. Pe Windows, din
 File Explorer trebuie creat ca `.gitignore.` deoarece trebuie păcălit să creadă că fișierul are și
