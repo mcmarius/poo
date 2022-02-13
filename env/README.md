@@ -360,6 +360,18 @@ Orice commit trebuie să aibă un mesaj. Ideal, mesajul ar trebui să respecte
 Dacă nu, măcar să fie amuzant. Un istoric cu 20 de commit-uri cu mesajul "Tema 2" sau "modificări"
 sau chiar "." nu este prea util.
 
+Pentru un mesaj scurt, folosim
+```shell
+git commit -m "Adăugare constructor de inițializare"
+```
+
+Pentru mesaje detaliate, scriem doar `git commit` și se va deschide editorul configurat implicit (pe Windows
+eu am configurat Notepad++). Pentru utilizarea altui editor, se poate folosi variabila de mediu
+EDITOR:
+```shell
+EDITOR=nano git commit
+```
+
 Dacă am făcut commit și încă nu am dat push, putem modifica ultimul commit dacă observăm ceva în
 neregulă:
 ```shell
@@ -381,6 +393,8 @@ Totuși, dacă aveți conflicte și nu folosiți o interfață grafică, mai tre
 ```shell
 git stash
 git pull
+# sau git pull origin main
+# general: git pull <nume_remote> <nume_branch>
 git stash pop
 # rezolvat conflicte
 git add fisiere_modificate
@@ -396,6 +410,15 @@ vom face push la commit-urile locale pentru a ajunge pe repository-ul remote.
 
 Putem face push la mai multe commit-uri deodată. Este nevoie de un push separat dacă vrem să ducem
 pe remote un tag.
+```shell
+git push
+# sau
+git push origin main
+# sau
+git push v0.1
+# sau
+git push --tags
+```
 
 ### `git tag`
 
