@@ -6,7 +6,8 @@ Cerințe:
 - minim o funcție șablon și o clasă șablon (template)
     - modificați o clasă existentă care este ceva mai izolată de celelalte (să nu aveți foarte mult de modificat) și transformați-o în clasă template
     - adăugați (minim) un atribut de tip `T` sau care depinde de `T`
-    - adăugați (minim) o funcție membru care să depindă de `T` (sau de alt parametru template); idee: [expresii de tip fold](#expresii-de-tip-fold-c17)
+    - adăugați (minim) o funcție membru care să depindă de `T` (sau de alt parametru template);
+      idee: [expresii de tip fold](#expresii-de-tip-fold-c-17)
     - adăugați (minim) o funcție normală/liberă template; poate să fie `friend`
 - minim 2 design patterns (3 dacă aveți singleton sau ceva la fel de simplu și proiectul e simplu); **utilizarea acestor design patterns ar trebui să aibă sens**
 
@@ -23,7 +24,6 @@ Observații:
 
 Orice funcționalitate în plus e luată în considerare pentru puncte bonus, inclusiv la temele din urmă. Nota maximă este 12.
 
-Dacă doriți să folosiți conceptele din C++20, am actualizat pipeline-ul de GitHub Actions. [Puteți vedea modificările aici](https://github.com/mcmarius/demo-poo/pull/19/files#diff-cdd48abbd3eb8d1c54077449fc74a8de1f29805d2be5d8e5232b7aab76ea7a6fL17) (vedeți și [următorul commit](https://github.com/mcmarius/demo-poo/commit/ab2b37c1d999ce9f7030464ece1e0be802309421) pe repo).
 
 -----
 

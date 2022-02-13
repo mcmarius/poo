@@ -183,7 +183,8 @@ Multe biblioteci externe folosesc deja CMake.
 
 Las [aici](https://www.jetbrains.com/help/clion/quick-cmake-tutorial.html) un tutorial cu CLion și CMake.
 
-Dacă nu folosiți CLion, vă puteți uita pe CMakeLists.txt 🚧 din repository-ul template.
+Dacă nu folosiți CLion, vă puteți uita pe
+[CMakeLists.txt din repository-ul template](https://github.com/mcmarius/oop-template/blob/main/CMakeLists.txt).
 
 ## Configurarea și utilizarea programului Git
 
