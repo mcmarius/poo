@@ -1,6 +1,9 @@
 ## Hall of Fame
 
-**2021-2022**: ?
+**2021-2022**:
+[Digital Banking](https://github.com/laurentiucretu68/Digital_Banking) |
+[Modern Chess](https://github.com/Robyss/Modern-Chess) |
+[Sound synth](https://github.com/lmihaig/sound-synth) | ?
 
 **2020-2021**:
 [ArcaneArts](https://github.com/AlexMincu/ArcaneArts) |
@@ -15,7 +18,12 @@
 
 ## Runner-ups
 
-**2021-2022**: ?
+**2021-2022**:
+[Magazin ceasuri](https://github.com/xSuly/Proiect-POO) |
+[Fitness & Healthcare](https://github.com/AndreiLaurentiu/OOP_Project) |
+[Randomizer!](https://github.com/Nubaz/Randomizer_Game) |
+[Rezervări cinema](https://github.com/radustefan2311/Proiect---OOP) |
+[UtilityIT](https://github.com/nicugnm/poo-cpp-proj) | ?
 
 **2020-2021**:
 [Clash Royale](https://github.com/TIPYexe/POO_ClashRoyale) |
@@ -31,7 +39,13 @@
 
 ## Other mentions
 
-**2021-2022**: ?
+**2021-2022**:
+[Agenda++](https://github.com/ReluSt13/Agenda-plus-plus) |
+[Aplicație bibliotecă](https://github.com/gabrielcatalin191200/OOP) |
+[Bază de date](https://github.com/radu-moraru/OOP-project) |
+[Cofetărie](https://github.com/andreeav19/Proiect_OOP) |
+[Săli de fitness](https://github.com/NastaseMarius19/baza_de_date_sali_fitness) |
+[SNAKE++](https://github.com/Antonioo-H/OOP-Project) | ?
 
 **2020-2021**:
 [MinecraftText](https://github.com/andrei-cerbulescu/MinecraftText) |
@@ -48,7 +62,8 @@
 
 **Care sunt criteriile pentru ca un proiect să fie inclus în `Hall of Fame`?**
 
-Complexitatea proiectului, efortul depus, readme/documentație, originalitate, CI (continuous integration), cod portabil.
+Complexitatea proiectului, efortul depus, readme/documentație, originalitate, CI (continuous integration),
+cod portabil.
 
 **Care sunt criteriile pentru ca un proiect să fie inclus în lista `Runner-ups`?**
 
@@ -56,8 +71,13 @@ Aceleași criterii ca mai sus, însă efortul depus mi s-a părut ceva mai mic.
 
 **Care sunt criteriile pentru ca un proiect să fie inclus în lista `Other mentions`?**
 
-Ideea proiectului este foarte bună, dar nu a fost dezvoltată suficient pentru a fi inclusă în listele de mai sus.
+Distincția față de rubrica anterioară a fost făcută pe baza efortului, a readme-ului și a bibliotecilor
+externe folosite.
+
+2020-2021: Ideea proiectului este foarte bună, dar nu a fost dezvoltată suficient pentru a fi inclusă în
+listele de mai sus.
 
 **De ce în 2019-2020 nu sunt mai multe proiecte?**
 
-Din vina mea. Deoarece nu am avut inspirație pentru alte idei de proiecte și am folosit lista de proiecte din anii anteriori.
+Din vina mea. Deoarece nu am avut inspirație pentru alte idei de proiecte și am folosit lista de proiecte
+din anii anteriori.
