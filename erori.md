@@ -16,4 +16,4 @@ protected și nevirtual (pentru că nu ar fi nevoie să fie virtual) pentru a nu
 prin pointer la baza respectivă (întrucât destructorul nu e accesibil/public). Mai multe detalii
 [aici](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rc-dtor-virtual).
 
-Totuși, în acele situații, nu am folosi polimorfism, deci tot nu avem un răspuns complet la întrebare.
+Totuși, în acele situații nu am folosi polimorfism, deci tot nu avem un răspuns complet la întrebare.

@@ -83,6 +83,8 @@ Ar fi de preferat să dezarhivați arhiva într-un loc unde calea absolută nu c
 
 🚧
 
+[//]: # (TODO)
+
 #### Linux
 
 Dacă aveți deja instalată o versiune relativ recentă de compilator, puteți sări momentan peste acest pas.
@@ -120,6 +122,8 @@ Ar trebui să vă apară ceva de felul următor:
 
 🚧
 
+[//]: # (TODO)
+
 Dacă nu vă apare versiunea corespunzătoare, încercați să schimbați ordinea căilor către
 compilatoare în `PATH`. Pentru a vedea unde se află compilatorul vechi, folosiți comanda
 `where` sau `whereis`.
@@ -127,6 +131,8 @@ compilatoare în `PATH`. Pentru a vedea unde se află compilatorul vechi, folosi
 Exemplu pe Windows:
 
 🚧
+
+[//]: # (TODO)
 
 Exemplu pe Linux:
 
@@ -202,6 +208,8 @@ Verificați dintr-un terminal că programul este instalat corect cu `git --versi
 
 🚧
 
+[//]: # (TODO)
+
 ### Crearea unui repository remote
 
 Dacă nu aveți deja cont, va trebui să vă creați unul. Cel mai la îndemână serviciu ar fi GitHub, însă
@@ -218,7 +226,7 @@ Cereți ajutor dacă nu vă iese ceva.
 Pentru a crea un repository pe GitHub, folosim butonul ➕ din dreapta sus, apoi "New repository".
 Pentru a putea folosi proiectul și local, ar fi bine să bifăm măcar una dintre opțiuni
 (de exemplu cea de "Add a README file") pentru ca repository-ul nostru să aibă cel puțin un commit.
-Dacă un avem măcar un commit, putem întâmpina diverse erori.
+Dacă nu avem măcar un commit, putem întâmpina diverse erori.
 
 ### Configurare inițială
 
@@ -245,7 +253,9 @@ URL-ul din tab-ul HTTPS:
 git clone https://github.com/mcmarius/poo.git
 ```
 
-Comanda `clone` face mai multe lucuri: inițializează un repository local, face legătura dintre
+[//]: # (TODO clonare din interfața grafică)
+
+Comanda `clone` face mai multe lucruri: inițializează un repository local, face legătura dintre
 repository-ul local și cel remote (de pe GitHub) și aduce local conținutul de pe remote. Dacă
 nu specificăm și alte opțiuni, vom prelua local tot istoricul modificărilor.
 
@@ -589,3 +599,5 @@ Găsiți instrucțiunile necesare [aici](https://git-lfs.github.com/).
 ### Din interfața grafică
 
 🚧
+
+[//]: # (TODO)
