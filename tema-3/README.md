@@ -1,8 +1,8 @@
 # Tema 3
 
-Scopul ultimei teme este utilizarea unor concepte mai avansate de OOP (design patterns) și a programării generice.
+Scopul ultimei teme este utilizarea unor noțiuni mai avansate de OOP (design patterns) și a programării generice.
 
-Cerințe:
+### Cerințe
 - minim o funcție șablon și o clasă șablon (template)
     - modificați o clasă existentă care este ceva mai izolată de celelalte (să nu aveți foarte mult de modificat) și transformați-o în clasă template
     - adăugați (minim) un atribut de tip `T` sau care depinde de `T`

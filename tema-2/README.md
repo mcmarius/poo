@@ -12,6 +12,7 @@
 #### Dynamic cast
 
 ### Copy and swap
+### RAII
 
 ### Excepții
 #### Motivație
@@ -20,9 +21,11 @@
 
 ### Funcții și atribute statice
 
+[//]: # (### Fișiere header și fișiere sursă)
+
 ## Cerințe tema 2
 
-Continuăm familiarizarea cu limbajul C++ (din nou) și învățăm alte concepte OOP de bază: moșteniri și excepții.
+Continuăm familiarizarea cu limbajul C++ (din nou) și învățăm alte noțiuni OOP de bază: moșteniri și excepții.
 
 Cerințe comune:
 - separarea codului din clase în fișiere header (`.h`/`.hpp` etc.) și surse (`.cpp` etc.)

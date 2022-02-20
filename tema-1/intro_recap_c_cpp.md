@@ -526,6 +526,14 @@ void f() {
 }
 ```
 
+Nu este necesar să dăm nume parametrilor atunci când declarăm o funcție, însă este util să facem asta pentru
+a documenta codul:
+```c++
+void f(int& numar);
+// echivalent cu
+void f(int&);
+```
+
 #### Citire și afișare
 
 Pentru a putea modifica variabilele, funcțiile de citire primesc variabilele prin referință. Și funcțiile de
@@ -743,8 +751,8 @@ aibă o interfață decentă/ușor de folosit (adică nu [ICU](https://icu.unico
 pasul de compilare (adică nu ICU), vă rog să îmi spuneți. Pentru prelucrări mai simple, am găsit
 [utf8_string](https://github.com/Gumichan01/utf8_string) și [tiny-utf8](https://github.com/DuffsDevice/tiny-utf8).
 
-C++ ne va provoca destule bătăi de cap, așa că nu are rost să ne punem singuri bețe în roate. Prin urmare,
-nu are rost să folosim șirurile de caractere din C și să gestionăm manual alocările de memorie.
+C++ ne va provoca destule bătăi de cap, așa că nu are rost să ne punem singuri și mai multe bețe în roate.
+Prin urmare, nu are rost să folosim șirurile de caractere din C și să gestionăm manual alocările de memorie.
 
 De aceea, vom folosi [`std::string`](https://en.cppreference.com/w/cpp/string/basic_string/basic_string):
 ```c++
@@ -867,6 +875,9 @@ Biblioteca standard de C este de obicei furnizată de sistemul de operare. Exemp
 MSVCRT sau UCRT pe Windows. Din acest motiv, biblioteca de C nu este de obicei inclusă în executabile.
 Întrucât limbajul C este relativ simplu, există numeroase implementări alternative.
 
+De menționat că pe Windows biblioteca C poate conține telemetrie
+([cel puțin prin 2015](https://levicki.net/articles/2015/12/03/RANT_Microsoft_Visual_Studio_2015.php)).
+
 Headerele standard pentru biblioteca C sunt denumite în C sub forma `<header.h>`: `<stdio.h>`, `<stdlib.h>` etc.
 
 În C++, headerele din biblioteca C de forma `<header.h>` sunt accesibile ca `<cheader>` deoarece sunt
@@ -879,4 +890,459 @@ libc++ pe Linux/macOS, libstdc++-6.dll pe MinGW și acele "Visual C++ Redistribu
 
 ### Despre compilarea în C și C++
 
-[//]: # (TODO)
+După cum am spus și mai devreme, limbajele C și C++ au apărut foarte demult și au fost nevoite să păstreze
+compatibilitatea cu versiuni mai vechi din motive istorice. La vremea respectivă abia erau puse la punct
+fundamentele teoriei compilatoarelor.
+
+Prin urmare, este exagerat să avem pretenția din partea C/C++ la un sistem sofisticat de separare a
+codului în module sau pachete.
+
+Un prim efort în acest sens este sistemul de module introdus în C++20. În prezent (2022), modulele nu sunt
+implementate complet de toate compilatoarele principale (GCC, Clang, MSVC). Până avem module, va trebui să
+ne mulțumim cu instrucțiuni de tip `#include`.
+
+#### Fișiere header, `#include`
+
+[//]: # (sau o referință/pointer la un tip de date)
+Pentru a putea folosi o funcție
+(sau [altele](https://en.cppreference.com/w/cpp/language/declarations))
+definită în altă parte, este necesar să folosim o declarație. O declarație oferă minimul necesar de
+informații pentru a putea apela funcția respectivă: numărul și tipurile de date ale parametrilor și
+tipul de date întors de funcție.
+
+Teoretic am putea scrie toate declarațiile de funcții de care avem nevoie fără să folosim fișiere header
+și instrucțiuni `#include`, însă ar fi foarte repetitiv. Fișierele de tip header au rolul de a grupa
+logic diverse declarații.
+
+Instrucțiunea `#include` (sub formele `#include "header"` și `#include <header>`) nu face altceva decât
+să copieze conținutul fișierului `header` în locul respectivului `#include`. Nu se întâmplă nimic special,
+deștept sau spectaculos, este doar copy-paste de text.
+
+Macroinstrucțiunile (`#include` și nu numai) se aplică succesiv până când nu mai este nimic de înlocuit.
+
+Fișierul rezultat după înlocuirea succesivă a tuturor instrucțiunilor de tip `#include` poartă numele de
+**translation unit** (TU). De obicei ne referim la fișiere sursă (cpp-uri) când vorbim despre TU.
+
+Fișierele header din bibliotecile standard conțin multe declarații și poate fi mai greu de urmărit ce se
+întâmplă, așa că vom folosi exemple mai simple.
+
+Avem fișierul "header.h":
+```c++
+void f();
+int g(char x);
+int g(double x);
+int g(double x, int y);
+void h(int& z);
+```
+
+În fișierul "sursa.cpp" vom pune un `#include` (presupunem că funcțiile sunt definite în alt fișier sursă):
+```c++
+#include "header.h"
+
+int main() {
+    f();
+    int a = g('x');
+    a = g(3.0);
+    a = g(2.0, 5);
+    h(a);
+}
+```
+
+Dacă folosim compilatorul GCC (sau Clang), avem opțiunea `-E` pentru a vedea modificările asupra fișierului
+după etapa de preprocesare (`g++ -E sursa.cpp`):
+```c++
+# 1 "sursa.cpp"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 1 "<command-line>" 2
+# 1 "sursa.cpp"
+# 1 "header.h" 1
+void f();
+int g(char x);
+int g(double x);
+int g(double x, int y);
+void h(int& z);
+# 2 "sursa.cpp" 2
+
+int main() {
+    f();
+    int a = g('x');
+    a = g(3.0);
+    a = g(2.0, 5);
+    h(a);
+}
+```
+
+Dacă punem de două ori include, se va copia de două ori conținutul fișierului header:
+```c++
+// sursa.cpp
+#include "header.h"
+#include "header.h"
+
+int main() {
+    f();
+    int a = g('x');
+    a = g(3.0);
+    a = g(2.0, 5);
+    h(a);
+}
+```
+
+Iar apoi `g++ -E sursa.cpp`:
+```c++
+# 1 "sursa.cpp"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 1 "<command-line>" 2
+# 1 "sursa.cpp"
+# 1 "header.h" 1
+void f();
+int g(char x);
+int g(double x);
+int g(double x, int y);
+void h(int& z);
+# 2 "sursa.cpp" 2
+# 1 "header.h" 1
+void f();
+int g(char x);
+int g(double x);
+int g(double x, int y);
+void h(int& z);
+# 3 "sursa.cpp" 2
+
+int main() {
+    f();
+    int a = g('x');
+    a = g(3.0);
+    a = g(2.0, 5);
+    h(a);
+}
+```
+
+Așadar, implicit nu există vreun mecanism de verificare că am inclus deja un header. Desigur, este foarte
+puțin probabil să includem explicit un header de mai multe ori, însă un header poate fi inclus de mai multe
+ori în mod indirect:
+```c++
+// un_header.h
+#include "header.h"
+
+// alt_header.h
+#include "header.h"
+
+// sursa.cpp
+#include "un_header.h"
+#include "alt_header.h"
+```
+
+În cazul funcțiilor, repetarea declarațiilor nu ne deranjează. Totuși, există situații când vrem să avem
+definiția unei funcții într-un fișier header:
+```c++
+// header.h
+int f(int x) {
+    return x%2 == 0 ? 42 : x;
+}
+```
+
+Dacă nu mai punem nimic în header și îl includem de două ori (sau folosim fișierele header definite mai sus),
+atunci vom primi eroare la compilare. Fișierul "sursa.cpp" este:
+```c++
+// sursa.cpp
+#include "header.h"
+#include "header.h"
+
+int main() {
+    int a = f(2);
+    a = f(a);
+}
+```
+
+Vom primi eroarea:
+```
+$ g++ sursa.cpp -o sursa
+In file included from sursa.cpp:2:
+header.h:1:5: error: redefinition of ‘int f(int)’
+    1 | int f(int x) { return x%2 == 0 ? 42 : x; }
+      |     ^
+In file included from sursa.cpp:1:
+header.h:1:5: note: ‘int f(int)’ previously defined here
+    1 | int f(int x) { return x%2 == 0 ? 42 : x; }
+      |     ^
+```
+
+De ce se întâmplă asta? Să vedem cu `g++ -E sursa.cpp`:
+```c++
+# 1 "sursa.cpp"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 1 "<command-line>" 2
+# 1 "sursa.cpp"
+# 1 "header.h" 1
+int f(int x) {
+    return x%2 == 0 ? 42 : x;
+}
+# 2 "sursa.cpp" 2
+# 1 "header.h" 1
+int f(int x) {
+    return x%2 == 0 ? 42 : x;
+}
+# 3 "sursa.cpp" 2
+
+int main() {
+    int a = f(2);
+    a = f(a);
+}
+```
+
+Ce putem face ca să prevenim astfel de probleme dacă un header este inclus de mai multe ori? Folosim un include
+guard (soluția standard) sau `#pragma once` (nu este la fel de portabilă, însă în unele situații poate fi mai
+rapidă). Un include guard arată în felul următor:
+```c++
+#ifndef HEADER_H
+#define HEADER_H
+
+// conținutul fișierului header
+
+#endif // HEADER_H
+```
+
+De exemplu, fișierul nostru "header.h" de mai sus va deveni:
+```c++
+#ifndef HEADER_H
+#define HEADER_H
+
+int f(int x) {
+    return x%2 == 0 ? 42 : x;
+}
+
+#endif // HEADER_H
+```
+
+Iar apoi "sursa.cpp" va arăta astfel după preprocesare (`g++ -E sursa.cpp`)`:
+```c++
+# 1 "sursa.cpp"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 1 "<command-line>" 2
+# 1 "sursa.cpp"
+# 1 "header.h" 1
+
+
+
+int f(int x) {
+    return x%2 == 0 ? 42 : x;
+}
+# 2 "sursa.cpp" 2
+
+
+int main() {
+    int a = f(2);
+    a = f(a);
+}
+```
+
+Dezavantajul este că trebuie să avem grijă să nu avem coliziuni de nume cu macro-urile definite. O convenție
+uzuală folosită și de IDE-uri este ca define-ul să aibă numele căii fișierului relativ la rădăcina proiectului.
+
+Deși nu ar fi întotdeauna necesar, o convenție este să avem perechi de fișier header - fișier sursă și să
+includem fișierul header în fișierul sursă:
+```c++
+// func.h
+#ifndef FUNC_H
+#define FUNC_H
+
+int f(int x);
+
+#endif // FUNC_H
+
+
+// func.cpp
+#include "func.h"
+
+int f(int x) {
+    return x%2 == 0 ? 42 : x;
+}
+```
+
+#### Fișiere de tip header și clase
+
+Definiția unei clase trebuie să fie completă ca să putem construi obiecte din acea clasă. Pe scurt și un pic
+simplificat, o clasă este definită complet dacă putem determina `sizeof`-ul unui obiect.
+
+Pentru a putea determina `sizeof`-ul unui obiect, trebuie să avem tipurile complete pentru toate atributele
+care nu sunt referințe sau pointeri. De asemenea, trebuie să avem toate declarațiile funcțiilor membru.
+
+Asta înseamnă că trebuie să avem `#include`-uri pentru toate tipurile de date care nu sunt referințe sau
+pointeri, inclusiv dacă folosim acele tipuri de date ca parametri sau ca tip de retur.
+
+Pentru tipurile de date de tip referințe sau pointeri, avem nevoie de o pre-declarare (forward declaration)
+dacă nu putem oferi definiția completă. Această pre-declarare anunță existența tipului respectiv de date,
+însă oferă numai o definiție incompletă.
+
+Exemplu:
+```c++
+// facultate.h
+#ifndef FACULTATE_H
+#define FACULTATE_H
+
+// avem nevoie de acest #include deoarece avem un obiect complet
+// de tip std::string, nu pointer sau referință
+#include <string>
+
+class Facultate {
+    std::string nume;
+};
+
+#endif // FACULTATE_H
+```
+
+Dacă în clasa `Student` avem nevoie doar de o referință sau de un pointer la `Facultate`, atunci este suficient
+să pre-declarăm clasa sau să precizăm explicit că este vorba e o clasă:
+```c++
+// student.h
+#ifndef STUDENT_H
+#define STUDENT_H
+
+class Facultate; // anunțăm că Facultate este o clasă
+
+class Student {
+    Facultate& facultate;
+};
+
+#endif // STUDENT_H
+```
+
+Sau:
+```c++
+// student.h
+#ifndef STUDENT_H
+#define STUDENT_H
+
+class Student {
+    class Facultate& facultate;
+};
+
+#endif // STUDENT_H
+```
+
+În schimb, dacă dorim să construim un obiect complet, atunci trebuie să includem header-ul:
+```c++
+// student.h
+#ifndef STUDENT_H
+#define STUDENT_H
+
+#include "facultate.h"
+
+class Student {
+    Facultate facultate;
+};
+
+#endif // STUDENT_H
+```
+
+Alt exemplu de pre-declarații:
+```c++
+// student.h
+#ifndef STUDENT_H
+#define STUDENT_H
+
+#include <iosfwd>
+
+class Student {
+public:
+    friend std::ostream& operator<<(std::ostream& os, const Student& st);
+};
+
+#endif // STUDENT_H
+```
+
+Am putea include `<ostream>` sau `<iostream>`, însă minimal avem pre-declarațiile de care avem nevoie în
+fișierul header `<iosfwd>`.
+
+#### Include tot ce folosești - IWYU (Include what you use)
+
+Chiar dacă pe unele compilatoare se include indirect `<iosfwd>` când includem `<string>`
+(sau se include indirect `<string>`când includem `<iostream>`), este recomandat să punem include-uri
+explicite pentru toate definițiile/declarațiile necesare și să nu ne bazăm pe detaliile de implementare
+ale unor compilatoare.
+
+C++ nu are extrem de multe [fișiere header predefinite](https://en.cppreference.com/w/cpp/header), iar
+editorul ne ajută de obicei cu ce trebuie sau ne putem uita pe cppreference când avem nevoie.
+
+Pe de altă parte, nu este în regulă să folosim fișiere header monolitice (de exemplu un header care include
+toate fișierele header din biblioteca standard), deoarece creștem aiurea timpul de compilare și includem
+în multe locuri și ce nu avem nevoie.
+
+Într-un viitor mai mult sau mai puțin îndepărtat vom putea folosi
+[IWYU](https://github.com/include-what-you-use/include-what-you-use). Momentan (2022) are prea multe bug-uri.
+
+#### Regula unei singure definiții (ODR - One definition rule)
+
+[ODR](https://en.cppreference.com/w/cpp/language/definition#One_Definition_Rule)
+ne spune că o definiție trebuie să apară **o singură dată** într-un translation unit. Dacă o definiție apare
+de mai multe ori în fișiere sursă diferite, atunci definiția trebuie să fie **identică** peste tot unde apare.
+
+Într-un fișier sursă (sau mai exact, într-un translation unit), o definiție trebuie să apară **o singură dată**.
+
+Dacă avem definiții în fișiere header, acel header poate fi inclus în mai multe translation units fără probleme,
+deoarece definiția va fi identică.
+
+Exemplu:
+```c++
+// header.h
+#ifndef HEADER_H
+#define HEADER_H
+
+int f(int x) {
+    return x%2 == 0 ? 42 : x;
+}
+
+#endif // HEADER_H
+
+
+// sursa1.cpp
+#include "header.h"
+
+// sursa2.cpp
+#include "header.h"
+```
+
+Chiar dacă ne apare de două ori definiția funcției `f` în program, ODR nu este încălcată, întrucât definiția este
+identică. Avem nevoie de include guards (sau `#pragma once`) pentru a nu ne apărea o definiție de mai multe ori
+în cadrul aceluiași translation unit.
+
+#### Compilare și linking
+
+Dacă vă interesează, etapele compilării sunt cele de
+[aici](https://en.cppreference.com/w/cpp/language/translation_phases).
+
+Pe scurt, se întâmplă următoarele:
+- se procesează succesiv toate directivele de preprocesare (de exemplu `#define` și `#include`)
+- fiecare fișier sursă este compilat într-un fișier obiect
+- toate fișierele obiect sunt legate (linking) pentru a forma un fișier executabil
+
+De obicei nu apelăm compilatorul explicit, ci folosim un instrument de build din următoarele motive:
+- portabilitate
+- recompilarea fișierelor modificate, nu tot codul
+- (re)compilare în paralel
+- compilarea dependențelor externe
+
+Câteva observații de interes:
+- în CMakeLists.txt, fișierele sursă sunt adăugate de obicei în comanda `add_executable`
+- etapa de compilare până la linking se poate executa în paralel pentru fiecare fișier sursă în parte
+- dacă nu s-au modificat fișierele header incluse de un fișier sursă și nici fișierul sursă, atunci acel
+fișier sursă nu mai trebuie recompilat (de obicei)
+- există un abuz de limbaj frecvent folosit:
+  - când spunem compilare, de obicei ne referim la compilare _și_ linking deși sunt două programe diferite
+  - atunci când vrem să facem distincția între cele două, menționăm și linker-ul
+- în limba română, corect este "dependență", nu "dependință"; "dependință" înseamnă încăpere
+
+În mod obișnuit, etapa de linking nu poate fi executată în paralel. Dacă vrem să putem face asta, avem
+nevoie de [instrumente specializate](https://github.com/rui314/mold).
+
+---
+
+[stackoverflow-survey-2021]: https://insights.stackoverflow.com/survey/2021

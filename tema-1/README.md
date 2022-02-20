@@ -20,9 +20,10 @@ echivalentă:
 Pentru diverse exerciții, este suficient să vă configurați afișarea de warnings. Desigur, trebuie să
 și țineți cont de warnings și să le eliminați pentru că **nu sunt degeaba**.
 
-Pentru introducere/recapitulare în limbajele C și C++, citiți de [aici](intro_recap_c_cpp.md).
+**Pentru introducere/recapitulare a noțiunilor de bază din limbajele C și C++,
+citiți de [aici](intro_recap_c_cpp.md).**
 
-## Concepte de bază de OOP în C++
+## Noțiuni de bază de OOP în C++
 
 ### Clase și obiecte
 
@@ -984,7 +985,7 @@ Detalii [aici](https://en.cppreference.com/w/cpp/language/rule_of_three).
 
 ## Cerințe tema 1
 
-Scopul primei teme este familiarizarea cu limbajul C++ și cu unele concepte OOP de bază. La sfârșitul
+Scopul primei teme este familiarizarea cu limbajul C++ și cu unele noțiuni OOP de bază. La sfârșitul
 săptămânii 4 ar trebui să aveți implementate minim 3 funcționalități pe care le considerați esențiale.
 
 **Nu vă apucați de implementat până nu ați primit OK-ul! Aș vrea să discut cu fiecare în parte pentru
@@ -1074,5 +1075,3 @@ Temele propuse sunt [aici](teme_propuse.md).
   - faptul că nu (mai) găsim draft-uri disponibile pentru standardele C++98/C++03 ar trebui să ne transmită ceva 😉
   - mai ales în contextul în care toate compilatoarele cunoscute au implementat C++11, C++14 și C++17
   - le-am adăugat mai mult ca să știți că există, nu e nevoie să vă uitați peste ele
-
-[stackoverflow-survey-2021]: https://insights.stackoverflow.com/survey/2021
