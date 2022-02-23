@@ -711,7 +711,7 @@ generați de compilator.
 
 ### `operator=` de mutare
 
-Este analog constructorului de mutare. De obicei, când folosim cc, folosim op= de căutare. Când folosim cm,
+Este analog constructorului de mutare. De obicei, când folosim cc, folosim op= de copiere. Când folosim cm,
 folosim op= de mutare.
 
 Regulile de definire implicită sunt mai complicate dacă vrem să avem și copiere, și mutare.
