@@ -10,11 +10,11 @@
 [Reddit++](https://github.com/MaximTiberiu/OOProject) |
 [Sep7ica](https://github.com/VictorAndreiCotescu/Sep7ica) |
 [fantasyCraft](https://github.com/meemknight/fantasyCraft) |
-[Muzeu](https://github.com/DianaIfrosa/Lab-POO) |
+[Muzeu](https://github.com/DianaIfrosa/OOP-Virtual-Museum-Project) |
 [Webshop backend API](https://github.com/Andrei0872/webshop-backend-api-oop)
 
 **2019-2020**:
-[Game of Life](https://github.com/Stefan-Radu/lab-oop)
+[Game of Life](https://github.com/Stefan-Radu/Predator-and-Prey)
 
 ## Runner-ups
 
