@@ -5,9 +5,15 @@
 
 ### Moșteniri
 
+[//]: # (constructori, destructori)
+
 ### Funcții virtuale
 #### Destructor
 #### Constructori virtuali
+
+[//]: # (clone public, cc/op= protected, la fel pt cele de mutare)
+[//]: # (https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rh-copy)
+
 #### Smart pointers
 #### Dynamic cast
 

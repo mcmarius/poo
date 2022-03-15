@@ -27,7 +27,12 @@ citiți de [aici](intro_recap_c_cpp.md).**
 
 ### Clase și obiecte
 
-O clasă reprezintă un tipar după care construim obiecte. Un obiect este o instanță a unei clase.
+O clasă este o descriere generală pentru noțiuni din realitate pe care vrem să le
+modelăm într-un program.
+O clasă reprezintă un tipar după care construim obiecte.
+Un obiect este o instanță a unei clase, adică un element concret, cu proprietăți specifice.
+
+Aveți grijă să nu folosiți definiții circulare!
 
 [//]: # (Clasele seamănă cu structurile, în sensul că grupează mai multe atribute)
 
@@ -71,7 +76,10 @@ declara funcții. În exemplul următor, `s2` și `s3` sunt declarații de func�
 primesc parametri și întorc prin valoare un obiect de tip `Student`.
 
 Cu toate acestea, `s6` și `s8` din exemplul de mai sus sunt obiecte, nu declarații de funcții.
-Din această cauză, limbajul C++ are o gramatică ambiguă; sintaxa cu acolade încearcă să remedieze situația.
+Din această cauză, limbajul C++ are o gramatică ambiguă.
+
+Sintaxa cu acolade încearcă să remedieze situația. Întotdeauna se construiesc obiecte
+atunci când folosim sintaxa cu acolade.
 
 Doar `s1` este un obiect construit în exemplul de mai jos!
 
@@ -115,6 +123,8 @@ class Facultate {
 Nu întotdeauna putem forma propoziții simple (sau cu sens) cu verbul "are". Dacă vreți o formulare generală, atunci
 am putea spune că avem compunere între clasele A și B dacă un obiect de tip A **are** ca atribut caracteristic
 un obiect de tip B.
+
+În curs, compunerea se mai numește și agregare, dar înseamnă același lucru.
 
 ### Încapsulare
 
@@ -202,7 +212,8 @@ Deoarece tot nu am ascuns complet detaliile de implementare, iar cu getters/sett
 acest lucru complet, întrucât, la rândul lor, getters/setters depind în mod direct de atributele private.
 
 De cele mai multe ori, vom avea nevoie doar de câțiva getters (cât mai puțini, strictul necesar) și nu vom
-folosi setters deloc.
+folosi setters (aproape) deloc, deoarece am vrea să ne definim operații cu un nivel mai ridicat
+de abstractizare.
 
 Dacă nu folosim setters, cum putem inițializa atributele obiectului? Cu ajutorul constructorilor.
 
@@ -402,6 +413,9 @@ obiecte în `main` astfel încât să fie apelați ambii constructori din `Facul
 
 Nu, deoarece compilatorul generează și un constructor de copiere, chiar dacă avem definit un constructor
 de inițializare cu parametri. De ce? Pentru că este natural să putem copia obiecte.
+
+### Constructori expliciți
+🚧
 
 ### Constructor de copiere
 
@@ -930,6 +944,9 @@ int main() {
 }
 ```
 
+### Operatori de conversie
+🚧
+
 ### Funcții membru, `*this`
 
 Funcțiile membru sunt funcții care fac parte din definiția unei clase. Funcțiile membru trebuie declarate
@@ -962,6 +979,24 @@ public:
 };
 ```
 
+Dacă avem funcții membru "read-only", atunci cel mai bine este să le marcăm cu `const`,
+deoarece `const`-urile au efect de domino și se propagă. Astfel, primim eroare la
+compilare dacă încercăm să modificăm ceva ce nu ar trebui.
+
+```c++
+class Student {
+    std::vector<int> note;
+public:
+    int medie() const {
+        int rezultat = 0;
+        for(int nota : note)
+            rezultat += nota;
+
+        return rezultat;
+    }
+};
+```
+
 De ce `this` este pointer și nu referință?
 
 Din motive istorice: `this` a fost introdus în limbaj înainte să existe referințele.
@@ -982,6 +1017,12 @@ Detalii [aici](https://en.cppreference.com/w/cpp/language/rule_of_three).
 [//]: # (- static)
 
 [//]: # (constructori/operatori de conversie)
+
+### Referințe circulare
+🚧
+
+### Numere aleatoare
+🚧
 
 ## Cerințe tema 1
 

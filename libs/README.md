@@ -8,6 +8,7 @@ Work In Progress (WIP) 🚧
 
 TL;DR:
 - bibliotecile header-only le includem direct în repository
+  - le punem într-un folder separat ca să putem să ignorăm warnings din dependențe externe
 - pentru bibliotecile care trebuie compilate, cel mai simplu mi se pare cu FetchContent: doar trebuie decomentat
 apelul din CMakeLists.txt din repository-ul template și apoi decomentat caching-ul dependențelor din cmake.yml
   - `include(FetchContent)`, apoi

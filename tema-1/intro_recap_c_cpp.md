@@ -555,6 +555,9 @@ fișier, apoi puteți face copy-paste din fișier în terminal ca să nu pierde�
 
 Din nefericire, sunt mai dificil de automatizat apăsările de taste speciale: săgeți, escape etc.
 
+#### Fișiere
+🚧
+
 #### Instrucțiuni condiționale și repetitive
 
 Dacă avem o singură instrucțiune, nu este nevoie de acolade. Totuși, dacă avem `if`-uri imbricate, este
