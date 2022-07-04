@@ -123,6 +123,9 @@ Linia marcată cu `(1)` este echivalentă cu următoarea linie:
     Derivata() : Baza() { std::cout << "Constructor Derivată\n"; }
 ```
 
+În cazul claselor derivate, întâi se construiesc complet clasele de bază _în ordinea din definiția clasei derivate_,
+apoi se construiește fiecare atribut al clasei derivate.
+
 Dacă în clasa de bază nu avem constructor fără parametri, ce se întâmplă? Încercați să compilați codul următor:
 ```c++
 #include <iostream>
@@ -341,7 +344,341 @@ Dacă aflați exemple de situații, vă rog să îmi spuneți și mie.
 [//]: # (Iar dacă tot am zis de situații rare, să vorbim despre moștenirea multiplă.)
 [//]: # (s-a mai întrebat și altcineva, dar tot nu am găsit utilitatea: https://stackoverflow.com/questions/14288594/)
 
-#### Constructor de copiere, `operator=`
+#### Constructor de copiere, `operator=` (recapitulare)
+
+```c++
+class student {};
+```
+
+Să ne amintim câteva reguli ale limbajului. Dacă nu definim nimic, compilatorul generează:
+- constructor fără parametri: `student()`
+- constructor de copiere: `student(const student& other)`
+- operator= de copiere: `student& operator=(const student& other)`
+- destructor: `~student()`
+- constructor de mutare: `student(student&& other)`
+- operator= de mutare: `student& operator=(student&& other)`
+
+
+Dacă scriem orice fel de constructor (cu sau fără parametri), nu se mai generează constructorul fără parametri:
+```c++
+class student {
+public:
+    student(int) {}
+};
+
+int main() {
+    student st; // eroare
+}
+```
+
+Compilatorul generează în continuare funcțiile speciale dacă nu le suprascriem:
+```c++
+class student {
+public:
+    student() {}
+};
+
+int main() {
+    student s1; // constr definit de noi
+    student s2{s1}; // constr de copiere
+    student s3{std::move(s2)}; // constr de mutare
+    s1 = s2; // op= de copiere
+    s2 = std::move(s3); // op= de mutare
+    // destructor
+}
+```
+
+Dacă definim doar destructorul, se generează constructorul fără parametri. cc și op= de copiere sunt generați,
+dar sunt deprecated deoarece încalcă regula celor trei. Nu avem operațiile de mutare.
+
+Aceleași reguli se aplică și dacă ne definim doar cc sau doar op= de copiere, deoarece s-ar încălca regula celor trei.
+
+```c++
+class student {
+public:
+    ~student() {}
+};
+
+int main() {
+    student s1; // compilează
+    student s2{s1}; // constr de copiere; compilează, dar este deprecated
+    // student s3{std::move(s2)}; // constr de mutare; nu compilează
+    s1 = s2; // op= de copiere; compilează, dar este deprecated
+    // s2 = std::move(s3); // op= de mutare; nu compilează
+    // destructor
+}
+```
+
+Corect ar trebui să definim toate cele trei funcții dacă ne definim una dintre ele explicit:
+```c++
+class student {
+public:
+    ~student() {}
+    student(const student& other) = default;
+    student& operator=(const student& other) = default;
+};
+```
+
+Dacă ne definim constructor de mutare sau operator= de mutare, nu mai avem cc și op= de copiere.
+
+**Concluzie**
+
+De cele mai multe ori, constructorul de copiere, operator= de copiere și destructorul generate de compilator
+fac ce trebuie. Corect este să nu le scriem deloc pe niciunele sau să le scriem pe toate 3 (sau 5) cu `=default`.
+
+În ceea ce privește operațiile de mutare, acestea sunt folosite pentru a evita copieri inutile. Opțiunile ar fi:
+- păstrăm toate cele 5 operații: compilatorul va alege când e mai bine să copieze sau să mute
+  - ori nu definim niciuna dintre cele 5 operații, ori le definim pe toate
+- definim mutările și implicit ștergem copierile
+- ștergem copierile și implicit dezactivăm și mutările
+- destructorul este generat implicit în toate cazurile de mai sus
+  - îl putem defini pentru simetrie doar dacă definim și copieri sau mutări
+
+Detalii și sursa de inspirație [aici](https://howardhinnant.github.io/bloomberg_2016.pdf).
+
+#### Constructor de copiere, `operator=` pentru derivate
+
+În exemplul de mai jos, am suprascris toate funcțiile speciale (cc, op=, destructor) pentru a observa când se apelează.
+Totuși, nu le-am suprascris corect pe toate. Încercați să rulați codul. Compilează?
+
+```c++
+#include <iostream>
+#include <string>
+#include <utility>
+
+class student {
+    std::string nume;
+public:
+    student(std::string nume_) : nume(std::move(nume_)) { std::cout << "constructor student: " << nume << "\n"; }
+    student(const student& other) : nume(other.nume) { std::cout << "cc student: " << nume << "\n"; }
+    student& operator=(const student& other) { nume = other.nume; std::cout << "op= student: " << nume << "\n"; return *this; }
+    ~student() { std::cout << "destructor student: " << nume << "\n"; }
+    friend std::ostream& operator<<(std::ostream& os, const student& st) { os << "st: " << st.nume << "\n"; return os; }
+};
+
+class profesor {
+    std::string nume;
+public:
+    profesor(std::string nume_) : nume(std::move(nume_)) { std::cout << "constructor profesor: " << nume << "\n"; }
+    profesor(const profesor& other) : nume(other.nume) { std::cout << "cc profesor: " << nume << "\n"; }
+    profesor& operator=(const profesor& other) { nume = other.nume; std::cout << "op= profesor: " << nume << "\n"; return *this; }
+    ~profesor() { std::cout << "destructor profesor: " << nume << "\n"; }
+    friend std::ostream& operator<<(std::ostream& os, const profesor& p) { os << "prof: " << p.nume << "\n"; return os; }
+};
+
+class curs {
+    profesor prof;
+public:
+    curs(const profesor& prof_) : prof(prof_) { std::cout << "constructor curs: " << prof << "\n"; }
+    curs(const curs& other) : prof(other.prof) { std::cout << "cc curs: " << prof << "\n"; }
+    curs& operator=(const curs& other) { prof = other.prof; std::cout << "op= curs: " << prof << "\n"; return *this; }
+    ~curs() { std::cout << "destructor curs: " << prof << "\n"; }
+    friend std::ostream& operator<<(std::ostream& os, const curs& c) { os << "curs: " << c.prof << "\n"; return os; }
+};
+
+class curs_obligatoriu : public curs {
+    student st;
+public:
+    curs_obligatoriu(const student& st_) : st(st_) { std::cout << "constructor curs_obligatoriu: " << st << "\n"; }
+    curs_obligatoriu(const curs_obligatoriu& other) : st(other.st) { std::cout << "cc curs_obligatoriu: " << st << "\n"; }
+    curs_obligatoriu& operator=(const curs_obligatoriu& other) { st = other.st; std::cout << "op= curs_obligatoriu: " << st << "\n"; return *this; }
+    ~curs_obligatoriu() { std::cout << "destructor curs_obligatoriu: " << st << "\n"; }
+    friend std::ostream& operator<<(std::ostream& os, const curs_obligatoriu& c) { os << "curs_obligatoriu: " << c.st << "\n"; return os; }
+};
+
+int main() {
+    student s{"a"};
+    profesor p{"b"};
+    curs_obligatoriu co{s};
+}
+```
+
+Orice constructor al unei clase derivate definit explicit de noi apelează implicit constructorul **fără parametri**
+al clasei de bază, indiferent dacă e vorba de constructori de inițializare, de copiere sau de alt fel.
+
+Dacă adăugăm următorul constructor public în clasa `curs`, codul va compila. Programul funcționează corect acum?
+```c++
+    curs() : prof("prof") { std::cout << "constructor implicit curs\n"; }
+```
+
+Răspunsul este NU și primim și următorul warning (îl primeam și înainte):
+```
+main.cpp: In copy constructor ‘curs_obligatoriu::curs_obligatoriu(const curs_obligatoriu&)’:
+main.cpp:40:5: warning: base class ‘class curs’ should be explicitly initialized in the copy constructor [-Wextra]
+     40 |     curs_obligatoriu(const curs_obligatoriu& other) : st(other.st) { std::cout << "cc curs_obligatoriu: " << st << "\n"; }
+        |     ^~~~~~~~~~~~~~~~
+```
+
+Pentru a remedia situația, trebuie să apelăm constructorul de copiere al clasei de bază. Acesta se va ocupa de
+copierea atributelor din bază. Putem apela constructorul de copiere în acest mod chiar dacă este generat de compilator.
+
+Noul constructor de copiere din clasa derivată va fi:
+```c++
+    curs_obligatoriu(const curs_obligatoriu& other) : curs(other), st(other.st) {
+        std::cout << "cc curs_obligatoriu: " << st << "\n";
+    }
+```
+
+Acum copierea se efectuează corect. Întâi se construiesc complet atributele din bază, iar abia apoi se construiesc
+și atributele din clasa derivată.
+
+Putem apela constructorul de copiere al clasei de bază cu un obiect de tip derivat deoarece
+**orice obiect de tip derivată _este un fel de_ obiect de tip bază**, deci orice referință de tip `curs_obligatoriu`
+poate fi convertită în mod implicit la o referință de tip `curs`.
+
+Dacă nu suprascriem cc într-o clasă derivată, acesta va funcționa corect și va apela cc din bază, iar apoi
+va apela cc pentru fiecare atribut din clasa derivată.
+
+Indiferent de ordinea din lista de inițializare, ordinea inițializărilor este cea descrisă mai sus!
+
+Dacă inversăm ordinea din lista de inițializare:
+```c++
+    curs_obligatoriu(const curs_obligatoriu& other) :  st(other.st), curs(other) {
+        std::cout << "cc curs_obligatoriu: " << st << "\n";
+    }
+```
+
+Primim warning, întrucât ordinea din cod nu coincide cu ordinea reală a execuției codului și induce confuzie.
+
+```
+main.cpp: In copy constructor ‘curs_obligatoriu::curs_obligatoriu(const curs_obligatoriu&)’:
+main.cpp:37:13: warning: ‘curs_obligatoriu::st’ will be initialized after [-Wreorder]
+     37 |     student st;
+        |             ^~
+main.cpp:40:78: warning:   base ‘curs’ [-Wreorder]
+     40 |     curs_obligatoriu(const curs_obligatoriu& other) : st(other.st),curs(other) { std::cout << "cc curs_obligatoriu: " << st << "\n"; }
+        |                                                                              ^
+main.cpp:40:5: warning:   when initialized here [-Wreorder]
+     40 |     curs_obligatoriu(const curs_obligatoriu& other) : st(other.st),curs(other) { std::cout << "cc curs_obligatoriu: " << st << "\n"; }
+        |     ^~~~~~~~~~~~~~~~
+```
+
+Revenind la varianta anterioară a constructorului de copiere, funcționează corect tot programul de mai sus?
+
+**Nu!**
+
+Funcția operator= din derivată are același defect observat în constructorul de copiere, însă nu mai primim warning.
+Codul pe care îl avem acum nu ne permite să demonstrăm acest lucru.
+
+Vom adăuga următorul constructor în clasa `curs_obligatoriu`:
+```c++
+    curs_obligatoriu(const profesor& prof_) : curs(prof_), st("stud") {
+        std::cout << "constructor curs_obligatoriu 2: " << prof_ << "\n";
+    }
+```
+
+Iar în funcția `main` vom adăuga:
+```c++
+    std::cout << "-----\n";
+    curs_obligatoriu co2{p}, co3{co2}, co4{profesor{"z"}};
+    std::cout << co2 << " " << co3;
+    std::cout << "----- op= (1) -----\n";
+    co4 = co3;
+    std::cout << "----- op= (2) -----\n";
+    std::cout << co4 << " " << co3;
+    std::cout << "-----\n";
+```
+
+Din mesajele de afișare ne interesează următorul fragment:
+```
+----- op= (2) -----
+curs_obligatoriu: st: stud
+
+ curs_obligatoriu: st: stud
+
+-----
+```
+
+Pentru a observa bug-ul din `curs_obligatoriu::operator=`, este necesar să mai modificăm și afișarea pentru a afișa
+atributele din bază:
+```c++
+    friend std::ostream& operator<<(std::ostream& os, const curs_obligatoriu& c) {
+        os << static_cast<const curs&>(c);
+        os << "curs_obligatoriu: " << c.st << "\n";
+        return os;
+    }
+```
+
+Trebuie să facem cast la clasa de bază pentru că un simplu `os << c` în interiorul funcției de mai sus ar
+rezulta în apel recursiv infinit. Un cast de tip C (`os << (const curs&) c;`) nu ar exprima intenția la fel de bine
+și ar fi mai nesigur.
+
+Dacă rulăm programul din nou, ar trebui să observăm bug-ul:
+```
+----- op= (2) -----
+curs: prof: z
+
+curs_obligatoriu: st: stud
+
+ curs: prof: b
+
+curs_obligatoriu: st: stud
+
+-----
+```
+
+Așadar, dacă suprascriem op= într-o clasă derivată, este necesar să apelăm în mod explicit op= al clasei de bază
+pentru a copia (sau atribui) corect și atributele din clasa de bază:
+```c++
+    curs_obligatoriu& operator=(const curs_obligatoriu& other) {
+        curs::operator=(other); // (1)
+        // sau
+        static_cast<curs&>(*this) = other; // (2)
+        // sau
+        curs& curs_ = *this; curs_ = other; // (3)
+
+        st = other.st;
+        std::cout << "op= curs_obligatoriu: " << st << "\n";
+        return *this;
+    }
+```
+
+Nu este necesară decât una dintre cele 3 variante de mai sus. La fel ca în cazul constructorului de copiere,
+se efectuează o conversie implicită de la `curs_obligatoriu` la `curs`.
+
+**Atenție!** Este necesar să folosim conversie la referințe, deoarece vrem ca și referința care vede doar
+partea din bază să se refere la _aceleași_ obiecte.
+
+Următorul cod ar crea un nou obiect temporar și ar face atribuirea părții din bază a lui `other`
+în acest obiect temporar:
+```c++
+    curs_obligatoriu& operator=(const curs_obligatoriu& other) {
+        curs curs_ = *this;
+        curs_ = other;
+
+        st = other.st;
+        std::cout << "op= curs_obligatoriu: " << st << "\n";
+        return *this;
+    }
+```
+
+Dacă nu suprascriem op= într-o clasă derivată, acesta va funcționa corect și va apela op= din bază, iar apoi
+va apela op= pentru fiecare atribut din clasa derivată.
+
+**Concluzie**
+- De cele mai multe ori **nu** avem nevoie să suprascriem cc și op=, nici pentru clase de bază, nici pentru derivate.
+  Funcțiile cc și op= generate de compilator fac ce trebuie.
+  - Dacă definim explicit cc/op= doar în bază, cc/op= din derivată generate de compilator vor apela cc/op= din bază.
+  - Dacă definim explicit cc/op= doar în derivată, putem apela cc/op= din bază generate de compilator.
+- Este necesar să suprascriem cc **și** op= doar în situații speciale. Singurele situații speciale în cazul nostru
+  vor fi clasa/clasele în care avem atribute de tip pointer.
+
+#### Exercițiu
+
+Completați ierarhia de mai jos. Adăugați (o parte din) următoarele funcții/atribute ca să înțelegeți mai bine
+ce se întâmplă:
+- atribute `private` și `protected`
+- constructori de inițializare, constructori de copiere, operator=, destructori
+- funcții `private`, `protected` și `public`
+- funcția main cu apeluri care să acopere tot ce ați definit mai sus
+
+Folosiți oricât de multe mesaje de afișare considerați necesare.
+
+```c++
+class curs {};
+class curs_obligatoriu : public curs {};
+class curs_optional : public curs {};
+```
 
 ### Funcții virtuale
 #### Destructor
@@ -362,10 +699,24 @@ Dacă aflați exemple de situații, vă rog să îmi spuneți și mie.
 #### Smart pointers
 #### Dynamic cast
 
-### Copy and swap
-### RAII
+#### Copy and swap
+#### RAII
 
-#### Moștenire multiplă și virtuală
+#### Exercițiu
+
+Adăugați și clasa următoare:
+```c++
+class curs_facultativ : public curs {};
+```
+
+Adăugați atribute și definiți tot ce este necesar în această clasă pentru a putea crea obiecte de acest tip.
+
+Dacă ați implementat corect, ar trebui să modificați codul doar în main și în clasa definită acum.
+Astfel, am demonstrat că moștenirea ne ajută să extindem codul existent _foarte ușor_, **fără modificări**
+în codul care se folosește doar de interfața clasei de bază.
+
+Partea dificilă este definirea adecvată a unei clase de bază. Întrucât cerințele se pot schimba pe parcurs,
+proiectarea claselor se învață cel mai bine prin exercițiu și în timp.
 
 ### Excepții
 #### Motivație
@@ -376,6 +727,12 @@ Dacă aflați exemple de situații, vă rog să îmi spuneți și mie.
 #### Ierarhie proprie
 
 ### Funcții și atribute statice
+
+### Moștenire multiplă și virtuală
+
+### Principiile SOLID
+
+[//]: # (circle elipse problem)
 
 [//]: # (### Fișiere header și fișiere sursă)
 
