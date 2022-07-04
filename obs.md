@@ -52,7 +52,7 @@ Valgrind nu merge pe Windows, iar pe macOS nu merg sanitizers pentru memory leak
 Am decis să folosim GitHub Actions ca să nu fie nevoie să vă configurați nimic local.
 
 Pe Windows există într-adevăr [DrMemory](https://drmemory.org) (făcut de Google),
-însă nu am reușit să îl fac să meargă. Dacă reușiți, să îmi spuneți și mie.
+însă nu am reușit să îl fac să detecteze ceva util. Dacă reușiți, să îmi spuneți și mie.
 
 Nu știu să existe alte astfel de instrumente care să fie gratuite și să mai și meargă.
 
@@ -381,7 +381,9 @@ consum redus de memorie.
 
 Din cauza constructorilor și a destructorilor, în C++ nu avem funcționalitate de
 `realloc`. Nu lucrez profesional cu C++, nu știu dacă există vreo soluție mai bună
-care să fie și simplu de înțeles. Dacă aflați, vă rog să îmi spuneți și modific.
+care să fie și simplu de înțeles. Probabil se poate folosind custom allocators,
+doar că nu este simplu și allocators nu prea au legătură cu acest curs. Dacă aflați,
+vă rog să îmi spuneți și modific.
 
 În situația în care întâi facem `delete[]` și apoi `new[]` există posibilitatea să
 nu avem suficientă memorie pentru a face acel `new[]` deoarece memoria eliberată de
