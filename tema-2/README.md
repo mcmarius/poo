@@ -39,9 +39,9 @@ class B : A {};
 ```
 Cel mai adesea vom folosi termenii de **clasă de bază** și **clasă derivată**.
 
-O clasă de bază reprezintă un concept general sau abstract care acoperă cât mai multe situații.
+O clasă de bază (sau superclasă) reprezintă un concept general sau abstract care acoperă cât mai multe situații.
 
-O clasă derivată reprezintă o particularizare a unei clase de bază pentru tratarea unor cazuri speciale
+O clasă derivată (sau subclasă) reprezintă o particularizare a unei clase de bază pentru tratarea unor cazuri speciale
 care nu pot fi modelate (ușor) într-un mod general în clasa de bază.
 
 Pentru exemplul de mai sus, clasa A este clasă de bază, iar clasa B este clasă derivată:
@@ -1138,14 +1138,15 @@ Dacă găsiți un exemplu _cu sens_, vă rog să îmi spuneți și mie.
 Pentru situațiile în care doar vrem să grupăm atribute și funcționalități comune, însă nu avem nevoie de
 funcții virtuale și am folosi doar clase derivate, avem posibilitatea să nu plătim prețul virtualizării.
 
-Din moment ce nu avem funcții virtuale, nici destructorul nu este nevoie să fie virtual.
+Din moment ce nu avem funcții virtuale, nici destructorul din bază nu este nevoie să fie virtual.
 
-Totuși, întrucât nu vrem să construim decât obiecte din clase derivate, destructorul nu trebuie să fie public:
+Totuși, întrucât nu vrem să construim decât obiecte din clase derivate, destructorul bazei nu trebuie să fie public:
 dacă destructorul unei clase nu este public, nu avem voie să construim obiecte din acea clasă, deoarece
 resursele asociate unui astfel de obiect nu ar putea fi eliberate.
 
-Destructorul nu poate fi privat, deoarece trebuie apelat de clasele derivate. Prin urmare, destructorul trebuie
-să fie protected. Dacă suntem paranoici, putem face protected și constructorii din bază.
+Destructorul clasei de bază nu poate fi privat, deoarece trebuie apelat de clasele derivate.
+Prin urmare, destructorul din bază trebuie să fie protected.
+Dacă suntem paranoici, putem face protected și constructorii din bază.
 ```c++
 #include <iostream>
 #include <vector>
@@ -1182,6 +1183,9 @@ int main() {
     student_master sm1;
 }
 ```
+
+Destructorii din derivate sunt automat publici, nu trebuie redefiniți. I-am redefinit doar ca să
+arătăm că se apelează.
 
 Folosim abordarea descrisă mai devreme dacă vrem să forțăm doar crearea de obiecte derivate și nu avem nevoie de
 funcții virtuale.
@@ -1377,8 +1381,8 @@ clang: error: linker command failed with exit code 1 (use -v to see invocation)
 
 Sau alt mesaj similar. Ce se întâmplă?
 
-Codul compilează, dar crapă la etapa de linking, deoarece nu este găsită definiția destructorului
-din clasa de bază.
+Codul compilează (transformarea codului sursă în cod obiect), dar crapă la etapa de linking,
+deoarece nu este găsită definiția destructorului din clasa de bază.
 
 Soluția este să definim destructorul în clasa de bază:
 ```c++
@@ -1403,67 +1407,994 @@ int main() {
 Funcțiile virtuale (pure) ne ajută să extindem codul existent într-un mod ușor, fără să facem schimbări
 în clasele de bază sau în alte clase care depind de clasa de bază.
 
-#### Interfață non-virtuală
+Opțional, de citit un pic și de [aici](https://en.wikipedia.org/wiki/Call_super).
 
-[//]: # (mai multă flexibilitate în clasele de bază _fără_ modificarea derivatelor)
+#### Interfață non-virtuală
 
 Funcțiile virtuale publice au dezavantajul că derivatele pot schimba în mod complet interfața clasei de bază.
 Avem flexibilitatea să schimbăm în derivate comportamentul din baze, însă nu putem să modificăm în mod uniform
 comportamentul derivatelor fără să facem modificări în toate derivatele.
 
-Interfața non-virtuală este o rețetă prin care:
-- derivatele nu pot modifica structura interfeței la nivel înalt și
+Interfața non-virtuală (**NVI** - non-virtual interface) este o rețetă prin care:
+- derivatele nu pot modifica structura interfeței din bază la nivel înalt și
 - obținem posibilitatea de a modifica în mod uniform toate derivatele fără să schimbăm în mod
   explicit codul din derivate.
 
-[//]: # (de găsit exemplu concret)
+Astfel, separăm interfața de detaliile de implementare. Această tehnică nu este o particularitate de C++.
 
-[//]: # (http://www.gotw.ca/publications/mill18.htm)
+```c++
+class curs {
+public:
+    void evalueaza() {
+        std::cout << "evaluarea a început\n";
+        examineaza();
+        corecteaza();
+        noteaza();
+        std::cout << "evaluarea s-a încheiat\n";
+    }
+private:
+    virtual void examineaza() = 0;
+    virtual void corecteaza() = 0;
+    virtual void noteaza() = 0;
+};
+
+class curs_obligatoriu : public curs {
+private:
+    void examineaza() override { /* codul din curs_obligatoriu::examineaza() */ }
+    void corecteaza() override { /* codul din curs_obligatoriu::corecteaza() */ }
+    void noteaza() override { /* codul din curs_obligatoriu::noteaza() */ }
+};
+
+class curs_optional : public curs {
+private:
+    void examineaza() override { /* codul din curs_optional::examineaza() */ }
+    void corecteaza() override { /* codul din curs_optional::corecteaza() */ }
+    void noteaza() override { /* codul din curs_optional::noteaza() */ }
+};
+```
+
+Dacă dorim să modificăm comportamentul funcției `evalueaza` în toate derivatele în același fel, este simplu:
+```c++
+#include <iostream>
+#include <chrono>
+
+class curs {
+public:
+    void evalueaza() {
+        using namespace std::chrono_literals;
+        std::cout << "evaluarea a început\n";
+        examineaza();
+        ia_pauza(35min);
+        corecteaza();
+        ia_pauza(3h);
+        noteaza();
+        std::cout << "evaluarea s-a încheiat\n";
+    }
+private:
+    virtual void examineaza() = 0;
+    virtual void corecteaza() = 0;
+    virtual void noteaza() = 0;
+    void ia_pauza(auto durata) {
+        std::cout << "o bine meritată pauză de "
+                  << std::chrono::seconds(durata).count() << " (de) secunde\n";
+    }
+};
+```
+
+**Codul din derivate este neschimbat!**
+
+Iar acum să vedem varianta în care nu ne complicăm cu atâtea funcții și folosim funcții virtuale publice:
+```c++
+#include <iostream>
+#include <chrono>
+
+class curs {
+public:
+    virtual void evalueaza() = 0;
+};
+
+class curs_obligatoriu : public curs {
+public:
+    void evalueaza() override {
+        // codul din curs_obligatoriu::examineaza()
+        // codul din curs_obligatoriu::corecteaza()
+        // codul din curs_obligatoriu::noteaza()
+    }
+};
+
+class curs_optional : public curs {
+public:
+    void evalueaza() override {
+        // codul din curs_optional::examineaza()
+        // codul din curs_optional::corecteaza()
+        // codul din curs_optional::noteaza()
+    }
+};
+```
+
+Într-adevăr, pentru programe mici, codul este mai simplu și în aparență nu se justifică să ne complicăm cu
+funcții separate.
+
+Încercăm să aplicăm modificările de mai devreme pe codul de acum:
+```c++
+#include <iostream>
+#include <chrono>
+
+class curs {
+public:
+    virtual void evalueaza() = 0;
+private:
+    void ia_pauza(auto durata) {
+        std::cout << "o bine meritată pauză de "
+                  << std::chrono::seconds(durata).count() << " (de) secunde\n";
+    }
+};
+
+class curs_obligatoriu : public curs {
+public:
+    void evalueaza() override {
+        using namespace std::chrono_literals;
+        std::cout << "evaluarea a început\n";
+        // codul din curs_obligatoriu::examineaza()
+        ia_pauza(35min);
+        // codul din curs_obligatoriu::corecteaza()
+        ia_pauza(3h);
+        // codul din curs_obligatoriu::noteaza()
+        std::cout << "evaluarea s-a încheiat\n";
+    }
+};
+
+class curs_optional : public curs {
+public:
+    void evalueaza() override {
+        using namespace std::chrono_literals;
+        std::cout << "evaluarea a început\n";
+        // codul din curs_optional::examineaza()
+        ia_pauza(35min);
+        // codul din curs_optional::corecteaza()
+        ia_pauza(3h);
+        // codul din curs_optional::noteaza()
+        std::cout << "evaluarea s-a încheiat\n";
+    }
+};
+```
+
+Acest cod este mai ușor de scris (un simplu copy-paste), dar mult mai greu de întreținut pe termen mediu-lung.
+
+Pe măsură ce adăugăm noi derivate, continuăm să duplicăm codul din ce în ce mai mult. Este foarte ușor să
+uităm să preluăm toate modificările în noile derivate. Mai grav, dacă vrem să mai modificăm comportamentul
+comun din derivate, avem de înlocuit de fiecare dată în n locuri, n fiind numărul de derivate.
+
+Bonus, funcția `evalueaza` este publică virtuală, deci nu avem un mecanism să impunem o structură comună
+pentru o nouă derivată. Derivata poate suprascrie complet toate funcțiile virtuale.
+
+Dacă folosim o interfață non-virtuală, de fiecare dată avem de modificat într-un singur loc! De asemenea,
+derivatele nu pot suprascrie decât partea de detaliu a interfeței, nu interfața cu totul.
+
+Interfața non-virtuală presupune următoarele convenții:
+- clasa de bază definește interfața prin funcții publice non-virtuale
+- clasa de bază declară detaliile de implementare prin funcții virtuale private (sau virtuale protected)
+  - nu este obligatoriu ca toate funcțiile virtuale să fie virtuale pure
+- clasele derivate suprascriu doar funcțiile virtuale private (sau protected)
+
+Este de preferat ca majoritatea funcțiilor din bază să fie private, nu protected. Facem protected doar
+funcțiile care trebuie apelate explicit din derivate.
+
+Exemple de comportamente care pot fi impuse de o clasă de bază pentru toate derivatele:
+- logging și/sau monitorizare
+- caching
+- debugging
+- pre-condiții (de exemplu setup/verificări comune) și post-condiții (de exemplu cleanup comun)
+
+Caz particular:
+```c++
+class curs {
+public:
+    void evalueaza() {
+        evalueaza_();
+        // sau
+        evalueaza_impl();
+        //sau
+        do_evalueaza();
+    }
+private:
+    virtual void evalueaza_() = 0;
+    virtual void evalueaza_impl() = 0;
+    virtual void do_evalueaza() = 0;
+};
+```
+
+Interfața non-virtuală este de obicei utilă și dacă nu avem mai multe etape în funcția publică. Nu există
+o convenție standard pentru denumirea funcției virtuale private. Singura restricție ar fi
+[să nu înceapă cu `_`.](https://stackoverflow.com/questions/228783/)
+
+Având în vedere că nu putem prezice viitorul și ce modificări va trebui să facem, costul de a adăuga câteva rânduri
+în plus în clasa de bază este neglijabil în comparație cu rescrierea ulterioară a codului în mai multe derivate.
+
+Sursa de inspirație și detalii [aici](http://www.gotw.ca/publications/mill18.htm).
+
+Sunt și situații în care nu este nevoie să ne complicăm cu NVI, deoarece funcția este prea simplă.
+Singura situație pe care o știu este definirea de constructori virtuali.
+
+**Exerciții:** adăugați constructori, atribute, afișări, implementări pentru funcțiile virtuale
+și ce mai lipsește în exemplele din această secțiune.
 
 #### Constructori virtuali
 
-Exemplul următor este doar cu scop ilustrativ pentru a scrie mai puțin.
+Denumirea de constructor virtual este o tehnică de programare. Din punct de vedere al sintaxei, nu există
+constructori virtuali.
+
+Facem o scurtă pauză de clase abstracte. Dacă avem o ierarhie și folosim pointeri sau referințe către clasa
+de bază, este foarte ușor să feliem accidental obiectele (object slicing) cu transmitere prin valoare:
+```c++
+#include <iostream>
+
+class baza {
+public:
+    virtual void f() const {
+        std::cout << "f bază\n";
+    }
+};
+
+class derivata : public baza {
+public:
+    void f() const override {
+        std::cout << "f derivată\n";
+    }
+};
+
+void g1(baza b) {
+    std::cout << "g1\n";
+    b.f();
+}
+
+baza g2(baza& b) {
+    std::cout << "g2\n";
+    return b;
+}
+
+int main() {
+    derivata d;
+    g1(d);
+    baza b1 = g2(d);
+    b1.f();
+    const baza& b2 = g2(d);
+    b2.f();
+}
+```
+
+Dacă nu avem nevoie de un nou obiect, înlocuim transmiterea/întoarcerea prin valoare cu referințe.
+Dar dacă avem nevoie să copiem obiecte și avem doar pointer sau referință către bază?
+
+Vom afla răspunsul după un exemplu mai stufos. Revenim la clase abstracte.
+
+Exemplul următor este doar cu scop ilustrativ pentru a scrie mai puțin. Nu îl folosiți ca model pentru teme.
 ```c++
 #include <iostream>
 
 class curs {
 public:
-    virtual void prezentare() const = 0;
+    virtual void prezentare() = 0;
     virtual ~curs() = default;
 };
 
 class curs_obligatoriu : public curs {
     int nr_prezentare = 0;
 public:
-    void prezentare() const override {
+    void prezentare() override {
         std::cout << "prezentare obligatorie " << ++nr_prezentare << "\n";
     }
 };
 
 class curs_optional : public curs {
-    bool interactiv;
+    bool interactiv = false;
 public:
-    void prezentare() const override {
+    void prezentare() override {
         std::cout << "prezentare opțională" << (interactiv ? " interactivă" : "") << "\n";
     }
 };
 
 class student {
-    curs* curs_;
+    curs* m_curs;
 public:
+    student(curs* curs_) : m_curs(curs_) {}
+    ~student() { delete m_curs; }
+    void prezinta() { m_curs->prezentare(); }
+    void schimba_curs(curs* curs_) { m_curs = curs_; }
+};
+
+int main() {
+    curs* c1 = new curs_obligatoriu;
+    curs* c2 = new curs_optional;
+    student st1{c1};
+    std::cout << "st1 prezintă\n";
+    st1.prezinta();
+    std::cout << "st1 schimbă cursul\n";
+    st1.schimba_curs(c2);
+    std::cout << "st1 prezintă\n";
+    st1.prezinta();
+}
+```
+
+Codul de mai sus funcționează fără probleme în aparență. Cine ar trebui să facă `new` și `delete`? Ar trebui
+făcut `new` în constructorul de la student? Ar trebui făcut `delete` în funcția main?
+
+Avem un memory leak deoarece c1 rămâne alocat. Ar trebui făcut `delete` în `schimba_curs`?
+```
+./main
+st1 prezintă
+prezentare obligatorie 1
+st1 schimbă cursul
+st1 prezintă
+prezentare opțională
+
+=================================================================
+==15278==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 16 byte(s) in 1 object(s) allocated from:
+    #0 0x7fe1bce055a7 in operator new(unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:99
+    #1 0x558266acf47c in main main.cpp:46
+    #2 0x7fe1bc7fd082 in __libc_start_main ../csu/libc-start.c:308
+
+SUMMARY: AddressSanitizer: 16 byte(s) leaked in 1 allocation(s).
+```
+
+Să modificăm funcția main astfel încât să mai adăugăm un student:
+```c++
+
+int main() {
+    curs* c1 = new curs_obligatoriu;
+    student st1{c1};
+    std::cout << "st1 prezintă\n";
+    st1.prezinta();
+    student st2{st1};
+    std::cout << "st1 prezintă\n";
+    st1.prezinta();
+    std::cout << "st2 prezintă\n";
+    st2.prezinta();
+}
+```
+
+Acum codul ar trebui să crape:
+```
+./main
+st1 prezintă
+prezentare obligatorie 1
+st1 prezintă
+prezentare obligatorie 2
+st2 prezintă
+prezentare obligatorie 3
+=================================================================
+==14997==ERROR: AddressSanitizer: heap-use-after-free on address 0x602000000010 at pc 0x563662293901 bp 0x7ffc37a26a40 sp 0x7ffc37a26a30
+READ of size 8 at 0x602000000010 thread T0
+    #0 0x563662293900 in student::~student() main.cpp:29
+    #1 0x5636622935ac in main main.cpp:51
+```
+
+Să mai vedem un exemplu. Înlocuim funcția main cu:
+```c++
+int main() {
+    curs* c1 = new curs_obligatoriu;
+    curs* c2 = new curs_optional;
+    student st1{c1};
+    std::cout << "st1 prezintă\n";
+    st1.prezinta();
+    student st2{c2};
+    std::cout << "st1 prezintă\n";
+    st1.prezinta();
+    std::cout << "st2 prezintă\n";
+    st2.prezinta();
+    std::cout << "st2 = st1;\n";
+    st2 = st1;
+    std::cout << "st1 prezintă\n";
+    st1.prezinta();
+    std::cout << "st2 prezintă\n";
+    st2.prezinta();
+}
+```
+
+Crapă similar:
+```
+./main
+st1 prezintă
+prezentare obligatorie 1
+st1 prezintă
+prezentare obligatorie 2
+st2 prezintă
+prezentare opțională
+st2 = st1;
+st1 prezintă
+prezentare obligatorie 3
+st2 prezintă
+prezentare obligatorie 4
+=================================================================
+==15762==ERROR: AddressSanitizer: heap-use-after-free on address 0x602000000010 at pc 0x556b72b7e977 bp 0x7ffc0a62c1a0 sp 0x7ffc0a62c190
+READ of size 8 at 0x602000000010 thread T0
+    #0 0x556b72b7e976 in student::~student() main.cpp:29
+    #1 0x556b72b7e61f in main main.cpp:51
+```
+
+**De ce crapă?**
+
+Dacă avem atribute de tip pointer, constructorul de copiere, operator= și destructorul generate implicit de compilator
+cel mai probabil nu fac ce trebuie.
+
+Pe exemplul de aici, constructorul de copiere și operator= copiază pointeri. Un pointer reține o adresă de memorie.
+Chiar dacă fiecare student are un câmp separat cu câte un pointer, valoarea reținută de acești pointeri este
+aceeași după ce folosim cc sau op=.
+
+Înainte ca programul să crape, observăm că ambii studenți incrementează același contor din `curs_obligatoriu`.
+
+**De ce vrem să folosim pointeri?**
+
+Deoarece vrem să apelăm funcții virtuale prin pointeri de bază. Nu trebuie să modificăm nimic în clasa `student`
+ca să funcționeze în continuare, oricâte clase derivate am crea din `curs`.
+
+Pentru ce facem la acest laborator, în orice alte situații nu prea are sens să folosim pointeri, deoarece ne-am
+complica inutil.
+
+**Ce ar trebui să scriem în constructorul de copiere și operator=?**
+
+Răspunsul corect este în secțiunea următoare.
+
+Să încercăm să scriem constructorul de copiere. Cursul din obiectul nou construit ar trebui să fie un pointer
+către un nou curs, deci trebuie să folosim `new`:
+```c++
+class student {
+    curs* m_curs;
+public:
+    student(const student& other) {
+        m_curs = new ???(other.m_curs);
+    }
 };
 ```
 
-[//]: # (nu apelăm funcții virtuale în constructori și destructori!!! comportament nedefinit)
+Trebuie să facem `new curs_obligatoriu` sau `new curs_optional`?
+
+Cele două soluții aparent simple și la îndemână sunt următoarele:
+- modificăm clasa `curs` și includem un câmp pentru a reține tipul subclasei și eventual un enum cu toate tipurile
+- folosim dynamic_cast/typeid și încercăm cu if/else if cast-uri la fiecare subclasă
+
+Clasa `curs` se transformă astfel:
+```c++
+class curs {
+public:
+    virtual void prezentare() = 0;
+    virtual ~curs() = default;
+    enum tip { Obligatoriu, Optional };
+    tip get_tip() const { return m_tip };
+private:
+    tip m_tip;
+};
+```
+
+În clasele derivate trebuie să inițializăm în toți constructorii noul câmp:
+```c++
+class curs_obligatoriu : public curs {
+    // restul
+public:
+    // restul
+    curs_obligatoriu() : curs(curs::Obligatoriu) {}
+};
+```
+
+Procedăm asemănător pentru toate clasele derivate.
+
+Nu este nevoie să suprascriem și constructorul de copiere, deoarece acesta funcționează corect
+și în clasa de bază, și în derivate.
+
+Acum avem tot ce ne trebuie pentru a defini constructorul de copiere din clasa `student`:
+```c++
+class student {
+    curs* m_curs;
+public:
+    // restul
+    student(const student& other) {
+        switch(other.m_curs->get_tip()) {
+            case curs::Obligatoriu:
+                m_curs = new curs_obligatoriu(*static_cast<curs_obligatoriu*>(other.m_curs));
+                break;
+            case curs::Optional:
+                m_curs = new curs_optional(*static_cast<curs_optional*>(other.m_curs));
+                break;
+            default:
+                // eroare, caz lipsa!!!
+                m_curs = nullptr;
+                break;
+        }
+    }
+};
+```
+
+Presupunând că inițializăm întotdeauna corect câmpul `m_tip` din clasa `curs`, este în regulă să facem
+`static_cast`, deoarece câmpul `m_tip` este modificat doar la crearea unui obiect. Fiecare instrucțiune
+`new` va apela constructorul de copiere al subclasei adecvate.
+
+`static_cast<curs_obligatoriu*>(other.m_curs)` convertește cursul din `other` de la `curs*` la `curs_obligatoriu*`.
+În mod normal, această conversie nu este corectă, întrucât `curs*` poate să arate către orice subclasă.
+Aici ne bazăm pe faptul că am inițializat corect câmpul pentru tip.
+
+Mai departe, constructorul de copiere apelat de `new` are nevoie de o referință la `curs_obligatoriu`, dar noi
+avem un pointer. De aceea, ultimul pas este să dereferențiem rezultatul cast-ului.
+
+Dezavantajul major al acestei abordări este că trebuie să modificăm codul în multe locuri atunci când avem
+nevoie să adăugăm o nouă derivată. Switch-ul respectiv se va repeta peste tot pe unde avem nevoie să creăm o
+copie a unui curs, nu doar în clasa `student`.
+
+Un alt dezavantaj este că avem nevoie de un câmp suplimentar în clasa de bază și creștem consumul de memorie
+pentru toate obiectele derivate, _pe lângă_ costul indus de funcțiile virtuale.
+
+Pentru dynamic cast/typeid, codul este similar și dezavantajele sunt aceleași, cu mici variații.
+Vedeți [secțiunea respectivă](#dynamic-cast) pentru detalii.
+
+Dacă nu folosim clase abstracte, apare și pericolul de object slicing.
+
+**Dacă avem instrucțiuni `if`/`else` pe tipuri de date, cel mai adesea este greșit!**
+
+Soluția este să folosim funcții virtuale. În loc să verificăm noi manual tipul unui obiect polimorfic, vom
+delega responsabilitatea creării unei copii chiar obiectului pe care vrem să îl copiem.
+
+Pentru a preveni object slicing, vom ascunde cc și op=, deci nu mai trebuie să fie publice. Totuși,
+dacă vrem să copiem obiecte, este nevoie să facem cc și op= protected ca să poată fi apelate de clasele derivate:
+```c++
+class curs {
+public:
+    virtual void prezentare() = 0;
+    virtual ~curs() = default;
+protected:
+    curs(const curs& other) = default;
+    curs& operator=(const curs& other) = default;
+};
+```
+
+**Atenție!** Dacă schimbăm comportamentul implicit al unui constructor, nu se mai generează
+constructorul fără parametri nici pentru derivate:
+```c++
+class curs_obligatoriu : public curs {
+public:
+    void prezentare() override {}
+};
+
+int main() {
+    curs_o c1;   // eroare!!!
+    curs c2{c1}; // ok
+}
+```
+
+Pentru a remedia situația, trebuie să definim constructorul fără parametri în bază. Chiar dacă ne definim
+constructori cu parametri în derivate, baza tot trebuie inițializată, iar compilatorul apelează implicit
+constructorul fără parametri din bază, constructor care este inexistent.
+
+**Exerciții:**
+- de ce nu putem defini constructorul fără parametri doar în derivate?
+- de ce nu ar fi în regulă să apelăm din derivată constructorul de copiere al bazei cu `this`?
+  - `curs_obligatoriu() : curs(*this) {}`
 
 [//]: # (clone public, cc/op= protected, la fel pt cele de mutare)
 
 [//]: # (https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rh-copy)
 
+**Constructorii virtuali** sunt prin convenție niște funcții virtuale numite `clone`. Folosim constructori
+virtuali pentru a copia în mod corect obiecte prin pointeri sau referințe către bază.
+```c++
+#include <iostream>
+
+class curs {
+public:
+    virtual void prezentare() = 0;
+    virtual curs* clone() const = 0;
+    virtual ~curs() = default;
+    curs() = default;
+protected:
+    curs(const curs& other) = default;
+    curs& operator=(const curs& other) = default;
+};
+
+class curs_obligatoriu : public curs {
+    int nr_prezentare = 0;
+public:
+    void prezentare() override {
+        std::cout << "prezentare obligatorie " << ++nr_prezentare << "\n";
+    }
+    curs* clone() const override { return new curs_obligatoriu(*this); }
+};
+
+class curs_optional : public curs {
+    bool interactiv = false;
+public:
+    void prezentare() override {
+        std::cout << "prezentare opțională" << (interactiv ? " interactivă" : "") << "\n";
+    }
+    curs* clone() const override { return new curs_optional(*this); }
+};
+
+void f1(curs* c) {
+    std::cout << "begin f1\n";
+    curs* d = c->clone();
+    c->prezentare();
+    d->prezentare();
+    delete d;
+    std::cout << "end f1\n";
+}
+
+void f2(curs& c) {
+    std::cout << "begin f2\n";
+    curs* d = c.clone();
+    c.prezentare();
+    d->prezentare();
+    delete d;
+    std::cout << "end f2\n";
+}
+
+int main() {
+    curs* oop = new curs_obligatoriu;
+    f1(oop);
+    f2(*oop);
+    delete oop; // 🙂️
+}
+```
+
+Deși funcția `clone` ar putea avea implementare dacă nu am avea alte funcții virtuale pure, am vrea să forțăm
+toate derivatele să implementeze `clone` pentru că altfel nu se apelează și constructorul de copiere din derivate.
+De aceea, vom prefera să facem întotdeauna funcția `clone` să fie virtuală pură.
+
+Observăm că funcțiile `f1` și `f2` nu se folosesc decât de referințe și pointeri la clasa de bază `curs`. Avem
+posibilitatea să adăugăm oricâte subclase, iar funcțiile `f1` și `f2` vor funcționa corect în continuare, fără
+să fie nevoie de modificări.
+
+Ca fapt divers, antetul unei funcții virtuale poate diferi în derivate prin tipul de retur dacă avem tipuri de date
+covariante. Cu alte cuvinte, în derivate avem voie să scriem așa:
+```c++
+class curs_obligatoriu : public curs {
+    // restul
+public:
+    // restul
+    curs_obligatoriu* clone() const override { return new curs_obligatoriu(*this); }
+};
+```
+
+Avem aceeași posibilitate și dacă trebuie să întoarcem referințe: putem întoarce `baza&` într-o funcție virtuală
+din bază și `derivata&`.
+
+Acest aspect al limbajului ne ajută să scăpăm de cast-uri atunci când știm că avem tipul de date derivat și
+trebuie să apelăm funcții din derivată care nu sunt și în bază. Totuși, nu este ceva esențial.
+
+O posibilă greșeală când implementăm constructori virtuali este următoarea:
+```c++
+class curs_obligatoriu : public curs {
+    // restul
+public:
+    // restul
+    curs* clone() const override { return new curs_obligatoriu(); }
+};
+```
+
+Nu se mai apelează constructorul de copiere, ci constructorul fără parametri. Chiar dacă primim un obiect nou,
+acesta nu conține datele pe care voiam să le copiem.
+
+Avantajul esențial al constructorilor virtuali este că nu ne umplem programul de `if`/`else`-uri pe tipuri de date.
+Atunci când creăm o nouă derivată, doar implementăm `clone` și creăm un obiect de acest subtip în main.
+**Restul codului nu se modifică și funcționează cu noua derivată!**
+
+Pentru ce facem noi, este ok să lăsăm funcția `clone` virtuală și publică, întrucât nu vom avea nevoie să îi
+modificăm în vreun fel comportamentul.
+
+În alte limbaje, clonarea se mai numește "deep copy". Unele limbaje fac "shallow copy" cu funcția `clone` și
+folosesc constructori de copiere pentru "deep copy". Ideea în sine de a avea nevoie de obiecte
+complet independente o veți regăsi și în viitor sub o formă sau alta.
+
+**Reamintim** că nu apelăm funcții virtuale în constructori și destructori în C++ deoarece este
+comportament nedefinit 💥
+
+#### Copy and swap și RAII
+
+Am văzut în secțiunea precedentă modul prin care copiem obiecte prin pointeri sau referințe către clasa de bază.
+
+În clasa `student` avem ca atribut un pointer la un curs și apăreau probleme din cauza cc și op= generate de
+compilator. Nu suntem mulțumiți cu abordarea prezentată mai devreme pentru că avem multe modificări de făcut
+în momentul în care definim o nouă clasă derivată. Acest inconvenient apărea din cauză că nu aveam un mecanism
+de clonat obiecte prin pointeri de bază.
+
+Vom considera ierarhia claselor pentru cursuri ca fiind cea din secțiunea anterioară. Să reluăm definiția
+clasei `student`:
+```c++
+class student {
+    curs* m_curs;
+public:
+    student(curs* curs_) : m_curs(curs_) {}
+    ~student() { delete m_curs; }
+    void prezinta() { m_curs->prezentare(); }
+    void schimba_curs(curs* curs_) { m_curs = curs_; }
+};
+```
+
+Pentru a elimina dilema cu cine ar trebui să facă `new` și `delete`, vom face `new` în constructori (și funcțiile
+similare) și `delete` în destructor:
+```c++
+class student {
+    curs* m_curs;
+public:
+    student(const curs& curs_) : m_curs(curs_.clone()) {}
+    ~student() { delete m_curs; }
+    void prezinta() { m_curs->prezentare(); }
+    void schimba_curs(const curs& curs_) { delete m_curs; m_curs = curs_.clone(); }
+};
+```
+
+Această abordare nu este neapărat eficientă din punctul de vedere al memoriei, însă este mai sigură.
+
+În funcția `main` vom avea câte un `delete` pentru fiecare `new`. Este important să nu folosim `new`
+direct în lista de parametri a unui apel, deoarece s-ar crea un obiect temporar pe care nu l-am mai
+putea elibera.
+
+Filozofia C++ în privința gestionării resurselor este [RAII](https://en.cppreference.com/w/cpp/language/raii)
+(resource acquisition is initialization):
+- resursele se alocă în constructori
+- resursele se eliberează în destructori
+
+Dacă am scris destructorii corect, aceștia se vor apela automat în momentul potrivit și nu există risc de
+resource leaks. Pentru ca această strategie să funcționeze, este important să **nu folosim `new`
+decât în constructori!**
+
+Consecința este că ar trebui să apelăm `clone` doar în constructori sau în funcții care se comportă
+ca niște constructori.
+
+În alte limbaje, un bloc `finally` (sau similar) este folosit pentru eliberarea manuală a resurselor.
+
+Am suprascris destructorul. Regula celor trei ne spune că ar trebui să suprascriem și cc, și op=:
+```c++
+class student {
+    curs* m_curs;
+public:
+    student(const curs& curs_) : m_curs(curs_.clone()) {}
+    student(const student& other) : m_curs(other.m_curs->clone()) {}
+
+    student& operator=(const student& other) {
+        if(this != &other) {
+            delete m_curs;
+            m_curs = other.m_curs->clone();
+        }
+        return *this;
+    }
+
+    ~student() { delete m_curs; }
+    void prezinta() { m_curs->prezentare(); }
+    void schimba_curs(const curs& curs_) { delete m_curs; m_curs = curs_.clone(); }
+};
+```
+
+Mai multe detalii despre auto-atribuiri [aici](/obs.md#ce-se-ntmpl-dac-facem-auto-atribuiri).
+
+Exemplul nu este tocmai realist: un student poate să aibă mai multe cursuri. Vom folosi `std::vector`
+pentru că nu are rost să reinventăm roata:
+```c++
+#include <vector>
+
+class student {
+    std::vector<curs*> cursuri;
+public:
+    student() = default;
+    student(const std::vector<curs*> cursuri_) {
+        for(const auto& curs : cursuri_)
+            cursuri.emplace_back(curs->clone());
+    }
+    student(const student& other) {
+        for(const auto& curs : other.cursuri)
+            cursuri.emplace_back(curs->clone());
+    }
+
+    student& operator=(const student& other) {
+        if(this != &other) {
+            for(auto& curs : cursuri)
+                delete curs;
+            cursuri.clear();
+            for(const auto& curs : other.cursuri)
+                cursuri.emplace_back(curs->clone());
+        }
+        return *this;
+    }
+
+    ~student() {
+        for(auto& curs : cursuri)
+            delete curs;
+    }
+
+    void prezinta() {
+        for(auto& curs : cursuri)
+            curs->prezentare();
+    }
+};
+```
+
+Logica din operatorul de atribuire (op=) nu este deloc trivială și este ușor să facem greșeli la gestionarea
+resurselor. De asemenea, implementarea prezintă câteva posibile defecte întrucât întâi ștergem resursele existente
+și abia apoi încercăm să alocăm alte resurse.
+
+Ca regulă generală, în multe cazuri este mai bine să alocăm întâi noile resurse într-o zonă temporară și să
+eliberăm resursele vechi de-abia după ce noile resurse au fost alocate cu succes. După acești pași, ce ne rămâne
+de făcut sunt interschimbări de pointeri, operații care nu ar trebui să eșueze.
+
+O discuție mai amănunțită a acestui subiect găsiți [aici](/obs.md#reimplementare-stdvector).
+
+Remarcăm faptul că repetăm logica din constructorul de copiere și din destructor. Ne vom folosi de cc pentru
+alocarea noilor resurse într-o variabilă temporară și apoi de destructor pentru eliberarea vechilor resurse.
+Pentru a elibera resursele vechi, acestea trebuie să ajungă în obiectul temporar. Cum facem asta? Cu o simplă
+interschimbare de pointeri!
+
+```c++
+#include <utility> // std::swap
+
+class student {
+    // restul
+public:
+    // restul
+    student& operator=(const student& other) {
+        if(this != &other) {
+            auto tmp_student{other};
+            std::swap(cursuri, tmp_student.cursuri);
+        }
+        return *this;
+    }
+};
+```
+
+Mult mai puțin cod, mult mai puține șanse să greșim ceva! De menționat că optimizăm crearea unei copieri
+în caz de auto-atribuire, dar ar trebui să definim separat op= de mutare.
+
+Codul se poate simplifica un pic mai mult și obținem simultan op= de copiere și op= de mutare:
+
+```c++
+#include <utility> // std::swap
+
+class student {
+    // restul
+public:
+    // restul
+    student& operator=(student other) {
+        std::swap(cursuri, other.cursuri);
+        return *this;
+    }
+};
+```
+
+Acum este prea simplu, îl complicăm la loc. Convenția este să folosim o funcție friend pentru a face partea de
+swap. Dacă avem mai multe atribute, este nevoie de swap pentru fiecare atribut în parte:
+```c++
+#include <vector>
+#include <string>
+#include <utility> // std::swap
+
+class student {
+    std::vector<curs*> cursuri;
+    std::string nume;
+public:
+    // restul
+    student& operator=(student other) {
+        swap(*this, other);
+        return *this;
+    }
+
+    friend void swap(student& st1, student& st2) {
+        std::swap(st1.cursuri, st2.cursuri);
+        std::swap(st1.nume, st2.nume);
+    }
+};
+```
+
+De ce facem swap-ul funcție friend?
+
+Pentru situația de mai sus nu este nevoie. Este util ca să simplificăm funcțiile de swap mai complexe din cauza
+regulilor limbajului. Funcțiile friend sunt găsite de
+[ADL (argument-dependent lookup)](https://en.cppreference.com/w/cpp/language/adl).
+
+Ca să înțelegem mai bine, mai complicăm un pic exemplul:
+```c++
+#include <iostream>
+#include <vector>
+#include <string>
+#include <utility> // std::swap
+
+class facultate {
+    std::string nume;
+public:
+    friend void swap(facultate& f1, facultate& f2) {
+        std::cout << "swap custom facultate\n";
+        std::swap(f1.nume, f2.nume);
+    }
+};
+
+class student {
+    std::vector<curs*> cursuri;
+    std::string nume;
+    facultate facultate_;
+public:
+    // restul
+    student& operator=(student other) {
+        swap(*this, other);
+        return *this;
+    }
+
+    friend void swap(student& st1, student& st2) {
+        std::swap(st1.cursuri, st2.cursuri);
+        std::swap(st1.nume, st2.nume);
+        swap(st1.facultate_, st2.facultate_);
+    }
+};
+```
+
+La fel cum clasa `student` are nevoie de o funcție specială (custom) de swap, este posibil ca și alte clase să
+aibă nevoie de astfel de funcții speciale de swap. Am adăugat o astfel de funcție în clasa `facultate` cu scop
+demonstrativ. Confirmați că vă apare mesajul din funcția swap din clasa `facultate`.
+
+Funcțiile din spații de nume (de exemplu `std::`) nu sunt căutate de ADL, fiindcă ADL caută doar
+funcții fără prefix de spațiu de nume.
+
+Pentru a avea codul uniform, este comun să folosim `using std::swap;` pentru a activa ADL și pentru funcția
+swap predefinită:
+```c++
+#include <iostream>
+#include <vector>
+#include <string>
+#include <utility> // std::swap
+
+class facultate {
+    std::string nume;
+public:
+    friend void swap(facultate& f1, facultate& f2) {
+        using std::swap;
+        std::cout << "swap custom facultate\n";
+        swap(f1.nume, f2.nume);
+    }
+};
+
+class student {
+    std::vector<curs*> cursuri;
+    std::string nume;
+    facultate facultate_;
+public:
+    // restul
+    student& operator=(student other) {
+        swap(*this, other);
+        return *this;
+    }
+
+    friend void swap(student& st1, student& st2) {
+        using std::swap;
+        swap(st1.cursuri, st2.cursuri);
+        swap(st1.nume, st2.nume);
+        swap(st1.facultate_, st2.facultate_);
+    }
+};
+```
+
+**Bonus:** de ce nu putem folosi `std::swap` în felul următor?
+
+```c++
+class student {
+    // restul
+public:
+    // restul
+    student& operator=(student other) {
+        if(this != &other) {
+            std::swap(*this, other);
+        }
+        return *this;
+    }
+};
+```
+
+Rulați ca să vă convingeți: `std::swap` apelează operatorul de atribuire și avem recursie infinită.
+
+#### Smart pointers
+
+##### shared_ptr
+##### unique_ptr
+
 #### Funcție de afișare
 
-#### Alte funcții virtuale
+#### Diverse 
 
+[//]: # (Alte funcții virtuale)
 
 [//]: # (cu qualified name lookup putem apela prin pointer la bază implementarea unei funcții virtuale pure)
 
@@ -1480,17 +2411,10 @@ public:
 
 [//]: # (de găsit pe undeva de scris: se recomandă overload cu friend din cauza ADL https://en.cppreference.com/w/cpp/language/adl)
 
-#### Smart pointers
-
-##### shared_ptr
-##### unique_ptr
 
 #### Dynamic cast
 
 [//]: # (referințe, pointeri)
-
-#### Copy and swap
-#### RAII
 
 #### Exercițiu
 
@@ -1523,6 +2447,8 @@ proiectarea claselor se învață cel mai bine prin exercițiu și în timp.
 ### Funcții și atribute statice
 
 ### Moștenire multiplă și virtuală
+
+[//]: # (exemplu de situație utilă https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rh-kind)
 
 ### Principiile SOLID
 
