@@ -1898,7 +1898,7 @@ public:
                 m_curs = new curs_optional(*static_cast<curs_optional*>(other.m_curs));
                 break;
             default:
-                // eroare, caz lipsa!!!
+                // eroare, caz lipsă!!!
                 m_curs = nullptr;
                 break;
         }
@@ -1957,7 +1957,7 @@ public:
 
 int main() {
     curs_o c1;   // eroare!!!
-    curs c2{c1}; // ok
+    curs c2{c1}; // ok dacă l-am putea construi pe c1
 }
 ```
 
@@ -1996,6 +1996,7 @@ public:
     void prezentare() override {
         std::cout << "prezentare obligatorie " << ++nr_prezentare << "\n";
     }
+
     curs* clone() const override { return new curs_obligatoriu(*this); }
 };
 
@@ -2005,6 +2006,7 @@ public:
     void prezentare() override {
         std::cout << "prezentare opțională" << (interactiv ? " interactivă" : "") << "\n";
     }
+
     curs* clone() const override { return new curs_optional(*this); }
 };
 
@@ -2174,10 +2176,12 @@ class student {
     std::vector<curs*> cursuri;
 public:
     student() = default;
+
     student(const std::vector<curs*> cursuri_) {
         for(const auto& curs : cursuri_)
             cursuri.emplace_back(curs->clone());
     }
+
     student(const student& other) {
         for(const auto& curs : other.cursuri)
             cursuri.emplace_back(curs->clone());
@@ -2268,7 +2272,7 @@ class student {
     std::vector<curs*> cursuri;
     std::string nume;
 public:
-    // restul
+    // restul; trebuie actualizat cc să copieze și numele
     student& operator=(student other) {
         swap(*this, other);
         return *this;
@@ -2387,34 +2391,573 @@ Rulați ca să vă convingeți: `std::swap` apelează operatorul de atribuire ș
 
 #### Smart pointers
 
+**Important!** Indiferent de ce fel de pointeri folosim, trebuie să ne asigurăm că nu dereferențiem pointeri nuli
+sau neinițializați. Este redundant să mai facem verificări doar dacă avem garanția că un pointer se inițializează
+corect în toate cazurile și nu există riscul să folosim pointerul după ce obiectul către care arată a fost
+eliberat (dangling pointer).
+
+Pe măsură ce programul crește în complexitate, vom avea din ce în ce mai multe alocări dinamice. Chiar și în codul
+de până acum nu respectăm în totalitate RAII pentru că nu facem `new` doar în constructori. Trebuie să ne asigurăm
+că fiecare `new` are un `delete` asociat, dar nu înseamnă că doar numărăm câte instrucțiuni `new` și câte `delete`
+avem. Există situații când multe new-uri sunt eliberate de un singur delete din destructor. Datorită RAII este mai
+rar în C++ să avem mai multe delete-uri decât new-uri, dar în C este destul de frecvent.
+
+Acest curs nu este de algoritmică, nu consider esențial să pierdem timp cu gestionarea explicită a memoriei.
+Recomandarea mea este să folosiți smart pointers: astfel, nu ne mai interesează când trebuie făcut `delete`.
+
+Nu este obligatoriu să folosiți smart pointers, dar este obligatoriu să verificați că nu aveți erori de memorie,
+indiferent dacă folosiți smart pointers sau nu. Este posibil să avem erori de memorie, inclusiv memory leaks, și
+dacă folosim smart pointers.
+
+Biblioteca standard de C++ are 3 tipuri de smart pointers: `shared_ptr`, `weak_ptr` și `unique_ptr`.
+
+Un dezavantaj este că nu avem tipuri de date covariante în cazul smart pointers (cel puțin nu ușor), însă este
+irelevant pentru acest laborator.
+
+`std::shared_ptr` pot fi ineficienți în situații reale. Câteva dezavantaje sunt contorul intern care trebuie
+sincronizat între firele de execuție și crearea multor copii ale pointerului. Probabil sunt și alte motive,
+dar nu am mai căutat pentru că nu este relevant. Ca exemplu, `std::shared_ptr` sunt
+[interziși](https://chromium.googlesource.com/chromium/src/+/main/styleguide/c++/c++-features.md#Shared-Pointers-banned)
+în proiectul Chromium. În schimb, acolo există smart pointers specializați; exemplu:
+[MiraclePtr](https://docs.google.com/document/d/1pnnOAIz_DMWDI4oIOFoMAqLnf_MZ2GsrJNb_dbQ3ZBg/edit).
+
 ##### shared_ptr
+
+Cel mai simplu de folosit la acest laborator este `shared_ptr`:
+- înlocuim pointerii simpli `T* variabila;` cu `std::shared_ptr<T> variabila;`
+- înlocuim `new T(arg1, arg2, ...)` cu `std::make_shared<T>(arg1, arg2, ...)`
+- nu mai avem `delete`
+
+Concret, în destructor nu mai avem nimic, iar singurele locuri cu alocări explicite au fost funcțiile `clone`:
+```c++
+// înainte
+curs* curs_obligatoriu::clone() const override {
+    return new curs_obligatoriu(*this);
+}
+
+// destructor cu delete în clasa student
+
+// după
+std::shared_ptr<curs> curs_obligatoriu::clone() const override {
+    return std::make_shared<curs_obligatoriu>(*this);
+}
+
+student::~student() = default; // nu mai este nevoie de delete
+```
+
+Restul codului rămâne la fel.
+
+Pentru ce facem noi la acest laborator, este suficient `std::shared_ptr`.
+[Recomandările din domeniu](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-unique_ptr)
+sunt de obicei cu `std::unique_ptr` (secțiunea următoare), dar este mult mai simplu cu `std::shared_ptr`
+din punct de vedere didactic.
+
+---
+
+Acest tip de pointeri numără referințele către obiectul alocat și distruge obiectul atunci când numărul de
+referințe ajunge la zero. Consecința este că avem memory leak dacă numărul de referințe nu ajunge niciodată
+la zero.
+```c++
+#include <memory>
+
+class B;
+class A {
+    std::shared_ptr<B> b;
+public:
+    void set(std::shared_ptr<B> b_) { b = b_; }
+};
+
+class B {
+    std::shared_ptr<A> a;
+public:
+    void set(std::shared_ptr<A> a_) { a = a_; }
+};
+
+int main() {
+    auto a = std::make_shared<A>();
+    auto b = std::make_shared<B>();
+    a.set(b);
+    b.set(a);
+}
+```
+
+Sanitizers nu detectează acest caz. Valgrind ne semnalează următoarele:
+```
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./main
+==15891== Memcheck, a memory error detector
+==15891== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==15891== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==15891== Command: ./main
+==15891==
+==15891==
+==15891== HEAP SUMMARY:
+==15891==     in use at exit: 64 bytes in 2 blocks
+==15891==   total heap usage: 3 allocs, 1 frees, 72,768 bytes allocated
+==15891==
+==15891== 32 bytes in 1 blocks are indirectly lost in loss record 1 of 2
+==15891==    at 0x483CFE3: operator new(unsigned long) (vg_replace_malloc.c:422)
+==15891==    by 0x10AA8F: __gnu_cxx::new_allocator<std::_Sp_counted_ptr_inplace<B, std::allocator<B>, (__gnu_cxx::_Lock_policy)2> >::allocate(unsigned long, void const*) (new_allocator.h:121)
+==15891==    by 0x10A69C: allocate (allocator.h:173)
+==15891==    by 0x10A69C: std::allocator_traits<std::allocator<std::_Sp_counted_ptr_inplace<B, std::allocator<B>, (__gnu_cxx::_Lock_policy)2> > >::allocate(std::allocator<std::_Sp_counted_ptr_inplace<B, std::allocator<B>, (__gnu_cxx::_Lock_policy)2> >&, unsigned long) (alloc_traits.h:460)
+==15891==    by 0x10A22B: std::__allocated_ptr<std::allocator<std::_Sp_counted_ptr_inplace<B, std::allocator<B>, (__gnu_cxx::_Lock_policy)2> > > std::__allocate_guarded<std::allocator<std::_Sp_counted_ptr_inplace<B, std::allocator<B>, (__gnu_cxx::_Lock_policy)2> > >(std::allocator<std::_Sp_counted_ptr_inplace<B, std::allocator<B>, (__gnu_cxx::_Lock_policy)2> >&) (allocated_ptr.h:97)
+==15891==    by 0x109ED9: std::__shared_count<(__gnu_cxx::_Lock_policy)2>::__shared_count<B, std::allocator<B>>(B*&, std::_Sp_alloc_shared_tag<std::allocator<B> >) (shared_ptr_base.h:648)
+==15891==    by 0x109CE7: std::__shared_ptr<B, (__gnu_cxx::_Lock_policy)2>::__shared_ptr<std::allocator<B>>(std::_Sp_alloc_shared_tag<std::allocator<B> >) (shared_ptr_base.h:1337)
+==15891==    by 0x109BDC: std::shared_ptr<B>::shared_ptr<std::allocator<B>>(std::_Sp_alloc_shared_tag<std::allocator<B> >) (shared_ptr.h:409)
+==15891==    by 0x109AF7: std::shared_ptr<B> std::allocate_shared<B, std::allocator<B>>(std::allocator<B> const&) (shared_ptr.h:861)
+==15891==    by 0x1097DE: std::shared_ptr<B> std::make_shared<B>() (shared_ptr.h:877)
+==15891==    by 0x10927B: main (main.cpp:18)
+==15891==
+==15891== 64 (32 direct, 32 indirect) bytes in 1 blocks are definitely lost in loss record 2 of 2
+==15891==    at 0x483CFE3: operator new(unsigned long) (vg_replace_malloc.c:422)
+==15891==    by 0x10A9C3: __gnu_cxx::new_allocator<std::_Sp_counted_ptr_inplace<A, std::allocator<A>, (__gnu_cxx::_Lock_policy)2> >::allocate(unsigned long, void const*) (new_allocator.h:121)
+==15891==    by 0x10A45C: allocate (allocator.h:173)
+==15891==    by 0x10A45C: std::allocator_traits<std::allocator<std::_Sp_counted_ptr_inplace<A, std::allocator<A>, (__gnu_cxx::_Lock_policy)2> > >::allocate(std::allocator<std::_Sp_counted_ptr_inplace<A, std::allocator<A>, (__gnu_cxx::_Lock_policy)2> >&, unsigned long) (alloc_traits.h:460)
+==15891==    by 0x10A00D: std::__allocated_ptr<std::allocator<std::_Sp_counted_ptr_inplace<A, std::allocator<A>, (__gnu_cxx::_Lock_policy)2> > > std::__allocate_guarded<std::allocator<std::_Sp_counted_ptr_inplace<A, std::allocator<A>, (__gnu_cxx::_Lock_policy)2> > >(std::allocator<std::_Sp_counted_ptr_inplace<A, std::allocator<A>, (__gnu_cxx::_Lock_policy)2> >&) (allocated_ptr.h:97)
+==15891==    by 0x109D75: std::__shared_count<(__gnu_cxx::_Lock_policy)2>::__shared_count<A, std::allocator<A>>(A*&, std::_Sp_alloc_shared_tag<std::allocator<A> >) (shared_ptr_base.h:648)
+==15891==    by 0x109C93: std::__shared_ptr<A, (__gnu_cxx::_Lock_policy)2>::__shared_ptr<std::allocator<A>>(std::_Sp_alloc_shared_tag<std::allocator<A> >) (shared_ptr_base.h:1337)
+==15891==    by 0x109BA2: std::shared_ptr<A>::shared_ptr<std::allocator<A>>(std::_Sp_alloc_shared_tag<std::allocator<A> >) (shared_ptr.h:409)
+==15891==    by 0x109A9B: std::shared_ptr<A> std::allocate_shared<A, std::allocator<A>>(std::allocator<A> const&) (shared_ptr.h:861)
+==15891==    by 0x109725: std::shared_ptr<A> std::make_shared<A>() (shared_ptr.h:877)
+==15891==    by 0x10926F: main (main.cpp:17)
+==15891==
+==15891== LEAK SUMMARY:
+==15891==    definitely lost: 32 bytes in 1 blocks
+==15891==    indirectly lost: 32 bytes in 1 blocks
+==15891==      possibly lost: 0 bytes in 0 blocks
+==15891==    still reachable: 0 bytes in 0 blocks
+==15891==         suppressed: 0 bytes in 0 blocks
+==15891==
+==15891== For lists of detected and suppressed errors, rerun with: -s
+==15891== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+```
+
+Dacă avem nevoie de pointeri în ambele direcții și vrem să folosim `std::shared_ptr`, trebuie să decidem
+în ce direcție acest pointer este opțional pentru a elimina referințele circulare. Marcăm legătura mai slabă
+cu `std::weak_ptr`.
+```c++
+#include <memory>
+
+class B;
+class A {
+    std::shared_ptr<B> b;
+public:
+    void set(std::shared_ptr<B> b_) { b = b_; }
+};
+
+class B {
+    std::weak_ptr<A> a;
+public:
+    void set(std::weak_ptr<A> a_) { a = a_; }
+};
+
+int main() {
+    auto a = std::make_shared<A>();
+    auto b = std::make_shared<B>();
+    a.set(b);
+    b.set(a);
+}
+```
+
+Legătura mai slabă o folosim de obicei pentru a simplifica logica programului.
+
+Exemplu:
+```c++
+#include <memory>
+
+class Calator;
+class Bilet {
+    std::weak_ptr<Calator> calator;
+};
+
+class Calator {
+    std::shared_ptr<Bilet> bilet;
+};
+```
+
+Călătorul gestionează existența obiectului bilet. Obiectul de tip călător nu trebuie să dispară dacă eliminăm un
+bilet. În sens invers, atunci când un obiect de tip călător nu mai există, biletul dispare automat.
+
+Noțiuni asemănătoare cu pointerii shared există și în Rust și Swift.
+
 ##### unique_ptr
+
+Pointerii unici sunt eficienți pentru că nu au nevoie de sincronizări și de obicei nu creăm noi pointeri, ci
+mutăm pointerul, adică transferăm resursa unui alt obiect.
+
+Pentru a folosi acești pointeri, pașii ar fi următorii:
+- pointerii se declară cu `std::unique_ptr<T> variabila;`
+- inițializarea se face su `std::make_unique<T>(arg1, arg2, ...);`
+- dacă vrem să plimbăm pointerii dintr-o funcție în alta **trebuie să folosim `std::move`** din `<utility>`
+- nu mai avem `delete`
+- orice clasă care conține un câmp de tip `unique_ptr` are implicit constructorul de copiere și
+  operator= de copiere dezactivate, deoarece pointerii unici nu pot fi copiați
+  - dacă vrem să copiem obiecte ale acestei clase, trebuie să ne definim cc și op= de copiere
+  - alternativ, folosim `std::move` pentru obiectele acestei clase
+
+Folosirea operațiilor de mutare în loc de operații de copiere oferă performanță, dar are efect de domino.
+Din motive didactice, am preferat să evit promovarea `std::unique_ptr`. Ne interesează mai mult concepte
+de OOP decât să umplem programul cu `std::move` și alt [**cod de umplutură**](https://stackoverflow.com/a/30885842)
+necesar ca operațiile de mutare să funcționeze corect.
 
 #### Funcție de afișare
 
-#### Diverse 
+Am văzut mai devreme un mod de a face afișarea pentru obiecte din clase derivate:
+```c++
+#include <string>
+#include <iostream>
+
+class curs {
+public:
+    friend std::ostream& operator<<(std::ostream& os, const curs& curs_) {
+        os << "Curs: " << curs_.nume << "\n";
+        return os;
+    }
+
+private:
+    std::string nume = "OOP";
+};
+
+class curs_obligatoriu : public curs {
+public:
+    friend std::ostream& operator<<(std::ostream& os, const curs_obligatoriu& curs_) {
+        os << static_cast<const curs&>(curs_)
+           << "\t" << curs_.nr_prezentari << " prezentări\n";
+        return os;
+    }
+
+private:
+    int nr_prezentari = 2;
+};
+
+int main() {
+    curs_obligatoriu c1;
+    std::cout << c1;
+    curs& c2 = c1;
+    std::cout << c2;
+    curs* c3 = &c1;
+    std::cout << *c3;
+}
+```
+
+Afișarea prin `operator<<` se uită la tipul de date declarat, așadar funcționează corect pentru obiecte derivate.
+Nu funcționează pentru referințe și pointeri de bază, tipul de date declarat fiind clasa de bază.
+
+Pentru a rezolva problema, vom folosi o funcție protected virtuală constantă `afisare`:
+```c++
+#include <string>
+#include <iostream>
+
+class curs {
+public:
+    virtual ~curs() = default;
+
+    friend std::ostream& operator<<(std::ostream& os, const curs& curs_) {
+        curs_.afisare(os);
+        return os;
+    }
+protected:
+    virtual void afisare(std::ostream& os) const {
+        os << "Curs: " << nume << "\n";
+    }
+private:
+    std::string nume = "OOP";
+};
+
+class curs_obligatoriu : public curs {
+protected:
+    void afisare(std::ostream& os) const override {
+        curs::afisare(os);
+        os << "\t" << nr_prezentari << " prezentări\n";
+    }
+private:
+    int nr_prezentari = 2;
+};
+
+int main() {
+    curs_obligatoriu c1;
+    std::cout << c1;
+    curs& c2 = c1;
+    std::cout << c2;
+    curs* c3 = &c1;
+    std::cout << *c3;
+}
+```
+
+Nu există o convenție consacrată pentru denumirea acestei funcții: `afis`, `afisare`, `print`, `show`, `display`
+etc. Nu contează ce nume alegem, dar este bine să păstrăm aceeași denumire dacă avem nevoie de afișări
+polimorfice în mai multe clase în același program.
+
+Vrem să facem funcția de afișare protected fiindcă este un detaliu de implementare. Respectăm (parțial) ideea de
+[interfață non-virtuală](#interfa-non-virtual), unde interfața (funcția publică) este `operator<<`.
+
+Totuși, dacă _toate_ derivatele ar trebui să apeleze afișarea din bază, mai bine regândim operatorul de afișare
+pentru a evita cod repetitiv [din vina noastră](https://en.wikipedia.org/wiki/Call_super).
+
+Poate nu toate derivatele adaugă atribute pe care să le afișeze, motiv pentru care nu facem funcția de afișare
+virtuală pură. Acum nu mai facem nimic în funcția de afișare din bază, deci nu avem motiv să o apelăm din
+derivate, așa că o putem face private. Rezultatul este următorul:
+```c++
+class curs {
+public:
+    virtual ~curs() = default;
+
+    friend std::ostream& operator<<(std::ostream& os, const curs& curs_) {
+        os << "Curs: " << curs_.nume;
+        curs_.afisare(os);
+        os << "\n";
+        return os;
+    }
+private:
+    virtual void afisare(std::ostream& os) const {}
+
+    std::string nume = "OOP";
+};
+
+class curs_obligatoriu : public curs {
+private:
+    void afisare(std::ostream& os) const override {
+        os << "\t" << nr_prezentari << " prezentări";
+    }
+
+    int nr_prezentari = 2;
+};
+```
+
+#### Diverse
 
 [//]: # (Alte funcții virtuale)
 
-[//]: # (cu qualified name lookup putem apela prin pointer la bază implementarea unei funcții virtuale pure)
+Dacă avem nevoie să apelăm din main implementarea unei funcții virtuale pure publice dintr-o clasă de bază,
+există o sintaxă specială de C++ care ignoră virtualizarea (qualified name lookup):
+```c++
+#include <iostream>
 
-[//]: # (totuși e cam inutil pt că funcțiile virtuale nu ar trebui să fie publice)
+class baza {
+public:
+    virtual void f() const = 0;
+};
 
-[//]: # (https://stackoverflow.com/questions/15853031/call-base-class-method-from-derived-class-object)
+void baza::f() const { std::cout << "f bază\n"; }
 
+class derivata : public baza {
+public:
+    void f() const override { std::cout << "f derivată\n"; }
+};
 
-[//]: # (https://en.wikipedia.org/wiki/Call_super)
+int main() {
+    derivata d;
+    std::cout << "d.f(): ";
+    d.f();
+    std::cout << "d.baza::f(): ";
+    d.baza::f();
+    baza& b1 = d;
+    std::cout << "b1.f(): ";
+    b1.f();
+    std::cout << "b1.baza::f(): ";
+    b1.baza::f();
+    baza* b2 = &d;
+    std::cout << "b2->f(): ";
+    b2->f();
+    std::cout << "b2->baza::f(): ";
+    b2->baza::f();
+}
+```
 
-[//]: # (https://stackoverflow.com/a/30885842)
+Din câte știu, sintaxa nu există în alte limbaje. De asemenea, este cam inutil să avem nevoie de așa ceva
+pentru că funcțiile virtuale nu ar trebui să fie publice ca să respecte rețeta de interfață non-virtuală.
 
-[//]: # (dilema cu cercul și elipsa)
+Nu este ceva extrem de ezoteric, s-au mai întrebat și [alții](https://stackoverflow.com/questions/15853031).
+Este un hack. Dacă ajungeți în situația de a crede că aveți nevoie de asta, gândiți-vă foarte bine dacă nu
+v-ar ajuta mai mult o variantă de interfață non-virtuală.
 
-[//]: # (de găsit pe undeva de scris: se recomandă overload cu friend din cauza ADL https://en.cppreference.com/w/cpp/language/adl)
+---
 
+#### Exemplu
 
-#### Dynamic cast
+Exemplul următor pune cap la cap toate conceptele prezentate în această secțiune referitoare la funcții virtuale.
+Poate fi folosit ca sursă de inspirație pentru partea de funcții virtuale din tema 2, însă nu este suficient,
+fiind doar un exemplu minimalist cu scop demonstrativ.
 
-[//]: # (referințe, pointeri)
+Codul este lăsat în interiorul claselor pentru a ocupa mai puțin spațiu pe ecran. În funcția main trebuie să
+aveți (mult) mai multe exemple. Testarea op= din student este făcută să vedem că merge, dar în proiecte mai
+mari este foarte posibil să avem nevoie de atribuiri, deci trebuie să funcționeze corect.
+
+```c++
+#include <iostream>
+#include <algorithm> // std::max
+#include <memory>
+#include <string>
+#include <utility> // std::move, std::swap
+#include <vector>
+
+class curs {
+public:
+    virtual ~curs() = default;
+    virtual std::shared_ptr<curs> clone() const = 0;
+    double nota_finala() const { return nota_finala_(); }
+
+    friend std::ostream &operator<<(std::ostream &os, const curs &curs_) {
+        os << "Curs: " << curs_.nume;
+        curs_.afisare(os);
+        os << "\n";
+        return os;
+    }
+
+    explicit curs(std::string nume_) : nume(std::move(nume_)) {}
+
+    // dacă folosim unique_ptr probabil trebuie activate operațiile de mutare
+    curs(curs &&other) = default;
+    curs &operator=(curs &&other) = default;
+protected:
+    curs(const curs &other) = default;
+    curs &operator=(const curs &other) = default;
+
+private:
+    virtual double nota_finala_() const = 0;
+    virtual void afisare(std::ostream &) const {}
+
+    std::string nume;
+};
+
+class curs_obligatoriu : public curs {
+public:
+    explicit curs_obligatoriu(
+            const std::string &nume, double laborator = 11, double examen = 9.5, bool seminar = false,
+            int nrPrezentari = 1) : curs(nume), laborator(laborator), examen(examen), seminar(seminar),
+                                    nr_prezentari(nrPrezentari) {}
+
+    std::shared_ptr<curs> clone() const override { return std::make_shared<curs_obligatoriu>(*this); }
+
+private:
+    double nota_finala_() const override { return laborator * 0.4 + seminar * 0.1 + examen * 0.5; }
+
+    void afisare(std::ostream &os) const override {
+        os << "\tlaborator: " << laborator << "\n"
+           << "\texamen: " << examen << "\n"
+           << "\tseminar: " << (seminar ? "da" : "nu") << "\n"
+           << "\t" << nr_prezentari << " prezentări";
+    }
+
+    double laborator = 0;
+    double examen = 0;
+    bool seminar = false;
+    int nr_prezentari = 0;
+};
+
+class curs_optional : public curs {
+public:
+    curs_optional(const std::string &nume, int nrRaspunsuri, double notaPrezentare) : curs(nume),
+                                                                                      nr_raspunsuri(nrRaspunsuri),
+                                                                                      nota_prezentare(notaPrezentare) {}
+
+    std::shared_ptr<curs> clone() const override { return std::make_shared<curs_optional>(*this); }
+
+private:
+    double nota_finala_() const override { return std::max(nr_raspunsuri, 10) * 0.1 + nota_prezentare; }
+
+    void afisare(std::ostream &os) const override {
+        os << "\tprezentare: " << nota_prezentare << "\n"
+           << "\t" << nr_raspunsuri << " răspunsuri";
+    }
+
+    int nr_raspunsuri = 0;
+    double nota_prezentare = 0;
+};
+
+class student {
+    std::string nume;
+    std::vector<std::shared_ptr<curs>> cursuri;
+public:
+    double medie_finala() const {
+        double total = 0;
+        for (auto &curs: cursuri)
+            total += curs->nota_finala();
+
+        return total / cursuri.size();
+    }
+
+    // student(std::string nume, const std::vector<std::shared_ptr<curs>> &cursuri_) : nume(std::move(nume)) {
+    //     for (const auto &curs: cursuri_)
+    //         cursuri.emplace_back(curs->clone());
+    // }
+    student(std::string nume, std::vector<std::shared_ptr<curs>> cursuri) : nume(std::move(nume)),
+                                                                            cursuri(std::move(cursuri)) {}
+
+    student(const student &other) : nume(other.nume) {
+        for (const auto &curs: other.cursuri)
+            cursuri.emplace_back(curs->clone());
+    }
+
+    student &operator=(student other) {
+        swap(*this, other);
+        return *this;
+    }
+
+    friend void swap(student &st1, student &st2) {
+        std::swap(st1.cursuri, st2.cursuri);
+        std::swap(st1.nume, st2.nume);
+    }
+
+    friend std::ostream &operator<<(std::ostream &os, const student &student) {
+        os << "nume student: " << student.nume << "\ncursuri:\n";
+        for (const auto &curs: student.cursuri)
+            os << *curs;
+        os << "\n";
+        return os;
+    }
+};
+
+class facultate {
+    std::string nume;
+    std::vector<student> studenti;
+public:
+    explicit facultate(std::string nume) : nume(std::move(nume)) {}
+    void adauga(const student &st) { studenti.emplace_back(st); }
+
+    friend std::ostream &operator<<(std::ostream &os, const facultate &facultate) {
+        os << "nume facultate: " << facultate.nume << "\nstudenti:\n";
+        for (const auto &student: facultate.studenti)
+            os << student;
+        // os << "\n";
+        return os;
+    }
+};
+
+int main() {
+    student st1{"m", {
+            curs_obligatoriu{"POO", 12, 9.8}.clone(),
+            curs_obligatoriu{"BD", 10, 9, false, 0}.clone(),
+            curs_obligatoriu{"TW", 9, 8, true, 0}.clone(),
+            curs_optional{"NLP", 5, 10}.clone()
+    }};
+    student st2{"c", {
+            curs_obligatoriu{"POO", 12}.clone(),
+            curs_obligatoriu{"BD", 9.5, 10, true, 5}.clone(),
+            curs_obligatoriu{"TW", 9, 9, true, 0}.clone(),
+            curs_optional{"CV", 3, 10}.clone()
+    }};
+    student st3{"z", {
+            curs_obligatoriu{"POO", 9, 8}.clone(),
+            curs_obligatoriu{"BD", 9, 9, true, 3}.clone(),
+            curs_obligatoriu{"TW", 10, 9, false, 0}.clone(),
+            curs_optional{"SP", 6, 9.9}.clone()
+    }};
+
+    std::cout << st1.medie_finala() << "\n";
+    std::cout << st2.medie_finala() << "\n";
+    std::cout << st3.medie_finala() << "\n";
+    facultate fac1{"FMI"};
+    fac1.adauga(st1);
+    fac1.adauga(st2);
+    std::cout << fac1;
+    st1 = st2;
+    std::cout << "---\ndupa op=: " << st1 << "---\n";
+
+    facultate fac2 = facultate{"poli"};
+    fac2.adauga(st3);
+    std::cout << fac2;
+}
+```
 
 #### Exercițiu
 
@@ -2432,10 +2975,6 @@ Astfel, am demonstrat că moștenirea ne ajută să extindem codul existent _foa
 Partea dificilă este definirea adecvată a unei clase de bază. Întrucât cerințele se pot schimba pe parcurs,
 proiectarea claselor se învață cel mai bine prin exercițiu și în timp.
 
----
-
-#### Exemplu
-
 ### Excepții
 #### Motivație
 
@@ -2444,9 +2983,14 @@ proiectarea claselor se învață cel mai bine prin exercițiu și în timp.
 #### Excepții predefinite
 #### Ierarhie proprie
 
-### Funcții și atribute statice
+### Diverse
+#### Dynamic cast
 
-### Moștenire multiplă și virtuală
+[//]: # (referințe, pointeri)
+
+#### Funcții și atribute statice
+
+#### Moștenire multiplă și virtuală
 
 [//]: # (exemplu de situație utilă https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rh-kind)
 
@@ -2478,9 +3022,10 @@ Cerințe comune:
   - utilizare cu sens: de exemplu, throw în constructor, try/catch în main
 - funcții și atribute statice
 - STL
-- un tag de git pe un commit cu cod stabil
+- un tag de git pe un commit cu cod stabil și toate bifele
 - fără variabile globale
-- cât mai multe `const`, testat/apelat tot codul public de interes din `main`
+- cât mai multe `const`
+- testat/apelat tot codul public din `main`, altfel nu trece de cppcheck
 
 Cerințe specifice:
 - implementarea a două funcționalități noi specifice temei; pentru minim o funcționalitate **trebuie**
