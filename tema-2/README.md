@@ -2976,12 +2976,736 @@ Partea dificilă este definirea adecvată a unei clase de bază. Întrucât ceri
 proiectarea claselor se învață cel mai bine prin exercițiu și în timp.
 
 ### Excepții
+
+Excepțiile sunt un mecanism de tratare a erorilor. Cel mai simplu exemplu de eroare este să știm dacă execuția
+unui program s-a încheiat cu succes. Un program este reprezentat de unul sau mai multe procese gestionate de
+sistemul de operare. Sistemul de operare primește de la program (proces) un număr care ne spune dacă au fost
+sau nu erori. Întoarcem acest număr prin funcția `main`:
+```c++
+int main() {
+    return 1;
+}
+```
+
+O convenție uzuală este să folosim 0 pentru succes și un număr întreg (sau natural) nenul pentru eșec. Dacă
+vrem portabilitate pe sisteme de operare mai ezoterice, există constantele `EXIT_SUCCESS` și `EXIT_FAILURE`
+din `<cstdlib>`/`<stdlib.h>`.
+
+Din terminal de bash, codul de eroare al ultimului proces este reținut în variabila `$?`. Dacă
+rulăm programul de mai sus, ar trebui să afișeze codul de eroare pe care îl punem în cod:
+```bash
+$ g++ main.cpp -o main
+$ ./main
+$ echo $?
+1
+```
+
+Din terminal de cmd, variabila se numește `%errorlevel%`. Există comenzi similare și în powershell.
+```
+> g++ main.cpp -o main.exe
+> main.exe
+> echo %errorlevel%
+1
+```
+
+Excepțiile reprezintă un alt mod de a semnala erori. Pentru a înțelege excepțiile, de ce vrem să le folosim
+și în ce situații este bine/nu este bine să le folosim, este mai ușor să vedem întâi ce alternative avem.
+
+#### Alternative
+
+Alternativele la excepții sunt următoarele:
+- coduri de eroare
+- tipuri de date rezultat (result types)
+
+Tratarea erorilor folosind coduri de eroare este cel mai simplu mecanism de a indica reușita sau eșecul în urma
+unui apel de funcție:
+```c++
+#include <vector>
+
+int calcul_medie(std::vector<int> note, int& rezultat) {
+    rezultat = 0;
+    if(note.size() < 3)
+        return 1; // note prea puține
+    for(int nota : note) {
+        rezultat += nota;
+        if(nota < 5) {
+            rezultat = 4;
+            return 2; // note prea mici
+        }
+    }
+    rezultat /= note.size();
+    return 0;
+}
+```
+
+Funcția de mai sus întoarce un anumit cod pentru a face distincția între diverse categorii de erori, iar
+rezultatul îl găsim în parametrul `rezultat` transmis prin referință. Pentru cazuri simple, am putea întoarce
+rezultatul direct în `return`, fără parametri auxiliari, cu condiția ca valorile să nu se suprapună cu codurile
+de eroare.
+
+Dacă avem de întors mai multe valori, grupăm atributele într-o structură sau clasă. Dacă trebuie să întoarcem
+și un cod de eroare, ar trebui să revenim la varianta cu transmiterea rezultatului ca referință.
+
+O variantă simplă ar fi să întoarcem un obiect cu atribute invalide/nule/setate pe zero. Aceasta nu este deloc
+o idee bună în cele mai multe situații, întrucât nu exprimăm într-un mod clar faptul că avem erori.
+
+Odată ce programul crește în dimensiuni, este anevoios să depanăm sau să extindem codul când avem foarte multe
+coduri de eroare. Aceste coduri de eroare ar trebui documentate. Un mod de a realiza această documentare este
+să utilizăm niște enumerări:
+```c++
+#include <vector>
+
+enum class rezultat_calcul { ok, note_prea_putine, note_prea_mici };
+
+rezultat_calcul calcul_medie(std::vector<int> note, int& rezultat) {
+    rezultat = 0;
+    if(note.size() < 3)
+        return rezultat_calcul::note_prea_putine;
+    for(int nota : note) {
+        rezultat += nota;
+        if(nota < 5) {
+            rezultat = 4;
+            return rezultat_calcul::note_prea_mici;
+        }
+    }
+    rezultat /= note.size();
+    return rezultat_calcul::ok;
+}
+```
+
+Chiar dacă acum este mai mult cod, codul este mai ușor de înțeles când avem sute sau mii de tipuri de erori și
+este mai rapid să căutăm după nume decât după numere. Desigur, pentru programe mici nu se justifică să ne complicăm.
+
+Observăm că abordarea de mai sus poate necesita câte un `enum` pentru fiecare funcție/clasă/modul. O abordare
+generală folosește tipuri de date rezultat sau [result types](https://en.wikipedia.org/wiki/Result_type)
+inspirate din programarea funcțională. Unele limbaje pot beneficia de cod simplificat dacă folosesc pattern matching.
+
+Pe scurt, avem un nou nivel de abstractizare: folosim o uniune pentru a reprezenta fie rezultatul funcției noastre,
+fie codul de eroare. O bază în C++ pentru acest stil de tratare a erorilor este clasa șablon
+[`std::variant`](https://en.cppreference.com/w/cpp/utility/variant).
+
+Un exemplu foarte schițat arată în felul următor:
+```c++
+#include <variant>
+
+class calcul {};
+class eroare {};
+
+std::variant<calcul, eroare> f(int nota) {
+    if(nota < 5) {
+        return eroare{nota, "prea mică"};
+    }
+    return calcul{nota + 1};
+}
+
+void g() {
+    auto rezultat = f(5);
+    if(calcul *x = std::get_if<calcul>(&rezultat)) {
+        // folosește x
+    }
+    else {
+        // eroarea este în std::get_if<eroare>(&rezultat) sau std::get<eroare>(rezultat)
+    }
+}
+```
+
+Dacă vă interesează subiectul, discutăm la tema 3 (dacă avem timp). Abordările nu se exclud: există
+[biblioteci](https://www.boost.org/doc/libs/develop/libs/system/doc/html/system.html)
+care combină tipuri de date rezultat cu excepții. Ca fapt divers, a existat o
+[tentativă](https://stackoverflow.com/questions/28746372/system-error-categories-and-standard-system-error-codes)
+mai low-level și la nivel de limbaj, dar pare o varză, nu recomand. Urmează să apară `std::expected`
+în C++23, dar există deja biblioteci care oferă același lucru.
+
+Nu există o definiție complet obiectivă pentru ce ar trebui considerat eroare. Este responsabilitatea noastră
+să alegem nivelul de detaliu.
+
+#### Aserțiuni
+
+Aserțiunile (instrucțiunile `assert`) sunt folosite doar în etapa de dezvoltare pentru condiții care trebuie
+să fie adevărate întotdeauna și care pot fi false doar din neatenția noastră. **Nu folosim aserțiuni pentru
+validarea datelor de intrare!** Sunt două motive pentru care aserțiunile nu ne ajută:
+- aserțiunile se dezactivează atunci când compilăm cu optimizări
+- dacă nu dezactivăm aserțiunile, programul crapă brusc la momentul execuției, fără vreo posibilitate de a
+  remedia situația
+
+Prin date de intrare înțelegem orice parametri ai unei funcții. Dacă vrem să ne asigurăm că primim date valide,
+trebuie să facem verificări explicite cu if-uri și să întrerupem execuția normală a codului dacă avem date
+invalide: fie întoarcem un cod de eroare, fie folosim excepții.
+
 #### Motivație
 
-[//]: # (coduri de eroare, sintaxă, contraexemple)
+Sub o formă sau alta, (aproape) toate formele de tratare a erorilor care nu folosesc excepții se rezumă la coduri
+de eroare sau tipuri de date rezultat. Dacă nu avem posibilitatea să folosim excepții, este de preferat să alegem
+tipuri de date rezultat (nu coduri de eroare) pentru că ne oferă flexibilitate și un cod mult mai ușor de întreținut.
+
+Codurile de eroare ne ajută cel mai mult doar în situații simple. **Exemplu:** input interactiv.
+
+Indiferent de ce am alege, ambele tehnici prezintă dezavantajul dificultății propagării erorilor prin multe
+apeluri de funcții. Exemplul următor folosește coduri de eroare, însă avem dificultăți asemănătoare cu tipurile
+de date rezultat dacă nu folosim biblioteci specializate.
+
+```c++
+#include <iostream>
+#include <vector>
+
+int calcul_medie(std::vector<int> note, int& medie) {
+    if(note.size() < 3)
+        return 1;
+    // ...
+    return 0;
+}
+
+int f1(/*...*/) {
+    // ...
+    int err = calcul_medie(/*...*/);
+    if(err != 0)
+        return err;
+    // ...
+    return 0;
+}
+
+int f2(/*...*/) {
+    // ...
+    int err = f1(/*...*/);
+    if(err != 0)
+        return err;
+    // ...
+    return 0;
+}
+
+// f3, f4, ..., f7, f8
+
+int f9(/*...*/) {
+    // ...
+    int err = f8(/*...*/);
+    if(err != 0)
+        return err;
+    // ...
+    return 0;
+}
+
+void f10(/*...*/) {
+    // ...
+    int err = f9(/*...*/);
+    if(err != 0) {
+        std::cout << "eroare calcul: " << err < "; se încearcă repararea erorii\n";
+        // repară
+        return;
+    }
+    // ...
+}
+```
+
+Funcția `f10` apelează funcția `f9`, `f9` apelează funcția `f8`, ..., `f2` apelează funcția `f1`, iar `f1`
+apelează funcția `calcul_medie`. Funcția `calcul_medie` întoarce un cod de eroare pe care avem nevoie să
+îl transmitem înapoi la funcția `f10`. Presupunem că nu avem posibilitatea să remediem situația sau să salvăm
+ceva în funcțiile `f1`, ..., `f9` și că trebuie să transmitem codul de eroare înapoi la `f10`.
+
+Acest scenariu este frecvent întâlnit în aplicații mai mari: eroarea apare într-o funcție internă dintr-o
+componentă sau bibliotecă externă, dar eroarea poate fi tratată doar într-o altă componentă sau altă parte
+de cod la multe apeluri de funcție distanță de locul unde a apărut eroarea. De aceea, avem nevoie să propagăm
+erorile de-a lungul mai multor apeluri de funcții.
+
+Vom rescrie codul de mai sus folosind excepții. Important nu este să înțelegeți ce face codul (momentan), ci să
+remarcați cât se simplifică logica programului, mai ales dacă scriam explicit toate funcțiile de la `f1` la `f10`.
+```c++
+#include <iostream>
+#include <vector>
+
+void calcul_medie(std::vector<int> note, int& medie) {
+    if(note.size() < 3)
+        throw eroare_calcul("prea puține note");
+    // ...
+}
+
+void f1(/*...*/) {
+    // ...
+    calcul_medie(/*...*/);
+    // ...
+    return 0;
+}
+
+void f2(/*...*/) {
+    // ...
+    f1(/*...*/);
+    // ...
+    return 0;
+}
+
+// f3, f4, ..., f7, f8
+
+void f9(/*...*/) {
+    // ...
+    f8(/*...*/);
+    // ...
+    return 0;
+}
+
+void f10(/*...*/) {
+    // ...
+    try {
+        f9(/*...*/);
+        // ...
+    } catch(eroare_calcul& err) {
+        std::cout << "eroare calcul: " << err.what() << "; se încearcă repararea erorii\n";
+        // repară
+        return;
+    }
+}
+```
+
+Diferența esențială la exemplul cu excepții față de exemplul cu coduri de eroare este că funcțiile `f1`-`f9`
+nu conțin instrucțiuni pentru a propaga erorile, iar codul este mai ușor de urmărit.
+
+De asemenea, dacă avem nevoie să adăugăm funcții intermediare, la varianta cu excepții, funcțiile intermediare
+nu au nevoie de cod suplimentar: erorile se propagă automat. Pe de altă parte, numărul de coduri de eroare
+crește și este din ce în ce mai dificil să determinăm ce erori trebuie propagate mai departe. 
+
+#### Sintaxă partea 1: introducere
+
+Pentru a arunca o excepție, folosim `throw`. Codul de după `throw` nu se mai execută:
+```c++
+#include <iostream>
+#include <exception>
+
+int main() {
+    std::cout << "înainte de throw\n";
+    throw std::exception{};
+    std::cout << "după throw\n";
+}
+```
+
+Dacă aruncăm o excepție și nu o prindem, programul crapă instant:
+```
+$ ./main
+înainte de throw
+terminate called after throwing an instance of 'std::exception'
+  what():  std::exception
+Aborted (core dumped)  ./main
+```
+
+Destructorii nu se mai apelează:
+```c++
+#include <iostream>
+#include <exception>
+
+class Test {
+public:
+    Test() { std::cout << "constr test\n"; }
+    ~Test() { std::cout << "destr test\n"; }
+};
+
+int main() {
+    Test t;
+    std::cout << "înainte de throw\n";
+    throw std::exception{};
+    std::cout << "după throw\n";
+}
+```
+
+Se va afișa:
+```
+$ ./main
+constr test
+înainte de throw
+terminate called after throwing an instance of 'std::exception'
+  what():  std::exception
+Aborted (core dumped)
+```
+
+Pentru a prinde o excepție, folosim un bloc `try`/`catch`:
+```c++
+#include <iostream>
+#include <exception>
+
+class Test {
+public:
+    Test(int nr) { std::cout << "constr test" << nr << "\n"; }
+    ~Test() { std::cout << "destr test\n"; }
+};
+
+int main() {
+    Test t1{1};
+    std::cout << "înainte de try\n";
+    try {
+        Test t2{2};
+        std::cout << "înainte de throw\n";
+        throw std::exception{};
+        Test t3{3};
+        std::cout << "după throw\n";
+    } catch(std::exception& err) {
+        Test t4{4};
+        std::cout << ">>> " << err.what() << " <<<\n";
+    }
+    Test t5{5};
+    std::cout << "după try\n";
+}
+```
+
+**Exercițiu:** în ce ordine se apelează destructorii în codul de mai sus?
 
 #### Excepții predefinite
+
+C++ definește clasa de bază pentru excepții [`std::exception`](https://en.cppreference.com/w/cpp/error/exception)
+din `<exception>`. Principalele clase derivate
+sunt [`std::runtime_error`](https://en.cppreference.com/w/cpp/error/runtime_error) și
+[`std::logic_error`](https://en.cppreference.com/w/cpp/error/logic_error) din `<stdexcept>`. Din aceste 3 clase
+sunt derivate excepții mai specifice. Nu ar trebui să le rețineți pe dinafară, citiți în documentație pentru a
+afla ce clasă de bază are o anumită excepție specifică și ce excepții aruncă o anumită funcție.
+
+De exemplu, funcția [`std::stoi`](https://en.cppreference.com/w/cpp/string/basic_string/stol) poate arunca
+`std::invalid_argument` sau `std::out_of_range` (ambele derivate din `std::logic_error`):
+```c++
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <stdexcept>
+
+int main() {
+    int x = 0;
+    std::string text;
+    //std::istringstream st{"1doi 3"};
+    // std::istringstream st{"1111111111111 doi 3"}; // std::out_of_range
+    std::istringstream st{"1 doi 3"};
+    try {
+        std::cout << "înainte de stoi\n";
+        st >> text;
+        x = std::stoi(text);
+        std::cout << "x:" << x << "\n";
+        st >> text;
+        x = std::stoi(text);
+        std::cout << "x:" << x << "\n";
+    } catch(std::invalid_argument& err) {
+        std::cout << "err: " << err.what() << "\n";
+    }
+}
+```
+
+Chiar dacă nu scriem noi un `throw` explicit, trebuie să prindem excepțiile care ar putea fi aruncate
+de o funcție. Altfel, programul crapă. Citiți în documentație ce excepții pot fi aruncate pentru a ști
+ce trebuie să prindeți.
+
+#### Sintaxă partea 2: moșteniri
+
+Putem avea mai multe clauze `catch`:
+```c++
+#include <iostream>
+#include <string>
+
+int main() {
+    std::string input;
+    std::cout << "x = ";
+    std::cin >> input;
+    try {
+        int x = std::stoi(input);
+        if(x % 11 == 0)
+            std::cout << "a\n";
+        else if(x % 7 == 0)
+            std::cout << "b\n";
+        else
+            std::cout << "c\n";
+    } catch(std::invalid_argument& err) {
+        std::cout << "nu este număr: " << err.what() << "\n";
+    } catch(std::out_of_range& err) {
+        std::cout << "număr prea mare/prea mic: " << err.what() << "\n";
+    }
+}
+```
+
+Execuția codului sare de la `throw` la **primul bloc `catch` care se potrivește**.
+Așadar, nu are rost să avem două catch-uri cu tip de date identic asociate unui același bloc `try`.
+
+Dacă avem blocuri try/catch imbricate, poate fi în regulă să repetăm din catch-uri pentru că se pot
+arunca excepții în mai multe locuri. Cu toate acestea, trebuie să avem în vedere că vrem să folosim
+excepții doar atunci când ne-am simplifica modul de tratare a erorilor, deci nu ar trebui să ne
+umplem codul în mod excesiv de blocuri try/catch.
+
+Să ne reamintim că un obiect de tip de date derivat _este un fel de_ obiect de tip de date de bază.
+Putem prinde excepții derivate cu referințe la o clasă excepție de bază:
+```c++
+#include <iostream>
+#include <string>
+
+int main() {
+    std::string input;
+    std::cout << "x = ";
+    std::cin >> input;
+    try {
+        int x = std::stoi(input);
+        if(x % 11 == 0)
+            std::cout << "a\n";
+        else if(x % 7 == 0)
+            std::cout << "b\n";
+        else
+            std::cout << "c\n";
+    } catch(std::logic_error& err) {
+        std::cout << "eroare conversie număr: [" << input << "] " << err.what() << "\n";
+    }
+}
+```
+
+Acum prindem cu un singur `catch` fie `std::invalid_argument`, fie `std::out_of_range`, deoarece
+`std::logic_error` este clasa lor de bază. Dacă ne interesează să tratăm o eroare mai specifică vom
+prinde eroarea specifică. Dacă vrem să tratăm în mod unitar mai multe categorii de erori, vom prinde
+o eroare generală printr-o clasă de bază comună.
+
+Am fi putut folosi în exemplul anterior și `std::exception` în loc de `std::logic_error`, dar trebuie
+să ținem cont că așa vom prinde și ce nu ne-am aștepta. Dacă folosim în catch o excepție prea generală,
+pierdem din detaliile erorilor și nu mai putem repara prea multe din două motive:
+- pierdem mare parte din contextul inițial al erorii
+- eroarea poate preveni din prea multe locuri
+
+Desigur, sunt situații când vrem să prindem tot, dar aceste situații nu sunt întâlnite foarte des. Un
+exemplu este un server care procesează cereri de la clienți: o cerere poate cauza tot felul de erori
+și un catch general este util în astfel de situații.
+
+La polul opus, poate fi de preferat să lăsăm programul să crape decât să prindem excepția. Ne ajută
+mai mult să vedem ce și unde a crăpat decât să prindem erori despre care nu avem habar, iar procesarea
+unor date să continue, deși nu ar trebui, întrucât niște prelucrări anterioare nu au reușit. Vom vedea
+o combinație a acestor abordări într-o [secțiune următoare](#sintax-partea-3-rearuncarea-excepiilor).
+
+Dacă avem două blocuri `catch`, ordinea acestor blocuri contează atunci când vrem să prindem și excepții
+specifice, și generale:
+```c++
+#include <iostream>
+#include <string>
+
+int main() {
+    std::string input{"oops"};
+    try {
+        int x = std::stoi(input);
+        if(x % 11 == 0)
+            std::cout << "a\n";
+        else if(x % 7 == 0)
+            std::cout << "b\n";
+        else
+            std::cout << "c\n";
+    } catch(std::logic_error& err) {
+        std::cout << "catch std::logic_error: " << err.what() << "\n";
+    } catch(std::invalid_argument& err) {
+        std::cout << "catch std::invalid_argument: " << err.what() << "\n";
+    }
+}
+```
+
+Chiar dacă excepția `std::invalid_argument` este mai specifică decât `std::logic_error`, primul
+`catch` care se potrivește este cel cu `std::logic_error`!
+
+Funcția `std::stoi` aruncă `std::invalid_argument`, dar se va afișa:
+```
+catch std::logic_error: stoi
+```
+
+Primim și warning. Repet, warning-urile nu sunt degeaba, nu le ignorați!
+```
+main.cpp: In function ‘int main()’:
+main.cpp:16:7: warning: exception of type ‘std::invalid_argument’ will be caught by earlier handler [-Wexceptions]
+   16 |     } catch(std::invalid_argument& err) {
+      |       ^~~~~
+main.cpp:14:7: note: for type ‘std::logic_error’
+   14 |     } catch(std::logic_error& err) {
+      |       ^~~~~
+```
+
+Corect este să **punem întotdeauna blocurile `catch` specifice înaintea celor generale!**
+```c++
+#include <iostream>
+#include <string>
+
+int main() {
+    std::string input{"oops"};
+    try {
+        int x = std::stoi(input);
+        if (x % 11 == 0)
+            std::cout << "a\n";
+        else if (x % 7 == 0)
+            std::cout << "b\n";
+        else
+            std::cout << "c\n";
+    } catch(std::invalid_argument& err) {
+        std::cout << "catch std::invalid_argument: " << err.what() << "\n";
+    } catch(std::logic_error& err) {
+        std::cout << "catch std::logic_error: " << err.what() << "\n";
+    }
+}
+```
+
+Excepțiile se propagă prin oricâte blocuri sau apeluri de funcții este necesar. Execuția codului sare de la `throw`
+la primul `catch` care se potrivește: ori un tip de date exact, ori un tip de date de bază al excepției aruncate.
+
+Exemplul următor este doar ca să înțelegem sintaxa (nu are sens să aruncăm argument invalid când nu avem argumente):
+```c++
+#include <iostream>
+#include <stdexcept>
+
+void f1() {
+    std::cout << "f1: înainte de throw\n";
+    {
+        throw std::invalid_argument{"argumentul invalid este..."};
+    } // linia 8
+    std::cout << "f1: după throw\n";
+} // linia 10
+
+void f2() {
+    std::cout << "f2: înainte de throw\n";
+    throw std::out_of_range{"trebuie între... și..."};
+    std::cout << "f2: după throw\n";
+} // linia 16
+
+void f3() {
+    std::cout << "f3: înainte de try\n";
+    try {
+        std::cout << "f3: înainte de f1\n";
+        f1(); // linia 22
+        std::cout << "f3: înainte de f2\n";
+        f2();
+        std::cout << "f3: după f2\n";
+    } catch(std::out_of_range& err) { // linia 26
+        std::cout << "f3: catch std::out_of_range " << err.what() << "\n";
+    }
+    std::cout << "f3: final\n";
+} // linia 30
+
+void f4() {
+    std::cout << "f4: înainte de try\n";
+    try {
+        std::cout << "f4: înainte de f3\n";
+        f3(); // linia 36
+        std::cout << "f4: după f3\n";
+    } catch(std::runtime_error& err) { // linia 38
+        std::cout << "f4: catch std::runtime_error " << err.what() << "\n";
+    }
+} // linia 41
+
+int main() {
+    std::cout << "main: înainte de try\n";
+    try {
+        std::cout << "main: înainte de f4\n";
+        f4(); // linia 47
+        std::cout << "după f4\n";
+    } catch(std::logic_error& err) { // linia 49
+        std::cout << "main: catch std::logic_error " << err.what() << "\n";
+    }
+}
+```
+
+Până la instrucțiunea `throw` din funcția `f1`, totul decurge normal, după cum ne-am aștepta. De la acest `throw`
+se sare direct la acolada de la linia 8 și se apelează toți destructorii din acest bloc (dacă există). Blocul
+acesta nu este un bloc `try`/`catch`, deci se sare la următorul bloc. Următorul bloc este la linia 10 și este
+scopul funcției `f1`. Se apelează acum și toți destructorii variabilelor locale din funcția `f1`.
+
+Mai departe, funcția `f1` a fost apelată din blocul `try`/`catch` al funcției `f3`, la linia 22. Excepția nu a
+fost încă prinsă, așa că execuția sare la următoarea acoladă închisă, adică la linia 26, moment în care se
+apelează destructorii variabilelor locale din acest bloc de `try`. Din restricții de sintaxă, blocul `try`
+are obligatoriu și minim un bloc `catch`, însă nu avem clauze `catch` care să știe să prindă excepția
+aruncată (`std::invalid_argument`). Excepția nu a putut fi tratată, deci execuția codului sare din nou la
+următoarea acoladă închisă, adică la linia 30. Se apelează iar destructorii.
+
+În continuare, am revenit din apelul funcției `f3` de la linia 36. Se sare iarăși la următoarea acoladă
+închisă, adică la linia 38 (și se apelează destructorii). Nici aici nu se potrivește `catch`-ul. Se sare la
+linia 41, destructorii din funcția `f4`...
+
+Și am ajuns la linia 47 de unde a fost apelată funcția `f4`. Se sare la linia 49, se apelează destructorii
+din blocul `try`/`catch` din funcția `main` și apoi găsim în sfârșit un bloc `catch` care să știe să trateze
+excepția aruncată.
+
+Se va afișa:
+```
+main: înainte de try
+main: înainte de f4
+f4: înainte de try
+f4: înainte de f3
+f3: înainte de try
+f3: înainte de f1
+f1: înainte de throw
+main: catch std::logic_error argumentul invalid este...
+```
+
+**Exercițiu:** adăugați clasa `Test` de mai devreme și creați niște obiecte pentru a vedea când se apelează
+destructorii. Adăugați orice alte afișări suplimentare de care credeți că aveți nevoie pentru a înțelege
+mai bine ce se întâmplă.
+
+Tot acest proces de distrugere a obiectelor și de revenire din apeluri se numește stack unwinding.
+Detalii [aici](https://en.cppreference.com/w/cpp/language/throw#Stack_unwinding).
+
+Încă un exemplu:
+```c++
+#include <iostream>
+#include <stdexcept>
+
+void f1() {
+    std::cout << "f1: înainte de throw\n";
+    throw std::invalid_argument{"argumentul invalid este..."};
+    std::cout << "f1: după throw\n";
+}
+
+void f2() {
+    std::cout << "f2: înainte de throw\n";
+    throw std::out_of_range{"trebuie între... și..."};
+    std::cout << "f2: după throw\n";
+}
+
+void f3() {
+    std::cout << "f3: înainte de try\n";
+    try {
+        std::cout << "f3: înainte de f1\n";
+        f1();
+        std::cout << "f3: înainte de f2\n";
+        f2();
+        std::cout << "f3: după f2\n";
+    } catch(std::runtime_error& err) {
+        std::cout << "f3: catch std::runtime_error " << err.what() << "\n";
+    }
+    std::cout << "f3: final\n";
+}
+
+void f4() {
+    std::cout << "f4: înainte de try\n";
+    try {
+        std::cout << "f4: înainte de f3\n";
+        f3();
+        std::cout << "f4: după f3\n";
+    } catch(std::logic_error& err) {
+        std::cout << "f4: catch std::logic_error " << err.what() << "\n";
+    }
+}
+
+int main() {
+    std::cout << "main: înainte de try\n";
+    try {
+        std::cout << "main: înainte de f4\n";
+        f4();
+        std::cout << "după f4\n";
+    } catch(std::invalid_argument& err) {
+        std::cout << "main: catch std::invalid_argument " << err.what() << "\n";
+    }
+}
+```
+
+**Exercițiu:** ce se afișează?
+
 #### Ierarhie proprie
+
+[//]: # (https://isocpp.org/wiki/faq/exceptions#exceptions-separate-good-and-bad-path)
+
+[//]: # (https://docs.microsoft.com/en-us/cpp/cpp/errors-and-exception-handling-modern-cpp)
+
+#### Sintaxă partea 3: rearuncarea excepțiilor
+#### Exemple
+
+[//]: # (throw în constructor)
+
+#### Contraexemple
+
+
+C++ este printre puținele limbaje care ne dă voie să aruncăm tipuri de date primitive și obiecte
+care nu sunt derivate din excepții.
+
+[//]: # (input interactiv)
+[//]: # (#### Sintaxă aproape inutilă: https://en.cppreference.com/w/cpp/language/function-try-block)
+
+[//]: # (http://www.gotw.ca/gotw/066.htm)
+
 
 ### Diverse
 #### Dynamic cast
