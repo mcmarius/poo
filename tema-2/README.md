@@ -666,6 +666,83 @@ va apela op= pentru fiecare atribut din clasa derivată.
 - op= din clasa de bază este moștenit de către derivată, dar este ascuns
   - în curs este greșit: dacă nu era moștenit, nu îl puteam apela din derivată
 
+#### Refolosirea constructorilor din bază
+
+Dacă creăm o derivată și nu adăugăm atribute, am vrea să moștenim constructorii din bază:
+```c++
+#include <iostream>
+#include <string>
+
+class curs {
+    std::string prof;
+    int nr = 10;
+public:
+    curs(const std::string& prof_) : prof(prof_) { std::cout << "constructor curs: " << prof << "\n"; }
+    curs(const std::string& prof_, int nr_) : prof(prof_), nr(nr_) { std::cout << "constructor curs: " << prof << "\n"; }
+    curs(int nr_, const std::string& prof_) : prof(prof_), nr(nr_) { std::cout << "constructor curs: " << prof << "\n"; }
+    friend std::ostream& operator<<(std::ostream& os, const curs& c) { os << "curs: " << c.prof << "\n"; return os; }
+};
+
+class curs_obligatoriu : public curs {};
+
+int main() {
+    using namespace std::string_literals;
+    curs_obligatoriu c1{"prof1"s};    // eroare C++ < C++20
+                                      // eroare în C++ >= C++20 dacă avem atribute private în derivată 
+    curs_obligatoriu c2{"prof2"s, 3}; // eroare
+    curs_obligatoriu c3{5, "prof3"s}; // eroare
+}
+```
+
+**Dacă nu avem nevoie să adăugăm atribute în derivată**, este firesc să vrem să refolosim constructorii din bază.
+Pentru C++ dinainte de C++11, acest lucru nu este posibil și trebuie scriși de mână constructori care să dea mai
+departe parametrii la clasa de bază. Din fericire, IDE-urile ar trebui să știe să genereze acești constructori.
+
+Începând cu C++11, clauza
+[`using baza::baza;`](https://en.cppreference.com/w/cpp/language/using_declaration#Inheriting_constructors)
+face disponibili în derivată toți constructorii din bază. Codul din `main`
+va compila dacă modificăm clasa derivată de mai sus astfel:
+```c++
+class curs_obligatoriu : public curs {
+    // nu contează specificatorul de acces la aceste clauze baza::baza;
+    using curs::curs;
+};
+```
+
+Toate celelalte atribute se inițializează cu inițializarea din definiția clasei sau prin constructorul
+fără parametri:
+```c++
+class curs_obligatoriu : public curs {
+    using curs::curs;
+
+    int x = 5;        // inițializare în definiția clasei
+    std::string nume; // se apelează constructorul std::string()
+    student stud_;    // se apelează constructorul student()
+};
+```
+
+**Exercițiu:** verificați ce constructori se apelează.
+
+Dacă avem nevoie să adăugăm atribute în derivată pe care să le și inițializăm diferit, nu ne ajută prea mult să
+preluăm constructorii clasei de bază, deoarece oricum trebuie să avem constructori și pentru acest atribut
+specific derivatei.
+
+**TODO:** următorul cod poate ar trebui mutat la tema 3, dar îl las momentan aici să vedeți că nu este mult
+de scris. Dacă folosim șabloane (templates) de funcții, există un mod succint de a inițializa atributele
+într-o derivată, apelând toți constructorii din bază:
+```c++
+class curs_obligatoriu : public curs {
+    std::string nume;
+public:
+    template <typename... Args> curs_obligatoriu(std::string nume_, Args... args) :
+        curs(args...), nume(nume_) {}
+};
+```
+
+Inițializările din C++ sunt [foarte complicate](https://randomcat.org/cpp_initialization/initialization.svg)
+și nu ne interesează să acoperim subiectul. Ca fapt divers (mai mult să îmi răspund la o întrebare),
+las [acest link](https://stackoverflow.com/questions/68470625/).
+
 #### Exercițiu
 
 Completați ierarhia de mai jos. Adăugați (o parte din) următoarele funcții/atribute ca să înțelegeți mai bine
@@ -750,6 +827,7 @@ int main() {
 **De ce 1 și nu 0?**
 
 Deoarece compilatorul trebuie să garanteze că orice obiect nou are o adresă diferită.
+Detalii [aici](https://isocpp.org/wiki/faq/classes-and-objects#sizeof-empty).
 
 **Întrebare preliminară 2: ce sizeof au următoarele clase?**
 
@@ -824,11 +902,11 @@ class cls3 {
 ```
 
 Ca extensie non-standard a limbajului, multe compilatoare oferă directiva de preprocesare `#pragma pack(n)`,
-unde `n` reprezintă multiplul la care să se facă alinierea. Pentru exemplul de mai sus, `sizeof`-ul fiecărei
-clase de mai devreme va fi 22.
+unde `n` reprezintă multiplul la care să se facă alinierea. Pentru exemplul de mai sus, dacă folosim directiva
+`#pragma pack(2)`, `sizeof`-ul claselor `cls2` și `cls3` va fi 22, iar clasa `cls1` va avea `sizeof` 24.
 
-Dacă mai aveam un câmp `char` în clasă, am avea `sizeof` tot 24, deoarece mai trebuie un byte de padding
-ca să fie multiplu de 2 (parametrul din directiva `#pragma pack`). Dacă folosim `#pragma pack(1)`,
+Dacă mai aveam un câmp `char` în clasă, am avea `sizeof` 24 la `cls2` și `cls3`, deoarece mai trebuie un byte de
+padding ca să fie multiplu de 2 (parametrul din directiva `#pragma pack`). Dacă folosim `#pragma pack(1)`,
 obținem 23 de bytes.
 
 Această directivă ne ajută să obținem consum mai mic de memorie, sacrificând timpul de execuție: adresele
@@ -2387,7 +2465,7 @@ public:
 };
 ```
 
-Rulați ca să vă convingeți: `std::swap` apelează operatorul de atribuire și avem recursie infinită.
+**Exercițiu:** rulați ca să vă convingeți: `std::swap` apelează operatorul de atribuire și avem recursie infinită.
 
 #### Smart pointers
 
@@ -3081,8 +3159,10 @@ generală folosește tipuri de date rezultat sau [result types](https://en.wikip
 inspirate din programarea funcțională. Unele limbaje pot beneficia de cod simplificat dacă folosesc pattern matching.
 
 Pe scurt, avem un nou nivel de abstractizare: folosim o uniune pentru a reprezenta fie rezultatul funcției noastre,
-fie codul de eroare. O bază în C++ pentru acest stil de tratare a erorilor este clasa șablon
-[`std::variant`](https://en.cppreference.com/w/cpp/utility/variant).
+fie codul de eroare. O bază în C++17 pentru acest stil de tratare a erorilor este clasa șablon
+[`std::variant`](https://en.cppreference.com/w/cpp/utility/variant), urmând să fie completată în C++23 de
+[`std::expected`](https://en.cppreference.com/w/cpp/header/expected). Există deja această funcționalitate
+sub formă de [bibliotecă externă](https://github.com/TartanLlama/expected) cu funcții ajutătoare în plus.
 
 Un exemplu foarte schițat arată în felul următor:
 ```c++
@@ -3113,8 +3193,7 @@ Dacă vă interesează subiectul, discutăm la tema 3 (dacă avem timp). Abordă
 [biblioteci](https://www.boost.org/doc/libs/develop/libs/system/doc/html/system.html)
 care combină tipuri de date rezultat cu excepții. Ca fapt divers, a existat o
 [tentativă](https://stackoverflow.com/questions/28746372/system-error-categories-and-standard-system-error-codes)
-mai low-level și la nivel de limbaj, dar pare o varză, nu recomand. Urmează să apară `std::expected`
-în C++23, dar există deja biblioteci care oferă același lucru.
+mai low-level și la nivel de limbaj, dar pare o varză, nu recomand.
 
 Nu există o definiție complet obiectivă pentru ce ar trebui considerat eroare. Este responsabilitatea noastră
 să alegem nivelul de detaliu.
@@ -3686,22 +3765,372 @@ int main() {
 
 #### Ierarhie proprie
 
-[//]: # (https://isocpp.org/wiki/faq/exceptions#exceptions-separate-good-and-bad-path)
+Până acum am folosit doar tipuri de excepții predefinite de biblioteca standard (stdlib), excepția cea mai de
+bază fiind `std::exception` (din `<exception>`). Vom întâlni clase asemănătoare și în alte limbaje. Totuși,
+în alte limbaje, sintaxa de `throw`/`catch` nu ne permite să aruncăm/prindem decât excepții derivate direct
+sau indirect din clasa de bază de excepții a limbajului respectiv.
 
-[//]: # (https://docs.microsoft.com/en-us/cpp/cpp/errors-and-exception-handling-modern-cpp)
+Chiar dacă C++ ne permite să aruncăm orice tip de date, această flexibilitate este utilă doar ca să avem voie
+să ne definim ierarhii proprii de excepții care să nu fie derivate din `std::exception`. Ne interesează să
+ne creăm ierarhii proprii de excepții de la zero doar dacă folosim biblioteci specializate și în cazuri rare.
+Nu avem nevoie de așa ceva la acest curs.
+
+Prin urmare, nu ne definim o ierarhie de excepții complet de la zero. Vom vedea în curând de ce.
+
+Să presupunem că nu ne definim deloc excepții proprii și continuăm să folosim clasele de excepții din
+biblioteca standard. Pentru programe mici nu contează, însă este o problemă atunci când integrăm în
+program biblioteci externe sau când ne definim noi o bibliotecă și aruncăm excepții din stdlib:
+```c++
+#include <iostream>
+#include <string>
+#include <stdexcept>
+
+#include <orar.hpp> // bibliotecă externă fictivă
+
+void învață(std::string nume_curs) {
+    if(nume_curs == "oop")
+        throw std::runtime_error("vreau pauză");
+    std::cout << "am chef de " << nume_curs << "!\n";
+}
+
+int main() {
+    try {
+        învață("sport");
+        învață("engleză");
+        orar::caută_sala(217);
+        învață("robotică");
+        orar::caută_sala(100);    // aruncă std::runtime_error("sala nu există")
+        orar::rezervă_sala(303);
+        învață("oop");
+    } catch(std::runtime_error& err) {
+        std::cout << err.what() << "\n";
+        // eroare din funcția învață? din caută_sala? din rezervă_sala?
+    }
+}
+```
+
+Dacă funcțiile din biblioteca `orar` aruncă tot `std::runtime_error` sau o excepție din stdlib pe care
+o aruncăm și noi, este imposibil să avem blocuri `catch` separate pentru a face distincția între erori
+aruncate de biblioteca externă și erori aruncate de noi. Mai mult, chiar dacă în prezent aruncăm
+excepții diferite față de acea bibliotecă, nu avem garanția că o versiune ulterioară a bibliotecii nu
+ar arunca excepții pe care le aruncăm și noi. Reciproc, suntem restricționați să nu aruncăm excepțiile
+aruncate de bibliotecile externe.
+
+La extrema cealaltă, dacă fiecare bibliotecă externă și fiecare componentă a programului nostru și-ar
+defini o ierarhie proprie de la zero, ne-ar trebui extrem de multe blocuri `catch` și nu am simplifica
+prea mult tratarea erorilor. Atunci când am adăuga o nouă bibliotecă, ar trebui să completăm programul
+în multe locuri cu alte clauze `catch`.
+
+Din aceste considerente, nu vrem să aruncăm excepții predefinite de biblioteca standard a limbajului.
+Acest lucru este valabil și în alte limbaje. Alte detalii
+[aici](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Re-exception-types). Specific C++,
+nu vrem nici să ne definim (de cele mai multe ori) o ierarhie de la zero, deoarece am forța
+utilizatorii claselor definite de noi să prindă neapărat aceste excepții particulare.
+
+Pentru a combina beneficiile celor două abordări, rețeta la care ajungem este următoarea: ne creăm o
+ierarhie proprie, iar clasa cea mai de bază a acestei ierarhii trebuie să fie derivată direct sau
+indirect din `std::exception`. Vom deriva din `std::runtime_error`, deoarece are constructor cu mesaj.
+```c++
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+#include <orar.hpp> // aceeași bibliotecă externă fictivă de mai devreme
+
+class eroare_aplicație : public std::runtime_error {
+    using std::runtime_error::runtime_error;
+};
+
+class eroare_student : public eroare_aplicație {
+public:
+    explicit eroare_student(std::string mesaj) :
+        eroare_aplicație("eroare student: " + mesaj) {}
+};
+
+class medie_invalidă : public eroare_aplicație {
+public:
+    explicit medie_invalidă(double medie) :
+        eroare_aplicație("media trebuie să fie >= 5, dar este " + std::to_string(medie)) {}
+};
+
+void învață(std::string nume_curs) {
+    if(nume_curs == "oop")
+        throw eroare_student("vreau pauză");
+    std::cout << "am chef de " << nume_curs << "!\n";
+}
+
+void calcul_medie(std::vector<int> note, int& medie) {
+    double medie_tmp = 0;
+    for(auto nota : note)
+        medie_tmp += nota;
+    medie_tmp /= note.size();
+    if(medie_tmp < 5)
+        throw medie_invalidă(medie_tmp);
+    medie = medie_tmp;
+}
+
+int main() {
+    try {
+        învață("sport");
+        învață("engleză");
+        orar::caută_sala(217);
+        învață("robotică");
+        orar::caută_sala(100);    // aruncă orar::sală_invalidă
+        orar::rezervă_sala(303);  // poate arunca orar::eroare_rezervare
+        int medie;
+        calcul_medie({2, 3, 4}, medie);
+        învață("oop");
+    } catch(orar::eroare_student& err) {
+        std::cout << "eroare student: " << err.what() << "\n";
+    } catch(eroare_aplicatie& err) {
+        std::cout << "eroare de la noi: " << err.what() << "\n";
+    } catch(orar::eroare_orar& err) {
+        std::cout << "eroare din orar: " << err.what() << "\n";
+    } catch(std::exception& err) {
+        std::cout << "altceva: " << err.what() << "\n";
+    }
+}
+```
+
+**Atenție:** `std::exception` nu are constructor cu mesaj în biblioteca standard. Un astfel de
+constructor este oferit de MSVC ca extensie de compilator, dar nu este portabil, deci nu îl vom folosi.
+
+La început de tot vrem să prindem erorile cele mai specifice care ne interesează. Dacă vrem să prindem erorile
+unor componente sau ale unor biblioteci externe, fără să ne preocupe alte detalii, prindem clasa de bază a
+erorilor pentru acea componentă/bibliotecă. Dacă nu ne interesează detalii deloc, ci doar vrem să știm că
+nu crapă, prindem `std::exception`.
+
+Presupunând că și alte biblioteci respectă această convenție, nu trebuie să modificăm nimic atunci când
+integrăm o nouă bibliotecă dacă doar vrem să prindem erori, deoarece se vor duce pe catch-ul cu
+`std::exception`. Dacă vrem să prindem erori mai specifice, avem o ierarhie de erori proprie pentru fiecare
+componentă/bibliotecă, iar aceste ierarhii nu intră în conflict una cu cealaltă.
+
+Clasele de excepții pot avea mai mulți parametri în constructori, dar în exemplul de mai sus nu am avut
+inspirație.
+
+Nu este neapărat nevoie de toate acele blocuri `catch` în exemplul de mai sus, dar le-am inclus pentru a
+ilustra mai sugestiv separarea codului care merge de codul care tratează erori:
+- codul din blocul `try` arată secvența de instrucțiuni executată dacă totul merge fără probleme
+- blocurile `catch` se ocupă doar de tratarea erorilor
+
+Codul este mult mai ușor de urmărit decât dacă am fi tratat erorile cu coduri de eroare, deoarece, atunci
+când folosim excepții, nu amestecăm codul obișnuit cu tratarea erorilor.
+
+Mai multe discuții [aici](https://isocpp.org/wiki/faq/exceptions#exceptions-separate-good-and-bad-path)
+și [aici](https://docs.microsoft.com/en-us/cpp/cpp/errors-and-exception-handling-modern-cpp).
 
 #### Sintaxă partea 3: rearuncarea excepțiilor
-#### Exemple
 
-[//]: # (throw în constructor)
+Există situații când nu avem posibilitatea să remediem complet o eroare, însă vrem să prindem excepția
+ca să reparăm ce se poate repara sau doar ca să scriem un mesaj de eroare (în logs, de exemplu) pentru
+o depanare mai ușoară. Instrucțiunea `throw;` rearuncă excepția curentă:
+```c++
+#include <iostream>
+#include <stdexcept>
+
+void f1() {
+    std::cout << "f1 înainte de throw\n";
+    throw std::runtime_error{"hopa..."};
+    std::cout << "f1 după throw\n";
+}
+
+void f2() {
+    try {
+        std::cout << "f2 înainte de apel f1\n";
+        f1();
+        std::cout << "f2 după apel f1\n";
+    } catch(std::runtime_error& err) {
+        std::cout << "f2 în catch 1: " << err.what() << "\n";
+        throw;
+        std::cout << "f2 în catch 1 după throw\n";
+    } catch(std::exception& err) {
+        std::cout << "f2 în catch 2: " << err.what() << "\n";
+    }
+}
+
+int main() {
+    try {
+        std::cout << "main înainte de apel f2\n";
+        f2();
+        std::cout << "main după apel f2\n";
+    } catch(std::exception& err) {
+        std::cout << "main în catch: " << err.what() << "\n";
+    }
+}
+```
+
+**Atenție!** Atunci când rearuncăm o excepție, se sare la următorul bloc `try`/`catch`! Nu se sare la un
+alt catch corespunzător aceluiași bloc `try`/`catch`!
+
+Pentru a demonstra că avem nevoie de sintaxa specială `throw;` și că nu este echivalentă cu a scrie
+`throw err;`, ne vom defini excepții proprii și vom suprascrie toate funcțiile speciale.
+Sintaxa `throw err;` creează întotdeauna un nou obiect:
+```c++
+#include <iostream>
+#include <stdexcept>
+#include <utility>
+
+class eroare_aplicație : public std::runtime_error {
+public:
+    eroare_aplicație(const std::string& mesaj) : std::runtime_error(mesaj) {
+        std::cout << "constr init eroare_aplicație: " << mesaj << "\n";
+    }
+    eroare_aplicație(const eroare_aplicație& other) : std::runtime_error(other) {
+        std::cout << "cc eroare_aplicație\n";
+    }
+    eroare_aplicație(eroare_aplicație&& other) : std::runtime_error(other) {
+        std::cout << "cm eroare_aplicație\n";
+    }
+    eroare_aplicație& operator=(const eroare_aplicație& other) {
+        std::runtime_error::operator=(other);
+        std::cout << "op= copiere eroare_aplicație\n";
+        return *this;
+    }
+    eroare_aplicație& operator=(eroare_aplicație&& other) {
+        std::runtime_error::operator=(other);
+        std::cout << "op= mutare eroare_aplicație\n";
+        return *this;
+    }
+    ~eroare_aplicație() {
+        std::cout << "destr eroare_aplicație\n";
+    }
+};
+
+class eroare_calcul : public eroare_aplicație {
+public:
+    eroare_calcul(const std::string& mesaj) : eroare_aplicație(mesaj) {
+        std::cout << "constr init eroare_calcul: " << mesaj << "\n";
+    }
+    eroare_calcul(const eroare_calcul& other) : eroare_aplicație(other) {
+        std::cout << "cc eroare_calcul\n";
+    }
+    eroare_calcul(eroare_calcul&& other) : eroare_aplicație(other) {
+        std::cout << "cm eroare_calcul\n";
+    }
+    eroare_calcul& operator=(const eroare_calcul& other) {
+        std::runtime_error::operator=(other);
+        std::cout << "op= copiere eroare_calcul\n";
+        return *this;
+    }
+    eroare_calcul& operator=(eroare_calcul&& other) {
+        std::runtime_error::operator=(other);
+        std::cout << "op= mutare eroare_calcul\n";
+        return *this;
+    }
+    ~eroare_calcul() {
+        std::cout << "destr eroare_calcul\n";
+    }
+};
+
+void f1() {
+    std::cout << "f1 înainte de throw\n";
+    throw eroare_calcul{"hopa..."};
+    std::cout << "f1 după throw\n";
+}
+
+void f2() {
+    try {
+        std::cout << "f2 înainte de apel f1\n";
+        f1();
+        std::cout << "f2 după apel f1\n";
+    } catch(eroare_aplicație& err) {
+        std::cout << "f2 în catch: " << err.what() << "\n";
+        throw err;                                  // linia 70
+        // throw eroare_aplicație(err);             // linia 71
+        // throw eroare_aplicație(std::move(err));  // linia 72
+        // throw;                                   // linia 73
+        std::cout << "f2 în catch după throw\n";
+    }
+}
+
+int main() {
+    try {
+        std::cout << "main înainte de apel f2\n";
+        f2();
+        std::cout << "main după apel f2\n";
+    } catch(std::exception& err) {
+        std::cout << "main în catch: " << err.what() << "\n";
+    }
+}
+```
+
+Executați codul și salvați undeva ce se afișează. Comentați linia 70 și decomentați pe rând liniile
+71-73 pentru a vedea ce constructori se apelează. Când se apelează destructorii excepțiilor și de ce?
+
+Dacă rearuncăm un nou obiect de un tip de bază, facem object slicing (liniile 70-72). De aceea avem nevoie
+de sintaxa `throw;`. Conform [documentației](https://en.cppreference.com/w/cpp/language/throw), compilatorul
+are voie să elimine operația de copiere/mutare și dacă facem `throw err;` și nu este object slicing.
+Momentan (2022), compilatoarele pe care am testat nu fac această optimizare.
+
+Înlocuiți excepția prinsă din `f2` cu `eroare_calcul`. Ce observați?
+
+Nu vrem niciodată să prindem o excepție prin valoare deoarece s-ar face automat object slicing. Dacă nu avem
+nevoie să modificăm obiectul de excepție, este recomandat să prindem excepția prin referință **constantă**:
+```c++
+int main() {
+    try {
+        std::cout << "main înainte de apel f2\n";
+        f2();
+        std::cout << "main după apel f2\n";
+    } catch(const std::exception& err) {  // <------------------ referință const!!!
+        std::cout << "main în catch: " << err.what() << "\n";
+    }
+}
+```
+
+**În ce situații am vrea să rearuncăm o excepție?**
+
+Există cel puțin patru situații când ne-ar interesa așa ceva:
+- afișăm un mesaj de eroare (facem logging), apoi rearuncăm același obiect
+- prindem o excepție dintr-o bibliotecă externă sau alt modul și aruncăm o excepție internă, "de-a noastră"
+  - poate să ne ajute dacă erorile primite sunt prea criptice sau irelevante pentru noi; este util dacă
+    modulul extern respectiv este izolat și nu prea îl folosim în alte locuri
+  - mai bine aruncăm o excepție internă și tratăm în mod uniform excepțiile interne decât să prindem o
+    excepție foarte specifică în cu totul altă parte din cod
+    - cu alte cuvinte, în "try/catch-ul mare din main" nu ne ajută prea mult să prindem excepții foarte
+      specifice pentru că am umple main-ul cu prea multe catch-uri de cazuri particulare
+  - poate să ne încurce și să facă depanarea mai dificilă pentru că pierdem contextul erorii inițiale
+- adunăm informații pentru depanare în obiectul prins, apoi rearuncăm același obiect
+  - modificăm atribute ale obiectului în mod direct sau prin apelarea unor funcții (simple sau virtuale)
+- prindem o excepție, creăm o nouă excepție cu atribut către vechea excepție, apoi aruncăm această nouă excepție
+  - tehnica se numește [exception chaining](https://en.wikipedia.org/wiki/Exception_chaining)
+  - C++11 oferă [std::nested_exception](https://en.cppreference.com/w/cpp/error/nested_exception)
+
+Ultimele două tehnici au efectul unui bulgăre de zăpadă aruncat la vale care se tot mărește.
+
+Recurgem la aceste tehnici doar dacă ne simplifică modul de lucru. Decât să ne umplem codul de
+`try`/`catch`-uri, poate fi mai util să lăsăm diverse componente să crape cu totul și doar să analizăm
+loguri.
+
+Multe limbaje fac abuz de excepții, deși sunt destule situații care nu sunt excepționale, neașteptate sau
+rare. Nu există un răspuns definitiv, trebuie să decidem care este cea mai bună variantă pentru fiecare
+caz în parte.
+
+Alte limbaje se folosesc mai mult de stacktrace pentru depanare. C++ nu are implementată funcționalitatea
+la nivel de limbaj în mod portabil fără biblioteci externe
+([exemplu](https://github.com/bombela/backward-cpp), nu am testat). Așteptăm să fie
+[implementată](https://en.cppreference.com/w/cpp/utility/basic_stacktrace) în C++23.
+
+#### Throw în constructor
+
+Excepțiile sunt singurul mecanism din limbaj prin care putem opri construirea unui obiect.
 
 #### Contraexemple
 
+Majoritatea exemplelor din curs.
 
 C++ este printre puținele limbaje care ne dă voie să aruncăm tipuri de date primitive și obiecte
-care nu sunt derivate din excepții.
+care nu sunt derivate din excepțiile predefinite de limbaj (mai corect spus sunt definite de stdlib).
+
+Discuții mai avansate [aici](http://www.gotw.ca/gotw/065.htm).
 
 [//]: # (input interactiv)
+
+[//]: # (catch&#40;...&#41;)
+
+[//]: # (aka pokemon exception handling)
+
 [//]: # (#### Sintaxă aproape inutilă: https://en.cppreference.com/w/cpp/language/function-try-block)
 
 [//]: # (http://www.gotw.ca/gotw/066.htm)
@@ -3710,7 +4139,7 @@ care nu sunt derivate din excepții.
 ### Diverse
 #### Dynamic cast
 
-[//]: # (referințe, pointeri)
+[//]: # (referințe, pointeri, de ce nu)
 
 #### Funcții și atribute statice
 
@@ -3731,19 +4160,19 @@ Continuăm familiarizarea cu limbajul C++ (din nou) și învățăm alte noțiun
 Cerințe comune:
 - separarea codului din clase în fișiere header (`.h`/`.hpp` etc.) și surse (`.cpp` etc.)
   - clasele mici și legate între ele se pot afla în aceeași pereche de fișiere header-sursă
-  - FĂRĂ using namespace std în fișiere `.h` la nivel global
+  - FĂRĂ `using namespace std` în fișiere `.h`/`.hpp` la nivel global
     - pot fi declarații locale
 - moșteniri
   - funcții virtuale (pure), constructori virtuali (clone)
     - funcțiile virtuale vor fi apelate prin pointeri la clasa de bază
     - pointerii la clasa de bază vor fi atribute ale altei clase, nu doar niște pointeri/referințe în main
   - apelarea constructorului din clasa de bază
-  - smart pointers
-  - dynamic_cast
+  - fără erori de memorie; recomandare: smart pointers
+  - `dynamic_cast`
 - suprascris cc/op= pentru copieri/atribuiri corecte, copy and swap
 - excepții
-  - ierarhie proprie (cu baza std::exception sau derivată din std::exception)
-  - utilizare cu sens: de exemplu, throw în constructor, try/catch în main
+  - ierarhie proprie (cu baza `std::exception` sau derivată din `std::exception`)
+  - utilizare cu sens: de exemplu, `throw` în constructor, `try`/`catch` în `main`
 - funcții și atribute statice
 - STL
 - un tag de git pe un commit cu cod stabil și toate bifele
@@ -3753,7 +4182,7 @@ Cerințe comune:
 
 Cerințe specifice:
 - implementarea a două funcționalități noi specifice temei; pentru minim o funcționalitate **trebuie**
-  folosite funcții virtuale
+  folosite funcții virtuale apelate prin pointeri de bază
 - **după** rezolvarea discuțiilor, de făcut un commit cu adăugarea unei noi derivate și suprascrierea unei
   funcții virtuale specifice temei; ar trebui modificat codul doar în funcția main și în fișierul cu noua derivată
 
