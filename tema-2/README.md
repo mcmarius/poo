@@ -3,7 +3,9 @@
 ### ⚠ Puneți cât mai multe întrebări! Nu există întrebări greșite.
 #### Semnalați orice fel de greșeli găsiți!
 
-[//]: # (TODO de adăugat la sfârșit sintaxa în alte limbaje populare [ordonate aproximativ după popularitate]:)
+[//]: # (TODO de adăugat la sfârșit sintaxa în alte limbaje ~~populare~~ studiate în facultate)
+
+[//]: # ([ordonate aproximativ după popularitate])
 
 [//]: # ( Java/Scala/Kotlin, C#, Python, JavaScript/TypeScript, Objective-C/Swift, Dart, PHP, R, Ruby, Perl)
 
@@ -763,7 +765,7 @@ class curs_optional : public curs {};
 ### Funcții virtuale
 
 Cuvântul cheie `virtual` poate fi folosit în C++ în două situații:
-- funcții membre virtuale într-o clasă
+- funcții membre nestatice virtuale într-o clasă
 - moșteniri virtuale pentru clase de bază în cazul moștenirilor multiple
 
 În această secțiune vorbim doar despre funcții virtuale.
@@ -772,7 +774,7 @@ Există o singură excepție de la regulă pe care o discutăm mai târziu.
 
 Există câteva funcții într-o clasă care nu pot fi funcții virtuale:
 - constructorii
-- funcțiile statice: doar funcțiile membre pot fi virtuale
+- [funcțiile statice](#funcii-i-atribute-statice): doar funcțiile membre nestatice pot fi virtuale
 - funcțiile friend: același motiv ca mai sus
 
 Pot fi virtuali și operatorii binari, dar în practică nu ne ajută să îi facem virtuali din
@@ -2657,6 +2659,8 @@ bilet. În sens invers, atunci când un obiect de tip călător nu mai există, 
 
 Noțiuni asemănătoare cu pointerii shared există și în Rust și Swift.
 
+[//]: # (make_shared_from_this, dynamic_pointer_cast)
+
 ##### unique_ptr
 
 Pointerii unici sunt eficienți pentru că nu au nevoie de sincronizări și de obicei nu creăm noi pointeri, ci
@@ -4061,7 +4065,7 @@ Executați codul și salvați undeva ce se afișează. Comentați linia 70 și d
 Dacă rearuncăm un nou obiect de un tip de bază, facem object slicing (liniile 70-72). De aceea avem nevoie
 de sintaxa `throw;`. Conform [documentației](https://en.cppreference.com/w/cpp/language/throw), compilatorul
 are voie să elimine operația de copiere/mutare și dacă facem `throw err;` și nu este object slicing.
-Momentan (2022), compilatoarele pe care am testat nu fac această optimizare.
+Momentan (2022), compilatoarele pe care am testat nu par să facă această optimizare întotdeauna.
 
 Înlocuiți excepția prinsă din `f2` cu `eroare_calcul`. Ce observați?
 
@@ -4114,36 +4118,887 @@ la nivel de limbaj în mod portabil fără biblioteci externe
 
 #### Throw în constructor
 
-Excepțiile sunt singurul mecanism din limbaj prin care putem opri construirea unui obiect.
+Excepțiile sunt singurul mecanism din limbaj prin care putem opri construirea unui obiect. De ce am vrea
+să facem asta? Fiindcă în acest fel garantăm că obiectul este într-o stare validă imediat după ce a fost
+construit.
+
+Dacă nu avem la dispoziție mecanismul de excepții, ar trebui să avem un atribut de tip `bool` pe care să
+îl verificăm la începutul fiecărei funcții membru:
+```c++
+#include <iostream>
+#include <string>
+
+class curs {
+    std::string nume;
+    bool valid = true;
+    // ...
+public:
+    curs(std::string nume_) : nume(nume_) {
+        if(nume.empty())
+            valid = false;
+        // if(...)
+        //    valid = false;
+    }
+    int calcul_medie(double& medie) {
+        if(!valid)
+            return 1;
+        // medie = ...
+        // if(eroare_calcul)
+        //     return 2;
+        return 0;
+    }
+    void prezintă(int nr) {
+        if(!valid) {
+            std::cout << "curs invalid\n";
+            return;
+        }
+        // std::cout << ...
+    }
+    int caută(std::string text, std::string& rezultat) {
+        if(!valid)
+            return 1;
+        // ...
+        return 0;
+    }
+};
+```
+
+O variantă și mai neinspirată este să punem utilizatorii clasei să fie responsabili să apeleze o funcție
+de validare înainte de fiecare funcție:
+```c++
+int main() {
+    curs c1{""};
+    if(c1.valid())
+        c1.prezintă(2);
+    if(c1.valid()) {
+        double medie;
+        int err;
+        err = c1.calcul_medie(medie);
+        if(!err)
+            std::cout << medie;
+    }
+    if(c1.valid()) {
+        std::string rez;
+        int err = c1.caută("throw", rez);
+
+    }
+}
+```
+
+Ambele variante necesită un efort suplimentar pentru a garanta corectitudinea, iar dacă uităm să verificăm
+că obiectul este valid înainte de un apel, programul va continua execuția normală și vom pierde mult timp
+să identificăm cauza reală a erorilor. Ideea nu este că nu putem scrie codul în această manieră sau că nu
+reușim să rezolvăm bug-urile. Dacă suntem motivați, ne descurcăm și reparăm până la urmă bug-urile. Problema
+esențială este că **pierdem mai mult timp cu depanarea** decât dacă am alege varianta cu excepții.
+
+Codul de mai sus rescris cu excepții este următorul:
+```c++
+#include <iostream>
+#include <stdexcept>
+#include <string>
+
+class eroare_aplicație : public std::runtime_error { using std::runtime_error::runtime_error; };
+class eroare_curs : public eroare_aplicație { using eroare_aplicație::eroare_aplicație; };
+class eroare_calcul : public eroare_aplicație { using eroare_aplicație::eroare_aplicație; };
+
+class curs {
+    std::string nume;
+    // ...
+public:
+    curs(std::string nume_) : nume(nume_) {
+        if(nume.empty())
+            throw eroare_curs("nume gol");
+        // if(...)
+        //    throw eroare_curs...
+    }
+    double calcul_medie() {
+        double medie = 0;
+        // medie = ...
+        // if(eroare)
+        //     throw eroare_calcul{};
+        return medie;
+    }
+    void prezintă(int nr) {
+        // std::cout << ...
+    }
+    std::string caută(std::string text) {
+        std::string rezultat;
+        // rezultat = ...
+        return rezultat;
+    }
+};
+
+int main() {
+    try {
+        curs c1{""};
+        c1.prezintă(2);
+        std::cout << c1.calcul_medie();
+        std::cout << c1.caută("cod de eroare");
+    } catch(const eroare_aplicație& err) {
+        std::cout << err.what() << "\n";
+    }
+}
+```
+
+Funcțiile din clasă nu mai au de verificat de fiecare dată dacă obiectul este valid înainte de a efectua
+alte operațiuni, iar codul din main separă foarte clar partea de funcționalitate de partea care tratează
+erorile.
+
+Dacă obiectul nu se poate construi, **aruncăm excepție în constructor** și astfel nu avem cum să obținem
+un obiect invalid, deoarece obiectul nu s-a construit deloc. Este aceeași idee ca la bazele de date cu
+realizarea unei tranzacții: operația de construire fie reușește complet, fie nu reușește deloc.
+
+Mergând cu ideea mai departe, este imposibil să construim parțial un obiect dacă un atribut este invalid:
+dacă se aruncă excepție într-un atribut, obiectul mare nu se va mai construi.
+```c++
+#include <iostream>
+#include <stdexcept>
+
+class A {
+    int nr;
+public:
+    A(int nr_) : nr(nr_) {
+        std::cout << "constr A " << nr << " înainte de throw\n";
+        if(nr % 2)
+            throw std::invalid_argument("A: nr trebuie să fie par");
+        std::cout << "constr A după throw\n";
+    }
+    ~A() {
+        std::cout << "destr A " << nr << "\n";
+    }
+};
+
+class B {
+    A a1;
+    A a2;
+public:
+    B(int nr1, int nr2) : a1(nr1), a2(nr2) {
+        std::cout << "constr B\n";
+    }
+    void f() {
+        std::cout << "B f\n";
+    }
+    ~B() {
+        std::cout << "destr B\n";
+    }
+};
+
+int main() {
+    try {
+        B b{4, 3};
+        b.f();
+    } catch(std::logic_error& err) {
+        std::cout << err.what() << "\n";
+    }
+}
+```
+
+Pentru un obiect care nu este construit nu se apelează destructorul: nu ar avea ce să distrugă!
+Dacă un obiect a fost deja construit ca membru al unui obiect mai mare, iar obiectul mai mare nu s-a
+construit complet, toate sub-obiectele obiectului mare construite complet până în acel punct se vor
+distruge automat. Resursele alocate în constructori în afara unor obiecte **nu se eliberează automat!**
+
+Această tehnică este utilă și atunci când suntem într-o funcție care trebuie să întoarcă un obiect,
+dar nu putem actualiza codul din clasa obiectului sau nu putem întoarce un cod de eroare/o valoare
+invalidă. Dacă aruncăm excepții într-o funcție care întoarce un rezultat prin tipul de retur, execuția
+codului nu mai ajunge la vreo instrucțiune `return`, ci sare de la `throw` la primul bloc `catch` care
+se potrivește.
 
 #### Contraexemple
 
-Majoritatea exemplelor din curs.
+[//]: # (Majoritatea exemplelor din curs.)
 
-C++ este printre puținele limbaje care ne dă voie să aruncăm tipuri de date primitive și obiecte
-care nu sunt derivate din excepțiile predefinite de limbaj (mai corect spus sunt definite de stdlib).
+Până acum am văzut când este bine să utilizăm excepțiile ca mecanism de tratare a erorilor. Cu toate acestea,
+există multe moduri de a ne complica logica programului în mod excesiv dacă recurgem la excepții atunci când
+alternativele (codurile de eroare și tipurile de date rezultat) ne-ar ajuta mai mult.
 
-Discuții mai avansate [aici](http://www.gotw.ca/gotw/065.htm).
+Excepțiile se justifică de obicei pentru a propaga erori prin mai multe apeluri de funcții și
+pentru a preveni construirea de obiecte invalide.
 
-[//]: # (input interactiv)
+Datele de intrare primite în mod interactiv nu trebuie validate cu excepții: avem posibilitatea să cerem din
+nou introducerea datelor în același loc din cod, deci nu ar trebui propagată vreo eroare. Să scriem întâi o
+variantă cu excepții:
+```c++
+#include <iostream>
+#include <stdexcept>
 
-[//]: # (catch&#40;...&#41;)
+int main() {
+    do {
+        int x = 0;
+        std::cout << "x: ";
+        std::cin >> x;
+        try {
+            if(x < 100)
+                throw std::invalid_argument{"trebuie >= 100"};
+            break;
+        } catch(const std::invalid_argument& err) {
+            std::cout << err.what() << "\n";
+        }
+    } while(true);
+}
+```
 
-[//]: # (aka pokemon exception handling)
+Iar acum varianta fără excepții:
+```c++
+#include <iostream>
+
+int main() {
+    do {
+        int x = 0;
+        std::cout << "x: ";
+        std::cin >> x;
+        if(x >= 100)
+            break;
+        std::cout << "trebuie >= 100\n";
+    } while(true);
+}
+```
+
+În general, de cele mai multe ori nu are sens să facem `throw` tot acolo unde facem și `catch`, deoarece
+este echivalent cu un `if`/`else`, doar că scriem mai mult cod. Este valabil mai ales când blocul de try
+nu este prea mare:
+```c++
+int main() {
+    // cu excepții
+    try {
+        if(conditie)
+            throw err;
+        // codul de după if
+    } catch(const err&) {
+        // codul din catch
+    }
+
+    // cu if/else
+    if(conditie) {
+        // codul din catch
+    }
+    else {
+        // codul de după if
+    }
+}
+```
+
+Este important să înțelegem că vrem să alegem mecanismul de tratare a erorilor care să fie cel mai simplu
+pentru contextul respectiv.
+
+**NU FOLOSIȚI INSTRUCȚIUNI `goto` LA ACEST CURS!** Totuși, trebuie să menționez că utilizarea `goto` este un
+mecanism des folosit pentru tratarea erorilor pentru a simula excepții, întrucât sunt cazuri când excepțiile
+sunt dezactivate (sisteme critice, de exemplu aviație).
+
+Alt exemplu când excepțiile sunt folosite în mod eronat:
+```c++
+int main() {
+    try {
+        if(conditie1)
+            throw err1;
+        // ...
+    } catch(const err1&) {
+        // ...
+    }
+    try {
+        if(conditie2)
+            throw err2;
+        // ...
+    } catch(const err2&) {
+        // ...
+    }
+    try {
+        if(conditie3)
+            throw err1;
+        // ...
+    } catch(const err1&) {
+        // ...
+    }
+}
+```
+
+Avem cel puțin 3 alternative:
+- alegem varianta de mai jos
+- regândim ierarhia de excepții
+- trecem înapoi la coduri de eroare
+
+Alte discuții [aici](https://isocpp.org/wiki/faq/exceptions#too-many-trycatch-blocks).
+```c++
+int main() {
+    try {
+        if(conditie1)
+            throw err1;
+        // ...
+        if(conditie2)
+            throw err2;
+        // ...
+        if(conditie3)
+            throw err1;
+        // ...
+    }
+    } catch(const err1&) {
+        // ...
+    }
+    } catch(const err2&) {
+        // ...
+    }
+}
+```
+
+Dacă tot suntem la subiectul "prea multe try/catch-uri", un alt mod de a complica inutil lucrurile este acesta:
+```c++
+#include <stdexcept>
+
+void f1(int x) {
+    if(x % 2)
+        throw std::invalid_argument{"nu este par"};
+}
+
+void f2(int y, int z) {
+    try {
+        // ...
+        f1(y + z);
+        // ...
+    } catch(std::invalid_argument& err) {
+        throw;
+    }
+}
+```
+
+Dacă _doar_ rearuncăm excepția în catch, _fără să facem altceva_, nu diferă cu nimic de a nu prinde excepția
+deloc. Dacă nu avem ce să facem ca să remediem situația sau dacă nu ne ajută să afișăm un mesaj de eroare
+intermediar, mai bine nu avem deloc `try`/`catch` pentru că _excepțiile se propagă automat_.
+
+C++ este printre puținele limbaje care ne dă voie să aruncăm tipuri de date primitive și obiecte care
+nu sunt derivate din excepțiile predefinite de limbaj (mai corect spus definite de stdlib). Asta înseamnă că
+avem voie să facem asta:
+```c++
+int main() {
+    try {
+        throw 1;
+    } catch(int err) {
+        std::cout << err << "\n";
+    }
+}
+```
+
+De ce este o idee extrem de... neinspirată să facem asta? Pentru că nu avem posibilitatea să facem distincția
+între tipuri diferite de erori, așa că ajungem la următoarea absurditate:
+```c++
+int main() {
+    try {
+        if(conditie1)
+            throw 1;
+        if(conditie2)
+            throw 2;
+    } catch(int err) {
+        if(err == 1) {
+            std::cout << "eroarea 1\n";
+        }
+        else if(err == 2) {
+            std::cout << "eroarea 2\n";
+        }
+    }
+}
+```
+
+Astfel, am reușit să folosim excepții sub formă de coduri de eroare, combinând dezavantajele ambelor abordări.
+Felicitări!
+
+Mai departe, dacă trebuie să interacționăm cu biblioteci/module scrise de cineva care s-a inspirat din
+exemplul anterior, însă nu a documentat ce tipuri de date sunt aruncate (sau avem ceva critic și trebuie
+să prindem orice), există o sintaxă specială de catch care știe să prindă acest "orice":
+```c++
+#include <iostream>
+// #include <exception>
+
+int main() {
+    // std::exception_ptr eptr;
+    try {
+        throw 1;
+    } catch(double err) {
+        std::cout << "catch double\n";
+    } catch(...) {
+        std::cout << "eroare necunoscută...\n";
+        // eptr = std::current_exception();
+    }
+    // depanare ulterioară a lui eptr
+    // if(eptr)
+    //     ...
+}
+```
+
+Nu este nevoie de `std::exception_ptr` și `std::current_exception` dacă nu vrem să facem mai departe nimic
+cu excepția sau dacă tratăm eroarea direct în blocul `catch(...)`.
+
+`catch(...)` este recomandat atunci când încercăm să garantăm că nu aruncăm mai departe alte excepții, de
+exemplu în destructori.
+
+Următorul exemplu **nu este un contraexemplu!** Sintaxa cu `catch(...)` ne mai poate ajuta să eliminăm
+duplicarea de cod dacă avem de tratat în mai multe locuri un grup de aceleași erori în același mod:
+```c++
+void handle_errors() {
+    try {
+        throw;
+    } catch(eroare_calcul& err) {
+        std::cout << "err calcul\n";
+    } catch(curs_invalid& err) {
+        std::cout << "err curs\n";
+    } catch(orar::eroare_planificare& err) {
+        std::cout << "err planificare orar\n";
+    }
+}
+
+void f1() {
+    try {
+        // ...
+    } catch(eroare_foarte_specifică1) {
+        // ...
+    } catch(...) {
+        handle_errors();
+    }
+}
+void f2() {
+    try {
+        // ...
+    } catch(eroare_foarte_specifică2) {
+        // ...
+    } catch(...) {
+        handle_errors();
+    }
+}
+```
+
+Am ales să vorbesc despre `catch(...)` în secțiunea de contraexemple, deoarece nu este bine să prindem
+excepții _prea_ generale, fiind foarte ușor să ascundem erori neașteptate în mod neintenționat
+(sau mai grav, intenționat din lene). Alt exemplu similar este să prindem în prea multe locuri direct
+`std::exception` sau altă clasă de bază foarte comună (procedeu numit uneori Pokémon exception handling).
+
+Reciproc, nu este bine nici să avem prea multe catch-uri specifice pentru că așa nu simplificăm deloc
+tratarea erorilor. C++ este un limbaj (prea) special, iar excepțiile complică lucrurile în multe locuri din
+limbaj. Este bine să știm că avem la dispoziție acest mecanism, dar este și mai bine să nu aruncăm excepții
+doar pentru a emula `goto`. La urma urmei, excepțiile ar trebui folosite doar în situații excepționale.
+
+Ca o încheiere a acestei secțiuni, printre cele mai dezastruoase lucruri pe care le puteți face cu excepțiile
+în C++ este să aruncați excepții în destructori. Pe scurt, șansele sunt foarte mari ca programul să sară în
+aer 💥
+
+Nu ne mai ajută nici `catch(...)`: dacă se aruncă o excepție în procesul de stack unwinding (vezi mai sus),
+se apelează `std::terminate` și programul crapă.
+
+Discuții mai avansate despre excepții specifice C++ [aici](http://www.gotw.ca/gotw/065.htm).
 
 [//]: # (#### Sintaxă aproape inutilă: https://en.cppreference.com/w/cpp/language/function-try-block)
 
 [//]: # (http://www.gotw.ca/gotw/066.htm)
 
-
 ### Diverse
 #### Dynamic cast
 
-[//]: # (referințe, pointeri, de ce nu)
+Am văzut la moșteniri și funcții virtuale că un obiect de tip derivată poate fi convertit automat la
+pointer sau referință de bază:
+```c++
+class curs {};
+class curs_obligatoriu : public curs {};
+
+void f1(curs& curs_) {}
+void f2(curs* curs_) {}
+
+int main() {
+    curs_obligatoriu c1;
+    f1(c1);
+    f2(&c1);
+}
+```
+
+De cele mai multe ori, ar trebui să ne descurcăm cu ajutorul funcțiilor virtuale (ideal prin interfață
+non-virtuală). Uneori, în cazuri izolate, interfața din clasa de bază ne limitează și ne trebuie o metodă să
+apelăm funcții publice dintr-o clasă derivată care nu sunt definite în clasa de bază.
+
+Dacă avem deja obiectul de tip clasă derivată, problema este rezolvată de la sine. Dacă avem un pointer sau
+o referință la clasa de bază, trebuie să folosim `dynamic_cast` pentru a transforma acest pointer/această
+referință la pointer/referință către clasa derivată dorită.
+
+Trebuie să activăm virtualizarea: cast-ul dinamic are nevoie de informații despre tipul de date la momentul
+execuției. Pentru a nu devia de la subiect, în exemplul următor nu sunt incluse toate funcțiile necesare
+atunci când folosim `virtual` (clone, cc/op= protected în bază șamd).
+
+Acest proces este riscant fiindcă nu știm dacă pointerul/referința arată către derivata de care avem nevoie
+sau către o altă derivată. Dacă facem cast la pointeri, primim un pointer nul în caz de eșec. Dacă facem cast
+la referințe, se aruncă excepția `std::bad_cast` (din `<typeinfo>`) la eșec.
+```c++
+#include <iostream>
+#include <typeinfo>
+
+class curs { public: virtual ~curs() = default; };
+class curs_obligatoriu : public curs {
+public:
+    void f() { std::cout << "f curs obligatoriu\n"; }
+};
+class curs_facultativ : public curs {
+public:
+    void g() { std::cout << "g curs facultativ\n"; }
+};
+
+void test1(curs* curs_) {
+    if(auto* co = dynamic_cast<curs_obligatoriu*>(curs_)) {
+        std::cout << "test1 cast pointer reușit\n";
+        co->f();
+    }
+    else
+        std::cout << "test1 cast pointer nereușit\n";
+
+    try {
+        auto& co = dynamic_cast<curs_obligatoriu&>(*curs_);
+        std::cout << "test1 cast referință reușit\n";
+        co.f();
+    } catch(std::bad_cast& err) {
+        std::cout << "test1 cast referință nereușit: " << err.what() << "\n";
+    }
+}
+
+void test2(curs& curs_) {
+    if(auto* co = dynamic_cast<curs_facultativ*>(&curs_)) {
+        std::cout << "test2 cast pointer reușit\n";
+        co->g();
+    }
+    else
+        std::cout << "test2 cast pointer nereușit\n";
+
+    try {
+        auto& co = dynamic_cast<curs_facultativ&>(curs_);
+        std::cout << "test2 cast referință reușit\n";
+        co.g();
+    } catch(std::bad_cast& err) {
+        std::cout << "test2 cast referință nereușit: " << err.what() << "\n";
+    }
+}
+
+int main() {
+    curs_obligatoriu c1;
+    curs_facultativ c2;
+    std::cout << "main: apel test1 cu param curs_obligatoriu\n";
+    test1(&c1);
+    std::cout << "main: apel test1 cu param curs_facultativ\n";
+    test1(&c2);
+    std::cout << "main: apel test2 cu param curs_obligatoriu\n";
+    test2(c1);
+    std::cout << "main: apel test2 cu param curs_facultativ\n";
+    test2(c2);
+}
+```
+
+Conversia de mai sus la `curs_obligatoriu`/`curs_facultativ` va merge și dacă transmitem derivate din
+`curs_obligatoriu` sau `curs_facultativ`. Prețul plătit este un timp de execuție ceva mai lent, deoarece
+trebuie parcursă toată ierarhia în cel mai rău caz (depinde și de compilator), nu doar până la tipul de
+date la care facem cast.
+
+Un alt mod de a identifica tipul de date actual în momentul rulării este cu operatorul `typeid` (header-ul
+`<typeinfo>` este obligatoriu). Diferența față de `dynamic_cast` este că merge un pic mai repede, însă
+nu va funcționa decât pentru `curs_obligatoriu`/`curs_facultativ`, nu și pentru alte derivate din aceste
+clase.
+
+De asemenea, dacă folosim pointer, acesta trebuie dereferențiat. Dacă dereferențiem pointer polimorfic nul,
+`typeid` aruncă [`std::bad_typeid`](https://en.cppreference.com/w/cpp/types/bad_typeid).
+```c++
+#include <iostream>
+#include <typeinfo>
+
+class curs { public: virtual ~curs() = default; };
+class curs_obligatoriu : public curs {
+public:
+    void f() { std::cout << "f curs obligatoriu\n"; }
+};
+class curs_facultativ : public curs {
+public:
+    void g() { std::cout << "g curs facultativ\n"; }
+};
+
+void test1(curs* curs_) {
+    if(curs_ == nullptr)
+        return;
+    if(typeid(curs_) == typeid(curs_obligatoriu*)) {
+        std::cout << "test1 typeid(curs_) == typeid(curs_obligatoriu*)\n";
+        static_cast<curs_obligatoriu*>(curs_)->f();
+        static_cast<curs_obligatoriu&>(*curs_).f();
+    }
+    if(typeid(curs_) == typeid(curs_obligatoriu)) {
+        std::cout << "test1 typeid(curs_) == typeid(curs_obligatoriu)\n";
+        static_cast<curs_obligatoriu*>(curs_)->f();
+        static_cast<curs_obligatoriu&>(*curs_).f();
+    }
+    if(typeid(curs_) == typeid(curs_obligatoriu&)) {
+        std::cout << "test1 typeid(curs_) == typeid(curs_obligatoriu&)\n";
+        static_cast<curs_obligatoriu*>(curs_)->f();
+        static_cast<curs_obligatoriu&>(*curs_).f();
+    }
+    if(typeid(*curs_) == typeid(curs_obligatoriu)) {
+        std::cout << "test1 typeid(*curs_) == typeid(curs_obligatoriu)\n";
+        static_cast<curs_obligatoriu*>(curs_)->f();
+        static_cast<curs_obligatoriu&>(*curs_).f();
+    }
+    if(typeid(*curs_) == typeid(curs_obligatoriu*)) {
+        std::cout << "test1 typeid(*curs_) == typeid(curs_obligatoriu*)\n";
+        static_cast<curs_obligatoriu*>(curs_)->f();
+        static_cast<curs_obligatoriu&>(*curs_).f();
+    }
+    if(typeid(*curs_) == typeid(curs_obligatoriu&)) {
+        std::cout << "test1 typeid(*curs_) == typeid(curs_obligatoriu&)\n";
+        static_cast<curs_obligatoriu*>(curs_)->f();
+        static_cast<curs_obligatoriu&>(*curs_).f();
+    }
+}
+
+void test2(curs& curs_) {
+    if(typeid(curs_) == typeid(curs_obligatoriu*)) {
+        std::cout << "test2 typeid(curs_) == typeid(curs_obligatoriu*)\n";
+        static_cast<curs_obligatoriu*>(&curs_)->f();
+        static_cast<curs_obligatoriu&>(curs_).f();
+    }
+    if(typeid(curs_) == typeid(curs_obligatoriu)) {
+        std::cout << "test2 typeid(curs_) == typeid(curs_obligatoriu)\n";
+        static_cast<curs_obligatoriu*>(&curs_)->f();
+        static_cast<curs_obligatoriu&>(curs_).f();
+    }
+    if(typeid(curs_) == typeid(curs_obligatoriu&)) {
+        std::cout << "test2 typeid(curs_) == typeid(curs_obligatoriu&)\n";
+        static_cast<curs_obligatoriu*>(&curs_)->f();
+        static_cast<curs_obligatoriu&>(curs_).f();
+    }
+    if(typeid(&curs_) == typeid(curs_obligatoriu*)) {
+        std::cout << "test2 typeid(&curs_) == typeid(curs_obligatoriu*)\n";
+        static_cast<curs_obligatoriu*>(&curs_)->f();
+        static_cast<curs_obligatoriu&>(curs_).f();
+    }
+    if(typeid(&curs_) == typeid(curs_obligatoriu)) {
+        std::cout << "test2 typeid(&curs_) == typeid(curs_obligatoriu)\n";
+        static_cast<curs_obligatoriu*>(&curs_)->f();
+        static_cast<curs_obligatoriu&>(curs_).f();
+    }
+    if(typeid(&curs_) == typeid(curs_obligatoriu&)) {
+        std::cout << "test2 typeid(&curs_) == typeid(curs_obligatoriu&)\n";
+        static_cast<curs_obligatoriu*>(&curs_)->f();
+        static_cast<curs_obligatoriu&>(curs_).f();
+    }
+}
+
+int main() {
+    curs_obligatoriu c1;
+    curs_facultativ c2;
+    test1(&c1);
+    test1(&c2);
+    test2(c1);
+    test2(c2);
+}
+```
+
+Rulați exemplul ca să vedeți ce se afișează!
+
+Varianta cu `typeid` merge doar dacă avem potrivire exactă de tip. Chiar dacă ar merge mai repede, este
+mult mai urât de extins și mai fragil. Fără verificare de `typeid`, `static_cast` de mai sus
+**nu este corect!**
+
+[//]: # (https://stackoverflow.com/questions/12588264/static-cast-and-rtti-vs-dynamic-cast)
+
+**Exercițiu:** comparați `dynamic_cast` cu `typeid`! Adăugați o subclasă pentru `curs_obligatoriu`,
+creați un obiect și apelați funcțiile de test.
+
+Dacă observăm că avem nevoie de multe cast-uri de la bază către derivată, este un semn că nu ne-am definit
+corect clasele și/sau funcțiile virtuale. Nevoia de hard-codare a unui tip de date derivat/dynamic_cast/typeid
+este un **anti-pattern**: un asemenea cod devine din ce în ce mai greu de extins și de întreținut.
+
+[//]: # (https://stackoverflow.com/questions/12582040/understanding-double-dispatch-c)
+[//]: # (https://en.wikipedia.org/wiki/Double_dispatch)
+[//]: # (http://www.vishalchovatiya.com/double-dispatch-in-cpp/)
+[//]: # (https://en.cppreference.com/w/cpp/utility/variant/visit)
+
+Evitați pe cât posibil downcast-urile, dar este bine să știți că există și această funcționalitate și că este
+cea mai bună variantă în unele situații. C++ nu are ([încă?](https://stackoverflow.com/a/13217106)) reflection,
+dar se predă RTTI pentru că în alte limbaje uzuale sunt biblioteci care se bazează destul de mult pe reflection.
+[Programarea cu "reflexie"](https://en.wikipedia.org/wiki/Reflective_programming) este un fel de meta-programare.
+C++ folosește în mod tradițional șabloane pentru meta-programare.
+
+<sub>Fun fact: dacă ne luăm după comentarii de pe net, unele jocuri dezactivează RTTI pentru a îngreuna
+crearea de cheats.</sub>
 
 #### Funcții și atribute statice
 
+Funcțiile membru dintr-o clasă de până acum sunt nestatice și le apelăm doar prin intermediul unui obiect.
+
+Funcțiile membru statice sunt la nivel de clasă și le apelăm cu numele clasei. Sintaxa ne permite să
+apelăm funcții statice și via un obiect, doar că în felul acesta nu mai este evident dacă funcția este
+statică sau nu, deci nu este recomandat.
+```c++
+#include <iostream>
+
+class curs {
+public:
+    void f() const {
+        std::cout << "funcție membru nestatică\n";
+    }
+    static void g() {
+        std::cout << "funcție membru statică\n";
+    }
+    // virtual static void h1_1() {}
+    // static virtual void h1_2() {}
+    // static void h2() const {}
+    // static void h3() volatile {}
+};
+
+int main() {
+    // curs::f(); // eroare
+    std::cout << "curs::g()\n";
+    curs::g();
+    curs c1;
+    std::cout << "c1.f()\n";
+    c1.f();
+    std::cout << "c1.g()\n";
+    c1.g(); // valid, dar nerecomandat
+    curs* c2 = &c1;
+    std::cout << "c2->g()\n";
+    c2->g(); // valid, dar nerecomandat
+}
+```
+
+Funcțiile membru statice sunt la nivel de clasă, deci nu avem nevoie să creăm un obiect pentru a efectua
+apeluri. Consecința este că nu avem `*this`, ceea ce înseamnă că funcțiile statice nu pot fi nici virtuale
+sau declarate cu `const` (sau `volatile`).
+
+Funcțiile membru statice nu au acces la `*this`, dar au acces la atributele membru statice.
+
+Atributele membru din secțiunile anterioare dintr-o clasă sunt nestatice și sunt la nivel de obiect.
+Atributele statice dintr-o clasă nu sunt la nivel de obiect, ci la nivel de clasă. Nu avem nevoie să
+creăm un obiect pentru a avea acces și a modifica atribute statice.
+
+Este un pic greșit în curs. Chiar dacă putem folosi atributele statice pe post de variabile globale la nivel
+de clasă, atributele statice nu aparțin tuturor obiectelor clasei, din simplul motiv că nu trebuie să avem
+vreun obiect din clasa respectivă. Atributele statice sunt pe clasă.
+
+**Atributele membru statice trebuie inițializate în afara clasei, într-un singur fișier `.cpp`!**
+```c++
+#include <iostream>
+
+class curs {
+    static int prez_medie;
+public:
+    static int get_prez_medie() {
+        return prez_medie;
+    }
+    static void up_prez_medie() {
+        ++prez_medie;
+    }
+    static void down_prez_medie() {
+        --prez_medie;
+    }
+};
+
+int curs::prez_medie = 20; // inițializare!!! doar într-un singur fișier .cpp!!!
+
+int main() {
+    std::cout << curs::get_prez_medie() << "\n";
+    curs::down_prez_medie();
+    curs::down_prez_medie();
+    std::cout << curs::get_prez_medie() << "\n";
+    curs::up_prez_medie();
+    curs::up_prez_medie();
+    curs::up_prez_medie();
+    curs::up_prez_medie();
+    std::cout << curs::get_prez_medie() << "\n";
+    curs::down_prez_medie();
+    std::cout << curs::get_prez_medie() << "\n";
+}
+```
+
+Nu avem acces din funcții membru statice la atribute membru nestatice, dar avem acces la atribute membru
+statice din funcții membru nestatice. O posibilă idee este să generăm id-uri unice:
+```c++
+#include <iostream>
+#include <string>
+
+class curs {
+    static int id_max;
+    const int id;
+    std::string nume;
+public:
+    explicit curs(std::string nume_) : id(id_max), nume(nume_) { ++id_max; }
+    int get_id() const { return id; }
+};
+
+int curs::id_max = 1;
+
+int main() {
+    curs c1{"oop"}, c2{"mate1"}, c3{"mate2"};
+    std::cout << c3.get_id() << "\n";
+    std::cout << c2.get_id() << "\n";
+    // c1 = c2; // eroare
+    curs c4{c1};
+    std::cout << c4.get_id() << "\n";
+}
+```
+
+Observație: soluția nu merge dacă folosim mai multe fire de execuție.
+
+**Atenție!** Atunci când avem atribute constante, compilatorul generează cc, dar nu mai generează și op=
+pentru că nu știe să copieze tot, dar fără atributele constante. Constructorul de copiere generat copiază
+același id. Dacă ne convine, nu este nevoie să îl suprascriem. Trebuie să ținem cont și că se pot crea
+multe obiecte temporare, deci id-ul ar fi mai mare decât numărul de obiecte create explicit de noi.
+```c++
+#include <iostream>
+#include <string>
+
+class curs {
+    static int id_max;
+    const int id;
+    std::string nume;
+public:
+    explicit curs(std::string nume_) : id(id_max), nume(nume_) { ++id_max; }
+    curs(const curs& other) : id(id_max), nume(other.nume) { ++id_max; }
+    curs& operator=(const curs& other) { nume = other.nume; return *this; }
+    int get_id() const { return id; }
+    const std::string& get_nume() const { return nume; }
+};
+
+int curs::id_max = 1;
+
+int main() {
+    curs c1{"oop"}, c2{"mate1"}, c3{"mate2"};
+    std::cout << c3.get_id() << "\n";
+    std::cout << c2.get_id() << "\n";
+    std::cout << c1.get_nume() << "\n";
+    c1 = c2; // eroare
+    std::cout << c1.get_nume() << "\n";
+    curs c4{c1};
+    std::cout << c4.get_id() << "\n";
+}
+```
+
+Funcțiile și atributele statice sunt aproape identice în restul limbajelor. Ca o încheiere specifică C++,
+avem și variabile statice locale. Acestea sunt tot la nivel de clasă, dar sunt vizibile doar în funcția `f`:
+```c++
+#include <iostream>
+
+class curs {
+public:
+    void f() const {
+        static int nr = 1;
+        std::cout << nr << "\n";
+        ++nr;
+    }
+    void g() {
+        // std::cout << nr << "\n"; // eroare!
+    }
+};
+
+int main() {
+    curs c1, c2, c3;
+    c1.f();
+    c2.f();
+    c3.f();
+    c1.f();
+}
+```
+
+Din nou, nu faceți abuz de atribute membru `static`, acestea fiind tot un fel de variabile globale, doar
+că localizate la nivel de clasă.
+
 #### Moștenire multiplă și virtuală
+
+[//]: # (important de zis cu apelarea bazei comune la moștenire virtuală; restul, cu altă ocazie...)
 
 [//]: # (exemplu de situație utilă https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rh-kind)
 
