@@ -35,6 +35,7 @@ Shortcuts pentru CLion (și alte editoare de la JetBrains):
 - <kbd>Ctl</kbd>+<kbd>D</kbd> duplică linia sau selecția
 - <kbd>Ctrl</kbd>+<kbd>Space</kbd> auto-complete
 - <kbd>Alt</kbd>+<kbd>Enter</kbd> quick fix (nu oferă întotdeauna cea mai bună soluție!): de exemplu, pentru `#include`, definit funcții, clase, variabile
+- <kbd>Alt</kbd>+<kbd>J</kbd> selectează același cuvânt și pune mai multe cursoare; detalii [aici](https://www.jetbrains.com/help/clion/multicursor.html#column_selection)
 - <kbd>Tab</kbd> pentru a accepta o sugestie și a înlocui token-ul existent (<kbd>Enter</kbd> pune sugestia curentă, însă lasă bucata de token existentă)
 - de 2 ori <kbd>Shift</kbd>: caută peste tot
 - <kbd>Ctrl</kbd>+<kbd>/</kbd> (de)comentează la nivel de linie

@@ -69,7 +69,10 @@ Dezavantajul este că C++ este _prea_ general. Evident, e mai greu să înveți 
 
 #### Încă mai este C++ un limbaj relevant în 202x?
 
-Încă este [folosit][stackoverflow-survey-2021]. Versiunile de C++ moderne (>=11) sunt relevante.
+Încă este
+[folosit](https://survey.stackoverflow.co/2022/#most-popular-technologies-language-prof),
+chiar un pic în creștere față de anul trecut. Continuă să fie în top 5 în mai multe
+clasamente. Versiunile de C++ moderne (>=11) sunt relevante.
 
 Dacă e să ne luăm după anumite [sondaje](https://www.jetbrains.com/lp/devecosystem-2021/cpp/),
 doar 6% mai folosesc versiuni vechi de C++ vechi și nu vor să treacă pe versiuni mai noi.
@@ -851,7 +854,12 @@ Tot ce alocăm explicit cu funcțiile/operatorii de alocare trebuie să eliberă
 În caz contrar, avem memory leaks sau alte erori de memorie.
 
 Pentru a detecta erorile de memorie, folosim programe specializate (valgrind, GCC/Clang sanitizers).
-Pe Windows nu am găsit un astfel de program care să fie gratuit și să mai și funcționeze.
+Pe Windows ~~nu am găsit un astfel de program care să fie gratuit și să mai și funcționeze~~
+există în sfârșit sanitizers, însă doar pe
+[MSVC](https://docs.microsoft.com/en-us/cpp/sanitizers/asan). Nu recomand MSVC pentru că ocupă
+_mult prea mult_ spațiu pe disc. Probabil se poate instala și o versiunea mai
+[mică](https://community.chocolatey.org/packages/visualstudio2022buildtools), dar nu am nervi
+să testez că nu e mai puțin bloatware sau că nu cere licență de activare.
 
 #### Directive de preprocesare
 
@@ -1346,6 +1354,6 @@ fișier sursă nu mai trebuie recompilat (de obicei)
 În mod obișnuit, etapa de linking nu poate fi executată în paralel. Dacă vrem să putem face asta, avem
 nevoie de [instrumente specializate](https://github.com/rui314/mold).
 
----
+#### Diverse
 
-[stackoverflow-survey-2021]: https://insights.stackoverflow.com/survey/2021
+[//]: # (https://stackoverflow.com/questions/53315710/trigraphs-in-a-comment-converted-in-c11-ignored-in-c17)

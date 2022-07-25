@@ -2,6 +2,8 @@
 
 Scopul ultimei teme este utilizarea unor noțiuni mai avansate de OOP (design patterns) și a programării generice.
 
+[//]: # (nitpick: ar fi mai corect să spunem șabloane de funcții și șabloane de clase; este abuz de limbaj)
+
 ### Cerințe
 - minim o funcție șablon și o clasă șablon (template)
     - modificați o clasă existentă care este ceva mai izolată de celelalte (să nu aveți foarte mult de modificat) și transformați-o în clasă template
@@ -717,6 +719,12 @@ int main() {
 Observații:
 - toate funcțiile unei clase template sunt la rândul lor funcții template
 - clasele template sunt de obicei utile dacă vrem să ne definim diverse structuri de date (de exemplu arbori)
+
+#### Curiously recurring template pattern (CRTP)
+
+[//]: # (TODO)
+
+[//]: # (https://devblogs.microsoft.com/oldnewthing/20220721-00/?p=106879)
 
 #### Tipuri de date dependente
 

@@ -902,11 +902,13 @@ de altă parte, `os` nu poate fi `const`, deoarece stream-ul de afișare se modi
 
 Funcțiile prieten (`friend`) ne permit accesul la câmpurile private ca să nu mai fie nevoie de getters.
 Afișarea este o operație foarte comună și este strâns legată de clasă, motiv pentru care este în regulă
-să putem accesa în mod direct atributele private (într-un cadru restrâns).
+să putem accesa în mod direct atributele private (într-un cadru restrâns). Noțiunea de funcție friend
+nu există și în alte limbaje. O noțiune similară ar fi accesul la nivel de pachet/modul/namespace.
 
 În biblioteca standard, avem ca funcție ajutătoare `std::to_string`. Totuși, nu avem definit `operator<<`
 pentru toate tipurile de date, deoarece există prea multe posibilități de a face asta (care pot afecta
 performanța), iar C++ încearcă să fie un limbaj general și să acopere cât mai multe cazuri.
+De aceea, nu sunt furnizate decât implementări care să meargă pe multe cazuri (uneori, prea multe).
 
 De exemplu, în cazul vectorilor nu am vrea să afișăm toate elementele dacă acestea sunt extrem de multe.
 

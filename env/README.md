@@ -192,6 +192,13 @@ Las [aici](https://www.jetbrains.com/help/clion/quick-cmake-tutorial.html) un tu
 Dacă nu folosiți CLion, vă puteți uita pe
 [CMakeLists.txt din repository-ul template](https://github.com/mcmarius/oop-template/blob/main/CMakeLists.txt).
 
+[//]: # (https://cliutils.gitlab.io/modern-cmake/)
+
+[//]: # (https://github.com/ttroy50/cmake-examples)
+
+Dacă nu vreți să folosiți nici CMake, ne facem timp și configurăm CI-ul să funcționeze cu alternativa
+dorită de voi.
+
 ## Configurarea și utilizarea programului Git
 
 ### Instalare

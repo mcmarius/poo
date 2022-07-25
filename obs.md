@@ -405,8 +405,8 @@ Da, cu copy and swap. Vezi tema 2.
 
 #### Ce se întâmplă dacă facem auto-atribuiri?
 
-În cazurile în care facem întâi `delete[]` și apoi `new[]` poate să sară în aer foarte ușor(
-nu zic numai eu asta, vezi
+În cazurile în care facem întâi `delete[]` și apoi `new[]` poate să sară în aer foarte ușor
+(nu zic numai eu asta, vezi
 [aici](https://isocpp.org/wiki/faq/assignment-operators#self-assignment-why)).
 Din nefericire, este mai greu de demonstrat întrucât avem nevoie de niște alocări
 între `delete[]` și `new[]` care să dea peste cap allocator-ul și să nu mai aloce vectorul
