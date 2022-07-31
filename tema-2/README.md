@@ -31,7 +31,7 @@ class B {
 
 ---
 
-**Moștenirea** este un alt concept de POO prin care dorim să modelăm legături de tipul "B **este un fel de** A".
+**Moștenirea** este un concept de POO prin care dorim să modelăm legături de tipul "B **este un fel de** A".
 
 Sintaxa pentru moștenire folosește `:`. Exemplu:
 ```c++
@@ -1207,10 +1207,10 @@ Acest aspect este deosebit de grav dacă în destructorii din derivate eliberăm
 Are sens să facem destructorii virtuali doar dacă avem și alte funcții virtuale.
 Reciproca nu este adevărată!
 
-Putem avea funcții virtuale fără să facem și destructorii virtuali. Totuși, nu văd utilitatea acestei abordări,
-deoarece nu pot fi reținute decât adresele unor variabile locale și apare foarte ușor riscul de
-referințe/pointeri agățate/agățați (dangling reference/pointer). Poate avea sens atunci când avem
-legături între clase în ambele direcții, dar tot mi se pare forțat.
+Limbajul ne permite să avem funcții virtuale fără să facem și destructorii virtuali. Totuși, nu văd
+utilitatea acestei abordări, deoarece nu pot fi reținute decât adresele unor variabile locale și apare
+foarte ușor riscul de referințe/pointeri agățate/agățați (dangling reference/pointer). Poate avea sens
+atunci când avem legături între clase în ambele direcții, dar tot mi se pare forțat.
 Dacă găsiți un exemplu _cu sens_, vă rog să îmi spuneți și mie.
 
 **Destructor protected și non-virtual**
@@ -1690,6 +1690,8 @@ o convenție standard pentru denumirea funcției virtuale private. Singura restr
 
 Având în vedere că nu putem prezice viitorul și ce modificări va trebui să facem, costul de a adăuga câteva rânduri
 în plus în clasa de bază este neglijabil în comparație cu rescrierea ulterioară a codului în mai multe derivate.
+Pe de altă parte, dacă unele funcții nu sunt foarte strâns legate de clasă, o idee mai bună este să folosim
+compunerea și să extragem acele funcții în una sau mai multe clase noi.
 
 Sursa de inspirație și detalii [aici](http://www.gotw.ca/publications/mill18.htm).
 
@@ -2805,7 +2807,7 @@ private:
 };
 ```
 
-#### Diverse
+#### Diverse (funcții virtuale)
 
 [//]: # (Alte funcții virtuale)
 
@@ -4870,6 +4872,10 @@ de clasă, atributele statice nu aparțin tuturor obiectelor clasei, din simplul
 vreun obiect din clasa respectivă. Atributele statice sunt pe clasă.
 
 **Atributele membru statice trebuie inițializate în afara clasei, într-un singur fișier `.cpp`!**
+
+Este nevoie să facem inițializarea **doar într-un `.cpp`**, deoarece fișierele `.h` pot fi incluse de mai
+multe ori, iar inițializarea s-ar realiza de mai multe ori, ceea ce este interzis de limbaj. Fișierele
+`.cpp` sunt compilate o singură dată și nu sunt incluse de alte fișiere.
 ```c++
 #include <iostream>
 
@@ -4998,13 +5004,700 @@ că localizate la nivel de clasă.
 
 #### Moștenire multiplă și virtuală
 
-[//]: # (important de zis cu apelarea bazei comune la moștenire virtuală; restul, cu altă ocazie...)
+Exemplele anterioare au ilustrat doar moștenirea simplă, dintr-o singură clasă de bază. Pentru a nu crea un număr
+mare de clase intermediare, este util să avem posibilitatea să moștenim pe un singur nivel din mai multe baze.
+Moștenirea multiplă poate fi împărțită în două categorii:
+- clase de bază fără atribute
+- clase de bază cu atribute
 
-[//]: # (exemplu de situație utilă https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rh-kind)
+De regulă, clasele de bază fără atribute au rolul de interfețe: aceste clase doar declară niște funcții
+virtuale pure și nu oferă o implementare. Clasele derivate sunt forțate să aibă definiții pentru funcțiile
+din clasa de bază dacă vor să arate că implementează acea interfață.
+
+Moștenirea de interfețe este cel mai frecvent întâlnit tip de moștenire multiplă și este oferit de majoritatea
+limbajelor OOP. Vom relua ideea la tema 3 din altă perspectivă.
+
+Exemplul este inspirat de [aici](https://docs.github.com/en/graphql/reference/interfaces).
+```c++
+class identifiable {
+    const int id;
+public:
+    virtual ~identifiable() = default;
+    identifiable() : id(generate_id()) {}
+    int get_id() const { return id; }
+};
+
+class deletable {
+    virtual ~deletable() = default;
+    virtual bool can_be_deleted() const = 0;
+};
+
+class loggable {
+    virtual ~loggable() = default;
+    virtual void log(std::string message) const { /* ... */ }
+};
+
+class pinned_post : public identifiable, public deletable, public loggable {
+    user user_;
+public:
+    bool can_be_deleted() const override {
+        return user_.is_author(*this) || user_.is_admin();
+    }
+
+    // void log(std::string message) const override { /* custom logging logic */ }
+};
+```
+
+Exemplul este minimal pentru a înțelege ideea. Nu sunt definite toate clasele/funcțiile ca să compileze.
+Toate interfețele au destructorii virtuali în cazul în care ne-am referi prin pointeri de bază.
+
+Unele interfețe nu pot defini un comportament implicit și atunci obligă clasele care le implementează să
+ofere definiții pentru funcțiile virtuale pure. Alte interfețe au funcționalități suficient de bune și
+putem păstra logica inițială, însă avem posibilitatea să o suprascriem.
+
+Exemplul nu este grozav pentru că avem un atribut în clasa `identifiable`. Identificatorul ar putea fi
+mutat în clasa care implementează interfața.
+
+Multe interfețe comune din alte limbaje sunt implementate sub formă de operatori în C++:
+
+|     C++      | Alte limbaje |
+|:------------:|:------------:|
+| `operator<`  | `Comparable` |
+| `operator==` | `Equatable`  |
+| `operator++` |  `Iterable`  |
+| `operator<<` | `Printable`  |
+| `operator()` |  `Callable`  |
+
+---
+
+Moștenirea multiplă în care clasele de bază au atribute este implementată la nivel de limbaj în C++,
+[Python](https://docs.python.org/3/tutorial/classes.html#multiple-inheritance),
+[MATLAB](https://www.mathworks.com/help/matlab/matlab_oop/subclassing-multiple-classes.html),
+[Perl](https://perldoc.perl.org/perlobj#Multiple-Inheritance),
+[Raku](https://docs.raku.org/language/classtut#Multiple_inheritance) și încă unele mai puțin cunoscute.
+O parte dintre acestea folosesc un [algoritm de liniarizare](https://en.wikipedia.org/wiki/C3_linearization)
+pentru a transforma moștenirea multiplă în mai multe moșteniri simple. Algoritmul a apărut la 7-10 ani după
+ce [moștenirea multiplă a apărut în C++](https://en.cppreference.com/w/cpp/language/history).
+
+Dacă ne uităm pe documentațiile respective, vedem că acest fel de moștenire nu este tocmai simplu de realizat
+corect și nu este recomandat în majoritatea situațiilor, în favoarea moștenirilor din interfețe
+([exemplu](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rh-mi-interface)).
+Și dacă tot vorbim de istorie, probabil nu este întâmplător că majoritatea limbajelor apărute mai târziu
+nu oferă moștenire multiplă pentru clase de bază cu atribute, iar această decizie este una intenționată.
+
+Înainte de a arăta dezavantajele moștenirii multiple, să prezentăm sintaxa printr-un exemplu:
+```c++
+class căști {
+    int volum_min;
+    int volum_max;
+    int volum;
+};
+
+class microfon {
+    double senzitivitate;
+    bool suprimare_ecou;
+};
+
+class căști_cu_microfon : public căști, public microfon {};
+```
+
+Căștile cu microfon sunt _un fel de_ căști, dar se comportă și ca _un fel de_ microfon. Dacă nu am fi
+dorit să expunem partea de "microfon", o variantă era să folosim compunere în loc de moștenire. Totuși,
+în acest caz, căștile cu microfon nu ar fi putut fi transmise unei funcții/unui obiect care necesită un
+microfon.
+
+Toate atributele din cele două baze sunt preluate de clasa derivată. Desigur, atributele trebuie declarate
+`protected` dacă vrem să le accesăm direct în derivată. De asemenea, în situații și mai rare, una sau mai
+multe moșteniri pot fi `private` sau `protected` în loc de `public`.
+
+**Atenție!** O eroare frecventă este să scriem moștenirea fără să scriem explicit specificatorii de acces
+la fiecare moștenire în parte. Implicit este `private`!
+```c++
+class căști_cu_microfon : public căști, microfon {};
+```
+
+Denumirea clasei derivate nu este tocmai una fericită, însă nu am găsit alt exemplu mai bun (momentan).
+Dacă un nume de atribut sau de funcție cu același antet apare în mai multe baze, avem ambiguitate în
+derivată și trebuie să ne referim la atribut/funcție cu prefixul bazei: `baza1::f()` sau `baza2::f()`.
+
+Atunci când clasele de bază provin din ierarhii complet independente, moștenirea multiplă este cel mai natural
+mod de a modela problema, iar eventualele ambiguități sunt ușor de rezolvat. Nu ne întâlnim foarte des cu așa
+ceva, dar în puținele situații relevante ne ajută mai mult decât improvizațiile și trucurile din limbajele
+fără moștenire multiplă.
+
+Modificăm exemplul de mai sus: adăugăm o bază comună și punem mesaje de afișare în constructori și destructori.
+```c++
+#include <iostream>
+
+class periferic {
+public:
+    enum tip_conector { Con3_5, USB, USB_C, Bluetooth };
+
+    periferic(tip_conector conector_ = USB) : conector(conector_) {
+        std::cout << "constr periferic " << conector << "\n";
+    }
+
+    ~periferic() {
+        std::cout << "destr periferic " << conector << "\n";
+    }
+
+    virtual void conectează() const {
+        std::cout << "periferic conectat pe " << conector << "\n";
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, tip_conector con) {
+        switch(con) {
+        case Con3_5:
+            os << "3.5mm";
+            break;
+        case USB:
+            os << "USB";
+            break;
+        case USB_C:
+            os << "USB-C";
+            break;
+        case Bluetooth:
+            os << "bluetooth";
+            break;
+        default:
+            os << "necunoscut";
+        }
+        return os;
+    }
+private:
+    tip_conector conector;
+};
+
+class căști : public periferic {
+public:
+    căști() : periferic(Con3_5) {
+        std::cout << "constr căști\n";
+    }
+
+    ~căști() {
+        std::cout << "destr căști\n";
+    }
+
+    void conectează() const override {
+        std::cout << "căști conectate\n";
+    }
+private:
+    int volum_min = 0;
+    int volum_max = 10;
+    int volum = 4;
+};
+
+class microfon : public periferic {
+public:
+    microfon() : periferic(USB_C) {
+        std::cout << "constr microfon\n";
+    }
+
+    ~microfon() {
+        std::cout << "destr microfon\n";
+    }
+    void conectează() const override {
+        std::cout << "microfon conectat\n";
+    }
+private:
+    double senzitivitate = 4.2;
+    bool suprimare_ecou = true;
+};
+
+class căști_cu_microfon : public căști, public microfon { // linia 78
+public:
+    căști_cu_microfon() {
+        std::cout << "constr căști cu microfon\n";
+    }
+
+    ~căști_cu_microfon() {
+        std::cout << "destr căști cu microfon\n";
+    }
+};
+
+int main() {
+    căști_cu_microfon cm1;
+    // cm1.conectează(); // eroare! care funcție conectează?
+    cm1.căști::conectează();
+}
+```
+
+Observăm că se construiește câte un obiect din clasa de bază `periferic` pentru fiecare bază în parte, fiindcă
+bazele sunt considerate complet independente. Constructorii sunt apelați în ordinea din definiția clasei,
+adică linia 78! Dacă nu apelăm bazele explicit, se apelează fiecare bază cu constructorul fără parametri.
+Dacă într-o bază nu avem constructor fără parametri, primim eroare. Constructorul din ultima derivată este
+echivalent cu următorul:
+```c++
+    căști_cu_microfon() : căști(), microfon() {
+        std::cout << "constr căști cu microfon\n";
+    }
+```
+
+**Exercițiu!** Verificați acest lucru: schimbați una dintre baze (`căști` sau `microfon`) pentru a avea doar
+constructor cu parametri.
+
+Când vine vorba de funcționalități, lucrurile sunt un pic mai complicate. Dacă ambele baze suprascriu o
+funcție virtuală din baza comună, derivata are ambiguitate dacă încercăm să facem apeluri de funcții. Nu
+primim eroare de compilare dacă nu apelăm nicăieri funcția, chiar dacă avem ambiguitate!
+
+Specific C++ (nu am săpat în alte limbaje), avem sintaxa oarecum inutilă de care ziceam
+[mai devreme](#diverse-funcii-virtuale) prin care apelăm direct funcția din baza care ne interesează. Totuși,
+este mai mult un hack.
+
+Mai departe, dacă avem o funcționalitate comună în baza inițială (`periferic`), am vrea să folosim interfața
+non-virtuală ca să nu fie apelată această funcționalitate de două ori în derivată (`căști_cu_microfon`).
+Codul inițial ar fi următorul:
+```c++
+class periferic {
+public:
+    virtual void conectează() const {
+        std::cout << "periferic conectat pe " << conector << "\n";
+    }
+};
+
+class căști : public periferic {
+public:
+    void conectează() const override {
+        periferic::conectează();
+        std::cout << "căști conectate\n";
+    }
+};
+
+class microfon : public periferic {
+public:
+    void conectează() const override {
+        periferic::conectează();
+        std::cout << "microfon conectate\n";
+    }
+};
+
+class căști_cu_microfon : public căști, public microfon {
+public:
+    void conectează() const override {
+        căști::conectează();
+        microfon::conectează();
+        std::cout << "căști cu microfon conectate\n";
+    }
+};
+
+int main() {
+    căști_cu_microfon cm1;
+    cm1.conectează(); // compilează, dar nu face chiar ce trebuie
+}
+```
+
+Se va afișa:
+```
+constr periferic 3.5mm
+constr căști
+constr periferic USB-C
+constr microfon
+constr căști cu microfon
+periferic conectat pe 3.5mm
+căști conectate
+periferic conectat pe USB-C
+microfon conectat
+căști cu microfon conectate
+destr căști cu microfon
+destr microfon
+destr periferic USB-C
+destr căști
+destr periferic 3.5mm
+```
+
+Se apelează de două ori implementarea din clasa `periferic`! Cel mai probabil nu vrem asta, mai ales dacă
+este vorba de fapt despre un singur conector.
+
+**Exercițiu!** Am omis părți din cod pentru că exemplul ar fi ocupat prea multe rânduri și nu mai era clar
+ce încercam să arăt. Adaptați codul inițial cu această implementare.
+
+**Exercițiu!** Rescrieți codul pentru a folosi o interfață non-virtuală. Indiciu:
+```c++
+class periferic {
+public:
+    void conectează() const {
+        std::cout << "periferic conectat pe " << conector << "\n";
+        // apel de funcție virtuală privată
+    }
+};
+```
+
+Dacă doar unele clase din ierarhie au nevoie de codul comun din bază, funcția respectivă ar trebui să fie
+protected și eventual non-virtuală.
+
+Pentru acest exemplu, este discutabil dacă are sens să avem conectori diferiți pentru căști și microfon dacă
+este vorba despre un singur periferic. Obiectele de tip `cășți_cu_microfon` au două atribute: `căști::conector`
+și `microfon::conector`. Dacă mai aveam o bază derivată din `periferic`, mai apărea încă un `conector`.
+
+Pentru a elimina atributele care apar de mai multe ori în derivata care moștenește clase cu bază comună,
+C++ ne pune la dispoziție moștenirea virtuală. Moștenirea virtuală trebuie activată pe primul nivel din
+ierarhie!
+
+Codul de mai sus rămâne aproape identic. Nu reiau tot exemplul, menționez doar modificările necesare:
+```c++
+class căști : public virtual periferic { /* restul este identic */ };
+class microfon : public virtual periferic { /* restul este identic */ };
+```
+
+Ce se va afișa acum?
+```
+constr periferic USB
+constr căști
+constr microfon
+constr căști cu microfon
+periferic conectat pe USB
+căști conectate
+periferic conectat pe USB
+microfon conectat
+căști cu microfon conectate
+destr căști cu microfon
+destr microfon
+destr căști
+destr periferic USB
+```
+
+Constructorul clasei `periferic` s-a apelat acum o singură dată. Totuși...
+
+De ce `USB`??? Conectorul de la căști este implicit `3.5mm` și nu avem alt constructor, iar conectorul de la
+microfon este implicit `USB-C` și nu avem alt constructor. Ce se întâmplă???
+
+La moștenirea virtuală, compilatorul trebuie să garanteze că baza comună se construiește **o singură dată**,
+înaintea tuturor derivatelor care urmează. Derivatele `căști` și `microfon` nu mai apelează constructorul
+clasei de bază `periferic` în acest context, deoarece acesta a fost deja apelat! Așadar, constructorul generat
+de compilator din clasa `căști_cu_microfon` este echivalent cu următorul constructor:
+```c++
+    căști_cu_microfon() : periferic(), căști(), microfon() {
+        std::cout << "constr căști cu microfon\n";
+    }
+```
+
+Prin urmare, dacă vrem să setăm atributul respectiv, am scrie constructorul astfel:
+```c++
+    căști_cu_microfon(tip_conector con) : periferic(con), căști(), microfon() {
+        std::cout << "constr căști cu microfon\n";
+    }
+```
+
+**Observație!** Dacă avem constructor cu parametri în baza comună și nu îl apelăm explicit din derivată,
+primim eroare la compilare. Presupunem că revenim la versiunea anterioară a codului, iar în bază nu mai
+avem valoare implicită (restul rămâne la fel, cu moșteniri virtuale):
+```c++
+class periferic {
+public:
+    periferic(tip_conector conector_) : conector(conector_) {
+        std::cout << "constr periferic " << conector << "\n";
+    }
+};
+
+class căști_cu_microfon : public căști, public microfon {
+public:
+    căști_cu_microfon() : căști(), microfon() {
+        std::cout << "constr căști cu microfon\n";
+    }
+};
+```
+
+Avem moștenire virtuală, deci implicit avem în constructorul din derivată este echivalent cu a avea:
+```c++
+căști_cu_microfon() : periferic(), căști(), microfon() {}
+```
+
+Primim următoarea eroare:
+```
+main.cpp: In constructor ‘căști_cu_microfon::căști_cu_microfon()’:
+main.cpp:82:45: error: no matching function for call to ‘periferic::periferic()’
+   82 |     căști_cu_microfon() : căști(), microfon() {
+      |                                             ^
+main.cpp:7:5: note: candidate: ‘periferic::periferic(periferic::tip_conector)’
+    7 |     periferic(tip_conector conector_) : conector(conector_) {
+      |     ^~~~~~~~~
+main.cpp:7:5: note:   candidate expects 1 argument, 0 provided
+main.cpp:3:7: note: candidate: ‘constexpr periferic::periferic(const periferic&)’
+    3 | class periferic {
+      |       ^~~~~~~~~
+main.cpp:3:7: note:   candidate expects 1 argument, 0 provided
+```
+
+Clang ne oferă un mesaj ceva mai clar:
+```
+main.cpp:82:5: error: constructor for 'căști_cu_microfon' must explicitly initialize the base class 'periferic' which does not have a default constructor
+    căști_cu_microfon() : căști(), microfon() {
+    ^
+main.cpp:3:7: note: 'periferic' declared here
+class periferic {
+      ^
+```
+
+Totuși, dacă includem apelul explicit al bazei, se presupune că știm ce facem și primim acest mesaj de la clang.
+Săgeata este mai bine poziționată decât la g++, unde mesajul este identic:
+```
+main.cpp:82:29: error: no matching constructor for initialization of 'periferic'
+    căști_cu_microfon() : periferic(), căști(), microfon() {
+                          ^
+main.cpp:7:5: note: candidate constructor not viable: requires single argument 'conector_', but no arguments were provided
+    periferic(tip_conector conector_) : conector(conector_) {
+    ^
+main.cpp:3:7: note: candidate constructor (the implicit copy constructor) not viable: requires 1 argument, but 0 were provided
+class periferic {
+      ^
+```
+
+Atât moștenirea multiplă, cât și inițializarea sunt funcționalități foarte complicate în C++ dacă intrăm în
+(prea multe) detalii. Este posibil să dați de diverse bug-uri pe compilatoare mai vechi (g++ < 8)
+dacă folosiți moștenire multiplă și inițializare cu acolade.
+
+Ca fapt divers, `virtual public` este același lucru, dar nu mai merge syntax highlight pe github
+(oricum nu prea merge dacă avem diacritice).
+
+**Observație! Nu punem moștenirea virtuală atunci când "unim" clasele, ci pe primul nivel unde facem derivate!**
+
+Pentru a ne convinge, modificăm clasele anterioare astfel:
+```c++
+class periferic { /* restul este identic */ };
+class căști : public periferic { /* restul este identic */ };
+class microfon : public periferic { /* restul este identic */ };
+class căști_cu_microfon : public virtual căști, public virtual microfon { /* restul este identic */ };
+```
+
+Se va afișa:
+```
+constr periferic 3.5mm
+constr căști
+constr periferic USB-C
+constr microfon
+constr căști cu microfon
+periferic conectat pe 3.5mm
+căști conectate
+periferic conectat pe USB-C
+microfon conectat
+căști cu microfon conectate
+destr căști cu microfon
+destr microfon
+destr periferic USB-C
+destr căști
+destr periferic 3.5mm
+```
+
+Dacă punem `virtual` acolo, **nu are niciun efect!** Moștenirea virtuală se activează de-abia după aceea.
+Acele `virtual`-uri ar avea efect doar dacă facem derivate din `class_căști_cu_microfon` și eventual cu
+alte baze virtuale, dar s-ar elimina din atributele comune doar în aceste derivate ulterioare **după ce**
+a fost activată moștenirea virtuală.
+
+Să mai vedem ceva. Ce afișează programul de mai jos?
+```c++
+#include <iostream>
+
+class bază {};
+class der1 : public bază {};
+class der2 : public bază {};
+class der3 : public bază {};
+class der4 : public der1, public der2, public der3 {};
+class bază2 {};
+class der5 : public bază, public bază2 {};
+
+int main() {
+    std::cout << "sizeof(bază): " << sizeof(bază) << "\n";
+    std::cout << "sizeof(der1): " << sizeof(der1) << "\n";
+    std::cout << "sizeof(der4): " << sizeof(der4) << "\n";
+    std::cout << "sizeof(der5): " << sizeof(der5) << "\n";
+}
+```
+
+Se va afișa:
+```
+sizeof(bază): 1
+sizeof(der1): 1
+sizeof(der4): 3
+sizeof(der5): 1
+```
+
+Dar pe msvc:
+```
+sizeof(bază): 1
+sizeof(der1): 1
+sizeof(der4): 2
+sizeof(der5): 1
+```
+
+Așadar, moștenirea multiplă cu bază comună nu este tocmai gratuită, dar nu avem costuri dacă bazele sunt
+complet independente. Dar moștenirea virtuală? Să ne limităm momentan la două clase derivate:
+```c++
+#include <iostream>
+
+class bază {};
+class der1 : public virtual bază {};
+class der2 : public virtual bază {};
+class der4 : public der1, public der2 {};
+
+int main() {
+    std::cout << "sizeof(bază): " << sizeof(bază) << "\n";
+    std::cout << "sizeof(der1): " << sizeof(der1) << "\n";
+    std::cout << "sizeof(der4): " << sizeof(der4) << "\n";
+}
+```
+
+Se va afișa (pe g++, clang, msvc):
+```
+sizeof(bază): 1
+sizeof(der1): 8
+sizeof(der4): 16
+```
+
+Nici moștenirea virtuală nu este gratuită, dar plătim costul doar pentru pointerii de la moștenirea virtuală.
+
+Pentru 3 moșteniri, vom avea (pe g++, clang, msvc):
+```
+sizeof(bază): 1
+sizeof(der1): 8
+sizeof(der4): 24
+```
+
+Dar dacă avem și funcții virtuale?
+```c++
+#include <iostream>
+
+class bază {
+public:
+    virtual ~bază() = default;
+};
+
+class der1 : public virtual bază {};
+class der2 : public virtual bază {};
+class der4 : public der1, public der2 {};
+
+int main() {
+    std::cout << "sizeof(bază): " << sizeof(bază) << "\n";
+    std::cout << "sizeof(der1): " << sizeof(der1) << "\n";
+    std::cout << "sizeof(der4): " << sizeof(der4) << "\n";
+}
+```
+
+Se va afișa:
+```
+sizeof(bază): 8
+sizeof(der1): 8
+sizeof(der4): 16
+```
+
+Iar dacă avem 3 derivate:
+```
+sizeof(bază): 8
+sizeof(der1): 8
+sizeof(der4): 24
+```
+
+Așadar, fiecare moștenire virtuală pare să adauge un nou pointer, însă nu mai crește `sizeof`-ul și când
+adăugăm funcții virtuale. Sau nu chiar! **Depinde de compilator!**
+
+Pe msvc cu 3 derivate se va afișa:
+```
+sizeof(bază): 8
+sizeof(der1): 16
+sizeof(der4): 24
+```
+
+Cu acest bagaj de cunoștințe, poate fi mai ușor să analizăm un alt exemplu de eroare. De câte ori avem `x`
+în clasa `der4`?
+```c++
+class bază { int x; };
+class der1 : public virtual bază {};
+class der2 : public virtual bază {};
+class der3 : public bază {};
+class der4 : public der1, public der2, public der3 {};
+
+int main() {
+    std::cout << "sizeof(bază): " << sizeof(bază) << "\n";
+    std::cout << "sizeof(der1): " << sizeof(der1) << "\n";
+    std::cout << "sizeof(der3): " << sizeof(der3) << "\n";
+    std::cout << "sizeof(der4): " << sizeof(der4) << "\n";
+}
+```
+
+Întâi de toate, primim acest warning pe gcc (nu și pe clang):
+```
+main.cpp:110:7: warning: virtual base ‘bază’ inaccessible in ‘der4’ due to ambiguity [-Winaccessible-base]
+  110 | class der4 : public der1, public der2, public der3 {};
+      |       ^~~~
+```
+
+Se va afișa:
+```
+sizeof(bază): 4
+sizeof(der1): 16
+sizeof(der3): 4
+sizeof(der4): 24
+```
+
+Iar pe msvc:
+```
+sizeof(bază): 4
+sizeof(der1): 16
+sizeof(der3): 4
+sizeof(der4): 32
+```
+
+Presupunem că `sizeof(int) == 4`. Pe g++/clang avem în `der4`:
+- 4 bytes dintr-un `x` de la `der1` și `der2`
+- 4 bytes dintr-un `x` de la `der3`
+- 8 bytes din `virtual` de la der1
+- 8 bytes din `virtual` de la der2
+
+Total: 24.
+
+Pe msvc, bănuiala mea este că ocupă mai mult din cauza unor bytes de padding. Cu directiva `#pragma pack(1)`
+obținem și pe msvc 24 pentru `der4`. Pentru `der1` am obține 12, deci și acolo pare să fie padding.
+
+Moștenirea multiplă și virtuală complică multe alte aspecte ale limbajului (de exemplu, excepțiile și RTTI).
+Am omis acest lucru în secțiunile precedente. Ca să nu discredităm complet aceste facilități, menționez că
+ele sunt utile atunci când alternativele îngreunează și mai mult întreținerea și extinderea codului.
+Detalii, explicații și exemple [aici](https://isocpp.org/wiki/faq/multiple-inheritance) și
+[aici](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rh-kind).
 
 ### Principiile SOLID
 
-[//]: # (circle elipse problem)
+Principiile SOLID sintetizează câteva recomandări pentru a scrie cod OOP ușor de întreținut și de extins.
+
+- **S**: Single responsibility principle
+- **O**: Open-closed principle
+- **L**: Liskov substitution principle
+- **I**: Interface segregation principle
+- **D**: Dependency inversion principle
+
+Să le luăm pe rând.
+
+**S**-ul din SOLID ne spune că nu trebuie să avem o clasă care face prea multe lucruri. Este de preferat să
+avem mai multe clase mici decât o singură clasă mare cu multe funcții și atribute. Prin izolarea diverselor
+funcționalități în clase separate, codul este mai ușor de depanat, de refactorizat și de testat.
+
+Dacă o clasă are mai mult de 5-10 funcții publice (în aplicații mai mari 1-3 funcții publice), cel mai
+probabil clasa face prea multe și ar trebui restructurat codul în mai multe clase/module ajutătoare. Dacă o
+funcție are mai mult de ~60-100 de rânduri (să încapă pe un ecran fără să facem prea mult scroll), probabil
+trebuie împărțită în funcții mai mici. Trebuie găsit un echilibru ca să nu ajungem în extrema cealaltă cu
+multe funcții foarte mici (over-engineering).
+
+**O**-ul din SOLID se referă la faptul că ce implementăm ar trebui să fie "open for extension, closed for
+modification". Partea cu "open" înseamnă că este ușor să adăugăm noi funcționalități. Partea cu "closed"
+înseamnă că nu ar trebui să schimbăm codul/comportamentul existent dacă o funcție/clasă/modul depinde de
+acest cod.
+
+Cu alte cuvinte, să nu stricăm ce merge deja. Atunci când adăugăm o nouă derivată, nu ar trebui să avem
+nevoie să schimbăm codul în clasa de bază sau în derivate.
+
+**L**-ul din SOLID zice că orice obiect de tip clasă de bază ar trebui să poată fi substituit (înlocuit) cu
+un obiect din orice derivată a acelei clase de bază fără ca funcționalitatea să fie alterată. Un obiect de
+clasă derivată _este un fel de_ obiect de clasă de bază.
+
+Derivatele noi nu ar trebui să fie complet diferite de clasa de bază. O încălcare a acestui principiu este
+problema cu [cercul și elipsa](https://en.wikipedia.org/wiki/Circle%E2%80%93ellipse_problem).
+
+**I**-ul din SOLID seamănă într-un fel cu **S**-ul. Ideea ar fi să nu avem interfețe prea complicate sau
+prea generale ca să avem cât mai puține situații de felul "unde dai și unde crapă". Dacă interfețele sunt
+cât de cât specifice, defectele sunt ușor de identificat pentru că afectează o mică parte din cod.
+
+**D**-ul din SOLID ne spune să ne bazăm pe interfețe, nu pe detalii de implementare. Am respectat acest
+principiu când am vorbit despre interfețe non-virtuale. Clasele derivate lasă clasa de bază să definească
+interfața. Poate să fie dificil la început să ne "inversăm" modul de gândire de până acum, dar ideea de
+interfață non-virtuală ar trebui să ne ghideze.
 
 [//]: # (### Fișiere header și fișiere sursă)
 
