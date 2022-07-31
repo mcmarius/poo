@@ -81,7 +81,7 @@ ar trebui să fie `true` (`o1 == ob2` să fie `false`)
 - din nou, modificăm unul dintre obiecte
 - dacă op= face ce trebuie, obiectele nu ar mai trebui să fie egale
 
-Ar trebui să facem modificarea obiectului astfel încât să fie afectat câmpurile obiectului
+Ar trebui să facem o modificare asupra obiectului astfel încât să fie afectate câmpurile obiectului
 care sunt mai speciale (de exemplu cele de tip pointer).
 
 În curs/seminar/alte materiale de laborator nu am văzut astfel de teste/verificări.
