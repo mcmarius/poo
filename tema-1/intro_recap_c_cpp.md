@@ -1356,4 +1356,6 @@ nevoie de [instrumente specializate](https://github.com/rui314/mold).
 
 #### Diverse
 
+[//]: # (fapt divers inutil: literalul pentru zero este în baza 8.)
+
 [//]: # (https://stackoverflow.com/questions/53315710/trigraphs-in-a-comment-converted-in-c11-ignored-in-c17)
