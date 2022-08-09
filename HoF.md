@@ -3,7 +3,13 @@
 **2021-2022**:
 [Digital Banking](https://github.com/laurentiucretu68/Digital_Banking) |
 [Modern Chess](https://github.com/Robyss/Modern-Chess) |
-[Sound synth](https://github.com/lmihaig/sound-synth) | ?
+[Sound synth](https://github.com/lmihaig/sound-synth) |
+[PiggyBank](https://github.com/vl4dio4n/PiggyBank) |
+[Inventory Management System](https://github.com/tudorcoman/oop-inventory-system) |
+[Festival de muzică](https://github.com/cristina-timbur/POO-tema2) |
+[Football Manager](https://github.com/radugheo/Football-Manager) |
+[Tetris](https://github.com/lowLevelGod/tetrispoo) |
+[Escape the maze](https://github.com/popastefan10/Escape-the-maze)
 
 **2020-2021**:
 [ArcaneArts](https://github.com/AlexMincu/ArcaneArts) |
@@ -23,7 +29,11 @@
 [Fitness & Healthcare](https://github.com/AndreiLaurentiu/OOP_Project) |
 [Randomizer!](https://github.com/Nubaz/Randomizer_Game) |
 [Rezervări cinema](https://github.com/radustefan2311/Proiect---OOP) |
-[UtilityIT](https://github.com/nicugnm/poo-cpp-proj) | ?
+[UtilityIT](https://github.com/nicugnm/poo-cpp-proj) |
+[Chess AI](https://github.com/vladciocoiu/proiect-poo) |
+[RPG](https://github.com/alin090402/OOP-RPG-project) |
+[FIFA Pack Opening Simulator](https://github.com/valentinvale/OOP_VS) |
+[WORDTYPER](https://github.com/ImCataG/poop)
 
 **2020-2021**:
 [Clash Royale](https://github.com/TIPYexe/POO_ClashRoyale) |
@@ -45,7 +55,9 @@
 [Bază de date](https://github.com/radu-moraru/OOP-project) |
 [Cofetărie](https://github.com/andreeav19/Proiect_OOP) |
 [Săli de fitness](https://github.com/NastaseMarius19/baza_de_date_sali_fitness) |
-[SNAKE++](https://github.com/Antonioo-H/OOP-Project) | ?
+[SNAKE++](https://github.com/Antonioo-H/OOP-Project) |
+[Headball](https://github.com/andreihodoroaga/Headball) |
+[Social Media Management](https://github.com/annemarie04/oop)
 
 **2020-2021**:
 [MinecraftText](https://github.com/andrei-cerbulescu/MinecraftText) |
