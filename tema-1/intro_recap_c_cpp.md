@@ -691,34 +691,40 @@ fixă, cunoscută la momentul compilării. De asemenea, avem
 
 int main() {
     std::array<int, 4> arr1 = {1, -1, 42, 8};
-    // std::array<int, 4> arr1{1, -1, 42, 8}; // echivalent
+    // std::array<int, 4> arr1{1, -1, 42, 8}; // (aproape) echivalent
     std::cout << arr1[0] << "\n";
     std::array<int, 3> arr2;
     arr2[0] = 3;
     arr2[1] = 2;
     //arr2[2] = 1;
     // arr[3] = 0; // nu se fac verificări, crapă urât la runtime, segmentation fault
-    // std::get<3>(arr2) = 0; // verificare la compilare
-    // arr2.at(3) = 0; // verificare la runtime - mai multe detalii la excepții
+    // std::get<3>(arr2) = 0; // verificare la compilare, dă eroare la compilare
+    // arr2.at(3) = 0; // verificare la runtime - se aruncă excepție; detalii la tema 2
+    // arr2.push_back(3); // eroare la compilare, std::array nu are funcția push_back
+                          // deoarece este vector de dimensiune fixă
     std::cout << "arr1.size(): " << arr1.size() << "\n";
     std::cout << "arr2.size(): " << arr2.size() << "\n";
 
-    std::vector<double> vec1{2.3};
-    vec1.push_back(3.1);  // [2.3, 3.1]
-    vec1[1] = 2;          // [2.3, 2]     // nu se fac verificări
-    // vec1.at(1) = 2;                    // verificare la runtime
-    // pt std::vector nu putem face verificări la compilare
-    int x = vec1.back();  // x == 2
+    std::vector<double> vec1{2.3, 1};       // [2.3, 1]  // inițializare cu acolade
+    vec1.push_back(3.1);  // [2.3, 1, 3.1]  // se alocă spațiu pt elementul nou adăugat
+    vec1[1] = 2;          // [2.3, 2, 3.1]  // nu se fac verificări dacă indexul 1 este valid
+                          // nu se extinde spațiul, se modifică valoarea existentă
+    // vec1[3] = 5;       // eroare la runtime, vectorul are spațiu alocat doar pt 3 elem
+                          // nu se verifică faptul că indexul 3 nu este valid
+    // vec1.at(1) = 2;    // verificare la runtime; indexul este valid, nu se aruncă excepție
+    // vec1.at(3) = 5;    // verificare la runtime; indexul este invalid, se aruncă excepție
+    // pt std::vector nu putem face verificări la compilare, nu avem `std::get` aici
+    int x = vec1.back();  // x == 3.1
     std::cout << "x: " << x << "\n";
-    vec1.pop_back();      // [2.3]
-    std::vector<int> vec2(3, 1); // [1, 1, 1]
+    vec1.pop_back();      // [2.3, 2]
+    std::vector<int> vec2(3, 1); // [1, 1, 1]  // atenție, trebuie cu paranteze aici
     vec2.push_back(2);
     std::cout << "vec1.size(): " << vec1.size() << "\n";
     std::cout << "vec2.size(): " << vec2.size() << "\n";
 }
 ```
 
-Pentru a parcurge elementele unui std::array/std::vector, avem următoarele variante:
+Pentru a parcurge elementele unui `std::array`/`std::vector`, avem următoarele variante:
 ```c++
 #include <iostream>
 
@@ -743,8 +749,20 @@ int main() {
 }
 ```
 
-Este de preferat varianta cu `for(auto& elem : arr)`, deoarece nu apelăm funcția `size()` la fiecare iterație.
-Folosim `const` dacă nu dorim să modificăm elementele.
+Mai este o variantă cu iteratori, însă de multe ori varianta echivalentă cu range-for este mult mai ușor
+de înțeles.
+
+Este de preferat varianta cu `for(auto& elem : arr)`, deoarece scriem mai puțin și nu apelăm funcția
+`size()`/`end()` la fiecare iterație. Folosim `const` dacă nu dorim să modificăm elementele.
+
+Este mai bine să folosim `std::array` decât vectori de dimensiune fixă din C (`int v[20]`) întrucât
+nu avem nevoie de o constantă în plus pentru a reține dimensiunea (avem `.size()`) și este mai ușor
+de modificat codul dacă ulterior avem nevoie să trecem la `std::vector`. De asemenea, în cazul
+`std::array`, se pot face verificări la compilare dacă accesăm un index invalid.
+
+Pentru bucle repetitive mai simple, compilatorul poate memoiza unele apeluri de funcții dacă poate
+demonstra că rezultatul apelului ar fi același la fiecare iterație. Ca să fim siguri că se fac aceste
+optimizări, ar trebui să ne uităm în codul de asamblare generat.
 
 #### Șiruri de caractere
 
