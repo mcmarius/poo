@@ -872,11 +872,13 @@ Tot ce alocăm explicit cu funcțiile/operatorii de alocare trebuie să eliberă
 În caz contrar, avem memory leaks sau alte erori de memorie.
 
 Pentru a detecta erorile de memorie, folosim programe specializate (valgrind, GCC/Clang sanitizers).
-Pe Windows ~~nu am găsit un astfel de program care să fie gratuit și să mai și funcționeze~~
-există în sfârșit sanitizers, însă doar pe
-[MSVC](https://docs.microsoft.com/en-us/cpp/sanitizers/asan). Nu recomand MSVC pentru că ocupă
-_mult prea mult_ spațiu pe disc. Probabil se poate instala și o versiunea mai
-[mică](https://community.chocolatey.org/packages/visualstudio2022buildtools), dar nu am nervi
+Pe Windows nu am găsit un astfel de program care să fie gratuit și _să mai și funcționeze_.
+Există sanitizers, însă doar pe [MSVC](https://docs.microsoft.com/en-us/cpp/sanitizers/asan)
+și nu am reușit să îl fac să detecteze ceva. Nu mi-a mers nici
+[Application Verifier](https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/application-verifier),
+tot cu MSVC. Nu recomand MSVC pentru că ocupă
+_mult prea mult_ spațiu pe disc. Probabil se poate instala și o versiune care ocupă mai
+[puțin](https://community.chocolatey.org/packages/visualstudio2022buildtools), dar nu am nervi
 să testez că nu e mai puțin bloatware sau că nu cere licență de activare.
 
 #### Directive de preprocesare
