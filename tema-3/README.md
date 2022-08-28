@@ -1,14 +1,18 @@
-### Tema 3
+# Tema 3
 
-Scopul acestei teme este utilizarea unor concepte mai avansate de OOP (design patterns) și a programării generice.
+Scopul ultimei teme este utilizarea unor noțiuni mai avansate de OOP (design patterns) și a programării generice.
 
-Cerințe:
+[//]: # (nitpick: ar fi mai corect să spunem șabloane de funcții și șabloane de clase; este abuz de limbaj)
+
+### Cerințe
 - minim o funcție șablon și o clasă șablon (template)
-    - modificați o clasă existentă care este ceva mai izolată de celelalte (să nu aveți foarte mult de modificat) și transformați-o în clasă template
+    - modificați o clasă existentă care este ceva mai izolată de celelalte
+      (să nu aveți foarte mult de modificat) și transformați-o în clasă template
     - adăugați (minim) un atribut de tip `T` sau care depinde de `T`
-    - adăugați (minim) o funcție membru care să depindă de `T` (sau de alt parametru template); idee: [expresii de tip fold](#expresii-de-tip-fold-c17)
+    - adăugați (minim) o funcție membru care să depindă de `T` (sau de alt parametru template);
     - adăugați (minim) o funcție normală/liberă template; poate să fie `friend`
-- minim 2 design patterns (3 dacă aveți singleton sau ceva la fel de simplu și proiectul e simplu); **utilizarea acestor design patterns ar trebui să aibă sens**
+- minim 2 design patterns (3 dacă aveți singleton sau ceva la fel de simplu și proiectul e simplu);
+  **utilizarea acestor design patterns ar trebui să aibă sens**
 
 Observații:
 - desigur, pt nota 10 trebuie să nu fie warnings sau erori de memorie
@@ -16,13 +20,13 @@ Observații:
 - puteți folosi și alte design patterns pe lângă cele prezentate aici
 - aceste patterns se pot combina între ele și au numeroase variațiuni
 
-**Deadline feature freeze** (dar prelungim atât cât se poate pt mici modificări); după această dată, cel mult reparat bug-uri
-  - sem 1: **29 decembrie** (inclusiv)
-  - sem 2: **3 iunie** (inclusiv)
+#### Termen limită
+- săptămâna 11 (18 decembrie/7 mai): progres parțial
+- **săptămâna 12 (22 decembrie/14 mai): tema 3 gata**
+- săptămâna 13 (8 ianuarie/21 mai): (eventuale) modificări în urma feedback-ului
 
-Orice funcționalitate în plus e luată în considerare pentru puncte bonus, inclusiv la temele din urmă. Nota maximă este 12.
-
-Dacă doriți să folosiți conceptele din C++20, am actualizat pipeline-ul de GitHub Actions. [Puteți vedea modificările aici](https://github.com/mcmarius/demo-poo/pull/19/files#diff-cdd48abbd3eb8d1c54077449fc74a8de1f29805d2be5d8e5232b7aab76ea7a6fL17) (vedeți și [următorul commit](https://github.com/mcmarius/demo-poo/commit/ab2b37c1d999ce9f7030464ece1e0be802309421) pe repo).
+Orice funcționalitate în plus e luată în considerare pentru puncte bonus, inclusiv la temele din urmă.
+Nota maximă este 12.
 
 -----
 
@@ -39,31 +43,31 @@ Exemplu: un obiect care gestionează o aplicație/un joc
 class application {
 private:
     application() = default;
-    static application* app;
 public:
     application(const application&) = delete;
     application& operator=(const application&) = delete;
-    static application* get_app() {
-        if(app == nullptr) { app = new application; }
+    static application& get_app() {
+        static application app;
         return app;
     }
 };
 
-application* application::app = nullptr;
-
 // mod de utilizare
-auto x = application::get_app();
+auto& x = application::get_app();
 ```
 
-**⚠ Atenție!** Inițializarea atributelor statice trebuie pusă într-un **singur** fișier .cpp, deoarece inițializarea trebuie făcută o singură dată. Fișierele .cpp sunt compilate o singură dată, dar fișierele .h sunt incluse de alte fișiere .h/.cpp și atunci ar apărea inițializarea de mai multe ori.
-
-Putem folosi smart pointers, însă nu este necesar, având în vedere că dorim ca variabila statică să trăiască pe toată durata programului în cazul singleton.
+**⚠ Atenție!** Inițializarea atributelor statice trebuie pusă într-un **singur** fișier .cpp, deoarece
+inițializarea trebuie făcută o singură dată. Fișierele .cpp sunt compilate o singură dată, dar fișierele
+`.h` sunt incluse de alte fișiere `.h`/`.cpp` și atunci ar apărea inițializarea de mai multe ori.
 
 ### Object pool
 
-Context: avem un număr limitat de obiecte care trebuie refolosite. De obicei este folosit pentru refolosirea conexiunilor la un server. Poate fi considerat un fel de generalizare a singleton-ului: un connection_pool cu o singură conexiune poate fi privit ca un singleton.
+Context: avem un număr limitat de obiecte care trebuie refolosite. De obicei este folosit pentru refolosirea
+conexiunilor la un server. Poate fi considerat un fel de generalizare a singleton-ului: un connection_pool
+cu o singură conexiune poate fi privit ca un singleton.
 
-Exemplu cu conexiuni; `connection_pool` poate la rândul său să utilizeze `singleton`; după ce o conexiune nu mai e folosită, se apelează `close`:
+Exemplu cu conexiuni; `connection_pool` poate la rândul său să utilizeze `singleton`; după ce o conexiune
+nu mai e folosită, se apelează `close`:
 ```c++
 class connection {
 private:
@@ -101,7 +105,9 @@ try {
 
 **Builder**
 
-Context: limitare a limbajului C++. Funcțiile au doar argumente poziționale, nu și argumente de tip dicționar (sau cheie-valoare). Dacă nu vrem să inițializăm toate atributele, nu putem folosi argumente implicite dacă ne interesează doar argumentele "de la sfârșit".
+Context: limitare a limbajului C++. Funcțiile au doar argumente poziționale, nu și argumente de tip dicționar
+(sau cheie-valoare). Dacă nu vrem să inițializăm toate atributele, nu putem folosi argumente implicite dacă
+ne interesează doar argumentele "de la sfârșit".
 
 Exemplu:
 ```c++
@@ -148,16 +154,25 @@ dulap d = b.nr_rafturi(5).tip_balama("clasic").build();
 
 Observații:
 - în funcția `build` putem arunca o excepție dacă obiectul este invalid (de exemplu, lipsește ușa)
-- putem introduce o funcție sau o clasă suplimentară pentru a reseta obiectul intern (sau putem face asta în funcția `build`) ca să putem folosi același `builder` pentru a construi mai multe obiecte
+- putem introduce o funcție sau o clasă suplimentară pentru a reseta obiectul intern (sau putem face
+  asta în funcția `build`) ca să putem folosi același `builder` pentru a construi mai multe obiecte
 
-Context general (nu depinde de limbaj): evaluare leneșă.
+Tehnica prin care înlănțuim apeluri și întoarcem un nou obiect (nu neapărat `this`) la modul general
+se numește method chaining și este foarte utilă în anumite situații.
 
-Exemplu: construirea unor cereri (SQL) în mod dinamic. Adăugăm pe parcurs mai multe clauze (`where`, `join` etc.), însă nu ar fi eficient să facem câte o cerere la baza de date la fiecare pas. Astfel, acumulăm condițiile într-o variabilă internă și efectuăm cererea efectivă cu toate condițiile acumulate de-abia "la sfârșit", în momentul în care avem nevoie de rezultate.
+Alte utilizări (nu depind de limbaj): evaluare leneșă a unor expresii, tratarea erorilor cu tipuri
+de date rezultat.
 
+Exemplu: construirea unor cereri (SQL) în mod dinamic. Adăugăm pe parcurs mai multe clauze
+(`where`, `join` etc.), însă nu ar fi eficient să facem câte o cerere la baza de date la fiecare pas.
+Astfel, acumulăm condițiile într-o variabilă internă și efectuăm cererea efectivă cu toate condițiile
+acumulate de-abia "la sfârșit", în momentul în care avem nevoie de rezultate.
 
 ### Factory
 
-Context: obiectul are foarte multe atribute (să zicem 5+, foarte comun în aplicații medii/mari) și nu ne interesează să le setăm pe fiecare în parte. Se folosește de obicei la testarea automată: dorim să obținem o instanță a obiectului "repede", fără să ne preocupe foarte tare ce "conține".
+Context: obiectul are foarte multe atribute (să zicem 5+, foarte comun în aplicații medii/mari) și
+nu ne interesează să le setăm pe fiecare în parte. Se folosește de obicei la testarea automată:
+dorim să obținem o instanță a obiectului "repede", fără să ne preocupe foarte tare ce "conține".
 
 Exemplu:
 ```c++
@@ -243,7 +258,8 @@ Observații:
 
 Scop simplificat: reprezentăm un obiect într-un mod diferit.
 
-Din ce am văzut în (prea) multe locuri, pare destul de standard să păstrezi interfața obiectului pe care îl decorezi. Cu toate acestea, eu nu am avut de folosit în practică decoratorii în acest fel 🙃
+Din ce am văzut în (prea) multe locuri, pare destul de standard să păstrezi interfața obiectului pe care
+îl decorezi. Cu toate acestea, eu nu am avut de folosit în practică decoratorii în acest fel 🙃
 
 Pe scurt:
 ```c++
@@ -268,7 +284,9 @@ TL;DR interfață comună pentru diverși algoritmi/variante ale aceluiași algo
 
 #### Null object
 
-Un eventual alt mod de a "trata" erori. În loc să folosim `nullptr` sau coduri de retur, continuăm să folosim obiectul într-un lanț de apeluri, iar apelurile respective nu vor face nimic în caz de erori. E un fel de proxy care ignoră apelurile invalide. Dacă vreți, poate să semene un pic și cu înlănțuirea din builder.
+Un eventual alt mod de a "trata" erori. În loc să folosim `nullptr` sau coduri de retur, continuăm să
+folosim obiectul într-un lanț de apeluri, iar apelurile respective nu vor face nimic în caz de erori.
+E un fel de proxy care ignoră apelurile invalide. Dacă vreți, poate să semene un pic și cu înlănțuirea din builder.
 
 ```c++
 obiect ob;
@@ -282,75 +300,26 @@ ow.h();
 ow.f().g().h();  // ob.g() crapă
 ```
 
-Clase ajutătoare în C++: [`std::optional`](https://en.cppreference.com/w/cpp/utility/optional), [`std::variant`](https://en.cppreference.com/w/cpp/utility/variant).
-
-----
-
-### Moșteniri multiple și virtuale
-
-C++ permite moșteniri multiple:
-```c++
-class planta {};
-class eco {}; // clasa abstracta
-class planta_eco : public planta, public eco {};
-```
-
-Un comportament care poate nu este de dorit apare atunci când clasele pe care le moștenim au o clasă de bază comună.
-
-Atributele și funcțiile din clasa de bază vor apărea de mai multe ori în "ultima" clasă derivată:
-```c++
-class ecran {};
-class dispozitiv {
-    ecran e;
-};
-
-class tableta : public dispozitiv {
-    // moștenește ecranul
-};
-
-class laptop : public dispozitiv {
-    // moștenește ecranul
-};
-
-class two_in_one : public tableta, public laptop {
-    // moștenește două ecrane!
-    // acestea sunt tabletă::ecran și laptop::ecran
-};
-```
-
-Soluția este să folosim moștenire virtuală:
-```c++
-class ecran {};
-class dispozitiv {
-    ecran e;
-};
-
-class tableta : public virtual dispozitiv {
-    // moștenește ecranul
-};
-
-class laptop : public virtual dispozitiv {
-    // moștenește ecranul
-};
-
-class two_in_one : public tableta, public laptop {
-    // moștenește un singur ecran!
-};
-```
-Dacă facem moștenirea virtuală "la sfârșit" (în clasa `two_in_one`), vom avea în continuare două `ecrane`.
-
-Side note: dacă pun `virtual public` e același lucru, dar nu mai merge syntax highlight pe github.
-
----
+Clase ajutătoare în C++: [`std::optional`](https://en.cppreference.com/w/cpp/utility/optional),
+[`std::variant`](https://en.cppreference.com/w/cpp/utility/variant).
 
 ## Templates
-Pentru motivație etc, citiți cursul. Această secțiune conține câteva exemple care mi s-au părut relevante/utile și arată modul în care putem folosi fișiere separate pentru templates.
 
-Dezavantajul atunci când folosim fișiere separate este acela că trebuie să declarăm în mod explicit funcțiile/clasele toate tipurile de date pentru care avem nevoie de templates. De aceea, pentru biblioteci poate să fie de preferat varianta header-only.
+Pentru motivație etc, citiți cursul. Această secțiune conține câteva exemple care mi s-au părut
+relevante/utile și arată modul în care putem folosi fișiere separate pentru templates.
 
-Avantajul pentru împărțirea în fișiere este acela că dacă modificăm implementarea, nu trebuie să recompilăm toate clasele care includ header-ul.
+Dezavantajul atunci când folosim fișiere separate este acela că trebuie să declarăm în mod explicit
+funcțiile/clasele toate tipurile de date pentru care avem nevoie de templates. De aceea, pentru biblioteci
+poate să fie de preferat varianta header-only.
 
-Pentru situațiile întâlnite aici, putem folosi fie `<class T>`, fie `<typename T>`, este același lucru. Există situații când merge doar cu `typename` sau doar cu `class`, însă nu ne vom întâlni cu ele (sper). Important este să le folosim pe cât posibil în mod consistent, peste tot la fel.
+Avantajul pentru împărțirea în fișiere este acela că dacă modificăm implementarea, nu trebuie să recompilăm
+toate clasele care includ header-ul.
+
+Pentru situațiile întâlnite aici, putem folosi fie `<class T>`, fie `<typename T>`, este același lucru.
+Există situații când merge doar cu `typename` sau doar cu `class`, însă nu ne vom întâlni cu ele (sper).
+Important este să le folosim pe cât posibil în mod consistent, peste tot la fel.
+
+[//]: # (TODO de adăugat erori de linker, ce trebuie pus în CMakeLists.txt)
 
 ### Funcții template
 
@@ -424,11 +393,13 @@ void f(T x) {
 
 Întrucât există mai multe (prea multe?) moduri de a afișa o colecție, afișarea nu este implementată.
 
-**Atenție!** Din cauza ODR (one definition rule), problema cu a ne defini noi `operator<<` ca funcție de sine stătătoare este aceea că altcineva nu va mai putea rescrie afișarea în alt mod.
+**Atenție!** Din cauza ODR (one definition rule), problema cu a ne defini noi `operator<<` ca funcție
+de sine stătătoare este aceea că altcineva nu va mai putea rescrie afișarea în alt mod.
 
 De aceea, e de preferat să ne punem datele într-o clasă wrapper și să facem `operator<<` pe această clasă wrapper.
 
-Totuși, clasa wrapper e mai complicat de făcut ca să meargă și pentru colecții de colecții. Așadar, în exemplul următor ne vom limita la o funcție de sine stătătoare.
+Totuși, clasa wrapper e mai complicat de făcut ca să meargă și pentru colecții de colecții. Așadar,
+în exemplul următor ne vom limita la o funcție de sine stătătoare.
 
 ```c++
 #include <iostream>
@@ -563,12 +534,16 @@ int main() {
 ```
 
 Observații:
-- poate fi util când avem mulți constructori, însă vrem să restricționăm crearea de obiecte (exemplu: object pool de mai sus)
+- poate fi util când avem mulți constructori, însă vrem să restricționăm crearea de obiecte
+  (exemplu: object pool de mai sus)
 - smart pointerii funcționează similar pentru a putea apela constructorii
-- nu putem folosi fișiere separate deoarece nu este rezonabil să instanțiem în avans toate combinațiile de apeluri
-- dacă vreți totuși să lucrați cu fișiere separate, fie scrieți funcția cu nr variabil de argumente în header, fie includeți cpp-ul în header (vezi la începutul secțiunii cu funcții template)
+- nu putem folosi fișiere separate deoarece nu este rezonabil să declarăm în avans toate combinațiile de apeluri
+- dacă vreți totuși să lucrați cu fișiere separate, fie scrieți funcția cu nr variabil de argumente în header,
+  fie includeți cpp-ul în header (vezi la începutul secțiunii cu funcții template)
 
-#### [Expresii de tip fold](https://en.cppreference.com/w/cpp/language/fold) (C++17)
+#### Expresii de tip fold (C++ 17)
+
+[Documentație](https://en.cppreference.com/w/cpp/language/fold).
 
 ```c++
 #include <iostream>
@@ -595,7 +570,7 @@ int main() {
 
 Observații:
 - pentru `std::cout << ... << args` "expansiunea" se face astfel:
-  - `(std::cout << ... ) << args`, adicaă
+  - `(std::cout << ... ) << args`, adică
   - `(std::cout << ... ) << 4`, adică
   - `((std::cout << ... ) << 3) << 4`, adică
   - `(((std::cout << ... ) << 2) << 3) << 4`, adică
@@ -607,21 +582,29 @@ Observații:
   - `std::cout << (1  << (2 << ...))`, adică
   - `std::cout << (1  << (2 << ( 3 << ...)))`, adică
   - `std::cout << (1  << (2 << ( 3 << 4  )))`, adică... facem shiftare pe biți și o să vedem doar un număr foarte mare
-- dacă ne definim o clasă proprie pentru care definim `operator<<` și încercăm afișarea, rândurile cu (1) și (2) nu vor mai merge deoarece compilatorul se va uita doar la definițiile din interiorul clasei `std::ostream`, nu și la funcțiile friend
+- dacă ne definim o clasă proprie pentru care definim `operator<<` și încercăm afișarea, rândurile cu (1) și (2)
+  nu vor mai merge deoarece compilatorul se va uita doar la definițiile din interiorul clasei `std::ostream`,
+  nu și la funcțiile friend
 - din cauza modului în care se realizează expansiunea argumentelor, nu putem adăuga spații în mod direct
 - acesta este motivul pentru care am definit separat funcția `print`, iar apelurile se vor realiza în felul următor:
   - `(print(std::cout, args), ...)`, adică
   - `(print(std::cout, 1), ...)`, adică
   - `(print(std::cout, 1), (print(std::cout, 2), ...))`, adică...
   - și, cu toate acestea, se va afișa `1 2 3 4`
-  - de ce? parantezele ar zice pe dos; așa funcționează [operatorul virgulă](https://en.cppreference.com/w/cpp/language/operator_other#Built-in_comma_operator): întâi se evaluează expresia din stânga, abia apoi expresia din dreapta
-- detalii în documentație, link-ul este pe titlul secțiunii
+  - de ce? parantezele ar zice pe dos; așa funcționează
+    [operatorul virgulă](https://en.cppreference.com/w/cpp/language/operator_other#Built-in_comma_operator):
+    întâi se evaluează expresia din stânga, abia apoi expresia din dreapta
+- detalii în documentație
 
 **La ce vă puteți folosi de acest lucru la temele voastre?**
 
 Vă puteți defini o funcție de adăugare a mai multor elemente simultan. Găsiți un exemplu și în documentație.
 
-Alternativ, puteți folosi [liste explicite de inițializare](https://en.cppreference.com/w/cpp/utility/initializer_list) dacă argumentele au același tip (de exemplu pointeri la bază); cf [recomandărilor](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#t103-dont-use-variadic-templates-for-homogeneous-argument-lists), variadic templates ar fi overkill.
+Alternativ, puteți folosi
+[liste explicite de inițializare](https://en.cppreference.com/w/cpp/utility/initializer_list)
+dacă argumentele au același tip (de exemplu pointeri la bază); cf
+[recomandărilor](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rt-variadic-not),
+variadic templates ar fi overkill.
 
 Bonus: dacă vrem să restricționăm funcția de afișare doar pentru derivate ale anumitei clase, putem folosi din nou concepte (C++20):
 ```c++
@@ -716,6 +699,166 @@ Observații:
 - toate funcțiile unei clase template sunt la rândul lor funcții template
 - clasele template sunt de obicei utile dacă vrem să ne definim diverse structuri de date (de exemplu arbori)
 
+#### Curiously recurring template pattern (CRTP), mixin
+
+CRTP este o tehnică de polimorfism folosind șabloane de clase. Tehnica este aplicabilă cu unele variații în
+alte limbaje de programare.
+
+La modul general, tehnica arată în felul următor:
+```c++
+template <typename Derivata>
+class Baza {
+    // ...
+};
+
+class Derivata : public Baza<Derivata> {
+    // ...
+};
+```
+
+Dacă vă dă cu virgulă rândul cu moștenirea, să vedem un exemplu concret:
+```c++
+#include <string>
+
+template <typename Derived, typename T>
+class Identifiable {
+    const T id;
+protected:
+    Identifiable(const T& id_) : id(id_) {}
+public:
+    const T& get_id() const { return id; }
+};
+
+class User : public Identifiable<User, std::string> {
+public:
+    User() : Identifiable("unique_id") {}
+};
+
+class Post : public Identifiable<User, int> {
+public:
+    // using Identifiable<User, int>::Identifiable;
+    Post(int id) : Identifiable(id) {}
+};
+
+int main() {
+    User u;
+    Post p{1};
+}
+```
+
+Cu ajutorul CRTP, am eliminat duplicarea logicii gestionării unor identificatori. Exemplul este minimal,
+dar cred că se înțelege că putem scăpa de mult cod repetitiv cu CRTP.
+
+Alt exemplu este să înlănțuim apeluri de funcții în mod polimorfic, adică atât din bază, cât și din derivată.
+
+Fără CRTP nu ar funcționa:
+```c++
+class Baza {
+public:
+    Baza& f1() {
+        // ...
+        return *this;
+    }
+    Baza& f2() {
+        // ...
+        return *this;
+    }
+};
+
+class Derivata : public Baza {
+public:
+    Derivata& g1() {
+        // ...
+        return *this;
+    }
+    Derivata& g2() {
+        // ...
+        return *this;
+    }
+};
+
+int main() {
+    Derivata d;
+    d.g1().f1().g2().f2();
+    //         ^----- eroare aici!!!
+}
+```
+
+Primim eroare în locul semnalat, deoarece `f1` întoarce referință către bază, deci nu mai avem acces la
+funcțiile din derivată.
+
+Soluția cu CRTP este următoarea:
+```c++
+template <typename T>
+class Baza {
+public:
+    T& f1() {
+        // ...
+        return static_cast<T&>(*this);
+    }
+    T& f2() {
+        // ...
+        return static_cast<T&>(*this);
+    }
+};
+
+class Derivata : public Baza<Derivata> {
+public:
+    Derivata& g1() {
+        // ...
+        return *this;
+    }
+    Derivata& g2() {
+        // ...
+        return *this;
+    }
+};
+
+int main() {
+    Derivata d;
+    d.g1().f1().g2().f2(); // merge!
+}
+```
+
+Cast-urile din bază sunt necesare fiindcă `*this` este altfel văzut ca `Baza&` și nu se poate face conversie
+implicită de la `Baza&` la `Derivata&`. Având în vedere că nu putem crea obiecte de tip `Baza` fără să avem
+un parametru la template, cast-ul este sigur. Puteam denumi parametrul de la șablon tot `Derivata` în loc de
+`T`, dar nu știu dacă era la fel de clar.
+
+CRTP are numeroase alte utilizări, însă nu voi intra în foarte multe detalii. Alte exemple: polimorfism
+la compilare prin definirea unei interfețe în bază (tot cu cast-uri în bază),
+[copiere polimorfică](https://devblogs.microsoft.com/oldnewthing/20220721-00/?p=106879),
+evaluarea leneșă a expresiilor (expression templates).
+
+Un idiom complementar este cel de clasă **mixin** (sau mix-in). Dacă la CRTP aveam clasa de bază template,
+aici avem derivata template. În cazul CRTP, baza stabilea interfața. La mixin, derivata este un șablon
+și poate fi extins cu diverse interfețe.
+
+Reluând exemplul de la tema 2 de la moșteniri multiple ale interfețelor, am putea folosi șabloane pentru
+a crea mai ușor clase pornind de la numeroase interfețe:
+```c++
+template<class... Mixins>
+class Post : public Mixins...
+{
+public:
+    Post(const Mixins&... mixins) : Mixins(mixins)... {}
+    // funcționalități suplimentare comune
+};
+
+int main() {
+    Post<Identifiable, Loggable, Deletable> post1;
+    Post<Identifiable, Loggable> post2;
+    Post<Identifiable> post3;
+    Post<Loggable> post4;
+}
+```
+
+Dacă încercam să folosim abordarea de la tema 2, am fi avut de definit explicit câte o nouă clasă pentru
+fiecare combinație de interfețe și am fi duplicat implementarea funcționalităților suplimentare comune.
+
+Aici am profitat de faptul că se creează o nouă clasă prin instanțierea șablonului cu noi tipuri de date,
+pe măsură ce avem nevoie de ele.
+
 #### Tipuri de date dependente
 
 ```c++
@@ -737,7 +880,9 @@ int main() {
 }
 ```
 
-Tipurile de date de mai sus sunt utile de exemplu la înmulțiri de matrice: vrem să impunem ca nr de linii al primei matrice să fie egal cu nr de coloane al celei de-a doua matrice. Astfel, codificăm o valoare în tipul de date. `scaun<3>` și `scaun<4>` sunt două tipuri de date distincte!
+Tipurile de date de mai sus sunt utile de exemplu la înmulțiri de matrice: vrem să impunem ca nr de linii
+al primei matrice să fie egal cu nr de coloane al celei de-a doua matrice. Astfel, codificăm o valoare în
+tipul de date. `scaun<3>` și `scaun<4>` sunt două tipuri de date distincte!
 
 ### Supraîncărcare operatori friend în clase template
 
