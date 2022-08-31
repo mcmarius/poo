@@ -3101,6 +3101,8 @@ Alternativele la excepții sunt următoarele:
 - coduri de eroare
 - tipuri de date rezultat (result types)
 
+Vezi și [aici](https://github.com/SFML/SFML/issues/2139#issue-1279145220).
+
 Tratarea erorilor folosind coduri de eroare este cel mai simplu mecanism de a indica reușita sau eșecul în urma
 unui apel de funcție:
 ```c++
