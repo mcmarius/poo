@@ -724,6 +724,7 @@ template <typename Derived, typename T>
 class Identifiable {
     const T id;
 protected:
+// public:
     Identifiable(const T& id_) : id(id_) {}
 public:
     const T& get_id() const { return id; }
@@ -734,9 +735,9 @@ public:
     User() : Identifiable("unique_id") {}
 };
 
-class Post : public Identifiable<User, int> {
+class Post : public Identifiable<Post, int> {
 public:
-    // using Identifiable<User, int>::Identifiable;
+    // using Identifiable<Post, int>::Identifiable;
     Post(int id) : Identifiable(id) {}
 };
 
