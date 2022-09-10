@@ -2772,7 +2772,7 @@ etc. Nu contează ce nume alegem, dar este bine să păstrăm aceeași denumire 
 polimorfice în mai multe clase în același program.
 
 Vrem să facem funcția de afișare protected fiindcă este un detaliu de implementare. Respectăm (parțial) ideea de
-[interfață non-virtuală](#interfață-non-virtual), unde interfața (funcția publică) este `operator<<`.
+[interfață non-virtuală](#interfață-non-virtuală), unde interfața (funcția publică) este `operator<<`.
 
 Totuși, dacă _toate_ derivatele ar trebui să apeleze afișarea din bază, mai bine regândim operatorul de afișare
 pentru a evita cod repetitiv [din vina noastră](https://en.wikipedia.org/wiki/Call_super).
