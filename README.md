@@ -11,6 +11,10 @@ Nota maximă este 12 (2p bonus).
 
 ### Prezența este obligatorie pentru minim 3-6 laboratoare ca să primiți note pe teme!
 
+Cu toate acestea... simpla prezență la ore **NU** vă garantează promovarea laboratorului/colocviului/examenului!
+
+**Este necesar să vă pregătiți pe cont propriu pentru colocviu și examen!!**
+
 # NU veniți cu temele la sfârșitul semestrului pentru că nu veți intra în examen!
 
 <sup>Am făcut scrisul mai mare ca să nu mai aveți scuze.</sup>
