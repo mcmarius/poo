@@ -1603,7 +1603,7 @@ funcții separate.
 class curs {
 public:
     virtual void evalueaza() = 0;
-private:
+protected:
     void ia_pauza(auto durata) {
         std::cout << "o bine meritată pauză de "
                   << std::chrono::seconds(durata).count() << " (de) secunde\n";
