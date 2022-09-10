@@ -774,7 +774,7 @@ Există o singură excepție de la regulă pe care o discutăm mai târziu.
 
 Există câteva funcții într-o clasă care nu pot fi funcții virtuale:
 - constructorii
-- [funcțiile statice](#funcii-i-atribute-statice): doar funcțiile membre nestatice pot fi virtuale
+- [funcțiile statice](#funcții-și-atribute-statice): doar funcțiile membre nestatice pot fi virtuale
 - funcțiile friend: același motiv ca mai sus
 
 Pot fi virtuali și operatorii binari, dar în practică nu ne ajută să îi facem virtuali din
@@ -2772,7 +2772,7 @@ etc. Nu contează ce nume alegem, dar este bine să păstrăm aceeași denumire 
 polimorfice în mai multe clase în același program.
 
 Vrem să facem funcția de afișare protected fiindcă este un detaliu de implementare. Respectăm (parțial) ideea de
-[interfață non-virtuală](#interfa-non-virtual), unde interfața (funcția publică) este `operator<<`.
+[interfață non-virtuală](#interfață-non-virtual), unde interfața (funcția publică) este `operator<<`.
 
 Totuși, dacă _toate_ derivatele ar trebui să apeleze afișarea din bază, mai bine regândim operatorul de afișare
 pentru a evita cod repetitiv [din vina noastră](https://en.wikipedia.org/wiki/Call_super).
@@ -3549,7 +3549,7 @@ exemplu este un server care procesează cereri de la clienți: o cerere poate ca
 La polul opus, poate fi de preferat să lăsăm programul să crape decât să prindem excepția. Ne ajută
 mai mult să vedem ce și unde a crăpat decât să prindem erori despre care nu avem habar, iar procesarea
 unor date să continue, deși nu ar trebui, întrucât niște prelucrări anterioare nu au reușit. Vom vedea
-o combinație a acestor abordări într-o [secțiune următoare](#sintax-partea-3-rearuncarea-excepiilor).
+o combinație a acestor abordări într-o [secțiune următoare](#sintaxă-partea-3-rearuncarea-excepțiilor).
 
 Dacă avem două blocuri `catch`, ordinea acestor blocuri contează atunci când vrem să prindem și excepții
 specifice, și generale:
@@ -5243,7 +5243,7 @@ funcție virtuală din baza comună, derivata are ambiguitate dacă încercăm s
 primim eroare de compilare dacă nu apelăm nicăieri funcția, chiar dacă avem ambiguitate!
 
 Specific C++ (nu am săpat în alte limbaje), avem sintaxa oarecum inutilă de care ziceam
-[mai devreme](#diverse-funcii-virtuale) prin care apelăm direct funcția din baza care ne interesează. Totuși,
+[mai devreme](#diverse-funcții-virtuale) prin care apelăm direct funcția din baza care ne interesează. Totuși,
 este mai mult un hack.
 
 Mai departe, dacă avem o funcționalitate comună în baza inițială (`periferic`), am vrea să folosim interfața
