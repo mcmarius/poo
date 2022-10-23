@@ -732,6 +732,12 @@ int main() {
     std::array<int, 4> arr = {1, -1, 42, 8};
     for(unsigned i = 0; i < arr.size(); ++i)
         std::cout << arr[i] << " ";
+    // sau
+    for(auto i = 0u; i < arr.size(); ++i)
+        std::cout << arr[i] << " ";
+    // sau
+    for(auto i = 0ull; i < arr.size(); ++i)
+        std::cout << arr[i] << " ";
     std::cout << "\n";
     for(auto& elem : arr)
         std::cout << elem << " ";
