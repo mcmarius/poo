@@ -69,8 +69,9 @@ GCC minim versiunea 10 sau Clang minim versiunea 10.
 Este necesar să adăugăm compilatorul în cale (variabila de mediu numită `%PATH%`)
 dacă vrem să îl accesăm mai ușor din linia de comandă.
 
-Dacă folosiți CLion ca IDE, versiunea de MinGW-w64/GCC inclusă este nouă și vine cu GCC 11 (ianuarie 2022).
-Totuși, dacă aveți probleme cu biblioteci externe, recomand să luați GCC 10 de pe WinLibs.
+Dacă folosiți CLion ca IDE, versiunea de MinGW-w64/GCC inclusă este nouă și vine cu GCC >= 11.
+Totuși, dacă aveți probleme cu biblioteci externe, recomand să luați GCC >= 10 de pe WinLibs, varianta
+cu MSVCRT runtime (nu UCRT runtime).
 
 Pe Windows, vă recomand să folosiți GCC/Clang furnizate de [WinLibs](https://winlibs.com). Nu recomand
 compilatorul celor de la Microsoft dacă nu îl aveți deja instalat pentru că ocupă foarte mult spațiu
@@ -202,6 +203,10 @@ dorită de voi.
 ## Configurarea și utilizarea programului Git
 
 ### Instalare
+
+Dacă folosiți CLion, editorul vă poate ajuta să instalați Git cu un singur buton.
+
+🚧
 
 Pentru Windows, cel mai simplu este să folosiți [Git for Windows](https://gitforwindows.org).
 NU vă recomand să vă setați ca editor implicit `vim`. După pasul cu editorul puteți da next/next
@@ -445,7 +450,7 @@ folosi tags din 2 motive:
 - pentru a genera executabile și pentru a distribui proiectul pe mai multe sisteme de operare
 
 Dacă nu folosiți tags, nu am de unde să știu care este "commit-ul bun", așa că voi alege
-un commit la întâmplare. Dacă nu îmi compilează codul pe commit-ul respectiv
+un commit la întâmplare. Dacă nu îmi compilează codul pe commit-ul respectiv, nu notez tema.
 
 Ar fi bine să puneți tags doar pe commit-uri care compilează.
 
