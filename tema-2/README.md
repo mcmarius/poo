@@ -2247,7 +2247,7 @@ public:
 };
 ```
 
-Mai multe detalii despre auto-atribuiri [aici](/obs.md#ce-se-ntmpl-dac-facem-auto-atribuiri).
+Mai multe detalii despre auto-atribuiri [aici](/obs.md#ce-se-întâmplă-dacă-facem-auto-atribuiri).
 
 Exemplul nu este tocmai realist: un student poate să aibă mai multe cursuri. Vom folosi `std::vector`
 pentru că nu are rost să reinventăm roata:
