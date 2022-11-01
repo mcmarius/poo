@@ -376,6 +376,8 @@ int main() {
 
 Compilatorul generează în continuare funcțiile speciale dacă nu le suprascriem:
 ```c++
+#include <utility>
+
 class student {
 public:
     student() {}
@@ -397,6 +399,8 @@ dar sunt deprecated deoarece încalcă regula celor trei. Nu avem operațiile de
 Aceleași reguli se aplică și dacă ne definim doar cc sau doar op= de copiere, deoarece s-ar încălca regula celor trei.
 
 ```c++
+#include <utility>
+
 class student {
 public:
     ~student() {}
@@ -405,12 +409,192 @@ public:
 int main() {
     student s1; // compilează
     student s2{s1}; // constr de copiere; compilează, dar este deprecated
-    // student s3{std::move(s2)}; // constr de mutare; nu compilează
+    student s3{std::move(s2)}; // nu se apelează constr de mutare, ci constr de copiere
     s1 = s2; // op= de copiere; compilează, dar este deprecated
-    // s2 = std::move(s3); // op= de mutare; nu compilează
+    s2 = std::move(s3); // nu se apelează op= de mutare, ci op= de copiere
     // destructor
 }
 ```
+
+Pentru a ne convinge că nu se mai generează operațiile de mutare, trebuie să ne uităm în codul de asamblare generat.
+
+Codul folosit:
+```c++
+#include <utility>
+
+class student {
+public:
+    //~student() {} // singura diferență este decomentarea acestui rând
+};
+
+int main() {
+    student s1;
+    student s2{std::move(s1)};
+}
+
+```
+
+<details>
+  <summary><code>g++ main_fara_destr.cpp -S -O0 -o -</code></summary>
+  <pre lang='asm'>
+	.file	"main_fara_destr.cpp"
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB90:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$16, %rsp
+	movq	%fs:40, %rax
+	movq	%rax, -8(%rbp)
+	xorl	%eax, %eax
+	movl	$0, %eax
+	movq	-8(%rbp), %rdx
+	subq	%fs:40, %rdx
+	je	.L3
+	call	__stack_chk_fail@PLT
+.L3:
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE90:
+	.size	main, .-main
+	.ident	"GCC: (Ubuntu 11.1.0-1ubuntu1~20.04) 11.1.0"
+	.section	.note.GNU-stack,"",@progbits
+	.section	.note.gnu.property,"a"
+	.align 8
+	.long	1f - 0f
+	.long	4f - 1f
+	.long	5
+0:
+	.string	"GNU"
+1:
+	.align 8
+	.long	0xc0000002
+	.long	3f - 2f
+2:
+	.long	0x3
+3:
+	.align 8
+4:  </pre>
+</details>
+
+<details>
+  <summary><code>g++ main_cu_destr.cpp -S -O0 -o -</code></summary>
+  <pre lang='asm'>
+	.file	"main_cu_destr.cpp"
+	.text
+	.section	.text._ZN7studentD2Ev,"axG",@progbits,_ZN7studentD5Ev,comdat
+	.align 2
+	.weak	_ZN7studentD2Ev
+	.type	_ZN7studentD2Ev, @function
+_ZN7studentD2Ev:
+.LFB91:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	nop
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE91:
+	.size	_ZN7studentD2Ev, .-_ZN7studentD2Ev
+	.weak	_ZN7studentD1Ev
+	.set	_ZN7studentD1Ev,_ZN7studentD2Ev
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB93:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$16, %rsp
+	movq	%fs:40, %rax
+	movq	%rax, -8(%rbp)
+	xorl	%eax, %eax
+	leaq	-10(%rbp), %rax
+	movq	%rax, %rdi
+	call	_ZSt4moveIR7studentEONSt16remove_referenceIT_E4typeEOS3_
+	leaq	-9(%rbp), %rax
+	movq	%rax, %rdi
+	call	_ZN7studentD1Ev
+	leaq	-10(%rbp), %rax
+	movq	%rax, %rdi
+	call	_ZN7studentD1Ev
+	movl	$0, %eax
+	movq	-8(%rbp), %rdx
+	subq	%fs:40, %rdx
+	je	.L4
+	call	__stack_chk_fail@PLT
+.L4:
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE93:
+	.size	main, .-main
+	.section	.text._ZSt4moveIR7studentEONSt16remove_referenceIT_E4typeEOS3_,"axG",@progbits,_ZSt4moveIR7studentEONSt16remove_referenceIT_E4typeEOS3_,comdat
+	.weak	_ZSt4moveIR7studentEONSt16remove_referenceIT_E4typeEOS3_
+	.type	_ZSt4moveIR7studentEONSt16remove_referenceIT_E4typeEOS3_, @function
+_ZSt4moveIR7studentEONSt16remove_referenceIT_E4typeEOS3_:
+.LFB94:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE94:
+	.size	_ZSt4moveIR7studentEONSt16remove_referenceIT_E4typeEOS3_, .-_ZSt4moveIR7studentEONSt16remove_referenceIT_E4typeEOS3_
+	.ident	"GCC: (Ubuntu 11.1.0-1ubuntu1~20.04) 11.1.0"
+	.section	.note.GNU-stack,"",@progbits
+	.section	.note.gnu.property,"a"
+	.align 8
+	.long	1f - 0f
+	.long	4f - 1f
+	.long	5
+0:
+	.string	"GNU"
+1:
+	.align 8
+	.long	0xc0000002
+	.long	3f - 2f
+2:
+	.long	0x3
+3:
+	.align 8
+4: </pre>
+</details>
+
+Nu am rulat cu optimizări deoarece s-ar face diverse... optimizări și nu s-ar vedea vreo diferență;
+de exemplu, se elimină din variabile și din codul care nu face de fapt nimic, se face inlining la cod.
+În programe mai mari, este posibil ca nu toate aceste optimizări să aibă loc deoarece compilarea
+ar dura foarte mult.
 
 Corect ar trebui să definim toate cele trei funcții dacă ne definim una dintre ele explicit:
 ```c++
@@ -423,6 +607,7 @@ public:
 ```
 
 Dacă ne definim constructor de mutare sau operator= de mutare, nu mai avem cc și op= de copiere.
+
 
 **Concluzie**
 
