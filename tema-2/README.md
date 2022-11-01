@@ -606,8 +606,14 @@ public:
 };
 ```
 
-Dacă ne definim constructor de mutare sau operator= de mutare, nu mai avem cc și op= de copiere.
+Dacă ne definim doar constructor de copiere sau operator= de copiere, nu mai avem cm și op= de mutare.
 
+Dacă ne definim doar constructor de mutare sau operator= de mutare, nu mai avem cc și op= de copiere.
+
+Dacă vrem să fim riguroși, avem nevoie de toate 5 atunci când avem nevoie să definim explicit destructorul
+(vezi mai jos la destructor virtual).
+În acest caz, nu avem de ales și trebuie să le specificăm pe toate (probabil cu `=default`),
+de unde și regula celor 5.
 
 **Concluzie**
 
