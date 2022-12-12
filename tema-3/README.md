@@ -23,7 +23,7 @@ Observații:
 #### Termen limită
 - săptămâna 11 (18 decembrie/7 mai): progres parțial
 - **săptămâna 12 (22 decembrie/14 mai): tema 3 gata**
-- săptămâna 13 (8 ianuarie/21 mai): (eventuale) modificări în urma feedback-ului
+- săptămâna 13 (15 ianuarie/21 mai): (eventuale) modificări în urma feedback-ului
 
 Orice funcționalitate în plus e luată în considerare pentru puncte bonus, inclusiv la temele din urmă.
 Nota maximă este 12.
