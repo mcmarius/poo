@@ -80,6 +80,7 @@ mici modificări pt a merge pe windows cu gcc
   - dacă vreți performanță, recomand [OjC](https://github.com/ohler55/ojc)
 - crypto: [digestpp](https://github.com/kerukuro/digestpp) pt hashing parole
 - date calendaristice: [date](https://github.com/HowardHinnant/date)
+- ?? https://github.com/seleznevae/libfort
 
 De încercat:
 - Boost (??)
