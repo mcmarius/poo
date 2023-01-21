@@ -316,12 +316,30 @@ Avantajul pentru împărțirea în fișiere este acela că dacă modificăm impl
 toate clasele care includ header-ul.
 
 Pentru situațiile întâlnite aici, putem folosi fie `<class T>`, fie `<typename T>`, este același lucru.
-Există situații când merge doar cu `typename` sau doar cu `class`, însă nu ne vom întâlni cu ele (sper).
+La versiuni mai vechi ale limbajului există situații când merge doar cu `typename` sau doar cu `class`,
+însă nu ne vom întâlni cu ele (sper).
 Important este să le folosim pe cât posibil în mod consistent, peste tot la fel.
 
 [//]: # (TODO de adăugat erori de linker, ce trebuie pus în CMakeLists.txt)
 
 ### Funcții template
+
+Dacă alegem să împărțim codul ca până acum în header și cpp, este **obligatoriu** să adăugăm la sfârșitul
+fișierului cpp declarații cu **toate** tipurile concrete folosite în restul surselor.
+
+Dacă nu adăugăm aceste declarații, vom primi erori de linker de felul următor:
+```
+/usr/bin/ld: /tmp/ccEk3rHM.o: in function `main':
+main.cpp:(.text+0xe): undefined reference to `void f<int>(int)'
+collect2: error: ld returned 1 exit status
+```
+
+Avem această eroare deoarece compilatorul are nevoie de definiția completă a funcției/clasei template
+atunci când are de instanțiat parametrul de template cu un tip concret (există o infinitate de
+tipuri concrete).
+
+O abordare echivalentă este să face un fișier sursă care să conțină doar declarațiile
+cu tipuri concrete (`sursa_impl.cpp` în exemplul de mai jos).
 
 ```c++
 // sursa.h
@@ -364,9 +382,9 @@ int main() {
 
 Observații:
 - în `sursa_impl.cpp` trebuie să adăugăm declarații pentru **toate** tipurile pe care le folosim peste tot unde includem `sursa.h`
-- poate fi suficient să adăugăm `sursa_impl.cpp` în sistemul de build, nu și `sursa.cpp`
+- este suficient să adăugăm `sursa_impl.cpp` în sistemul de build (Makefile/CMakeLists.txt etc.), nu și `sursa.cpp`
 
-O variantă un pic mai organizată, dar tot header-only:
+O variantă organizată ca header și cpp, dar dpdv al compilatorului tot header-only:
 ```c++
 // sursa.h
 #ifndef SURSA_H
@@ -388,6 +406,12 @@ void f(T x) {
     std::cout << x;
 }
 ```
+
+**ATENȚIE!** În această variantă **nu** trebuie să punem `sursa.cpp` în sistemul de build (Makefile/CMakeLists.txt etc.)!
+
+Pentru fiecare loc unde includem `sursa.h`, se va include automat și implementarea, iar în fișierul respectiv există
+definiția completă a clasei/funcției template și se face de fiecare dată instanțiere de templates. Acesta este și
+motivul pentru care codul de C++ care folosește multe templates durează mult de compilat.
 
 #### Funcție de afișat colecții din STL
 
@@ -444,6 +468,8 @@ Observații:
 - în acest mod, nu mai generăm definiția și pentru `std::string`, deci nu mai apar ambiguități
 - am pus o condiție în plus pentru a nu mai afișa ultima virgulă; acesta este motivul pentru care nu am folosit `for(const auto& elem : obj)`
   - am fi putut lua ultimul element și să comparăm cu acela, însă asta ar necesita ca elementele să fie comparabile
+
+Metoda prin care compilatorul continuă substituirea lui T cu tipuri concrete și nu dă erori de compilare, deși a găsit și tipuri care nu se potrivesc, se numește [SFINAE](https://en.cppreference.com/w/cpp/language/sfinae) (substitution failure is not an error).
 
 În cazul în care avem foarte multe elemente, am dori să optimizăm afișarea pentru a limita consumul de resurse:
 ```c++
