@@ -76,7 +76,7 @@ clasamente. Versiunile de C++ moderne (>=11) sunt relevante.
 
 Dacă e să ne luăm după anumite sondaje ([2021](https://www.jetbrains.com/lp/devecosystem-2021/cpp/),
 [2022](https://www.jetbrains.com/lp/devecosystem-2022/cpp/)),
-doar ~~6%~~ 3.4% mai folosesc versiuni vechi de C++ vechi și nu vor să treacă pe versiuni mai noi.
+doar ~~6%~~ 3.4% mai folosesc versiuni vechi de C++ și nu vor să treacă pe versiuni mai noi.
 
 ### Noțiuni de bază din C și C++
 
@@ -792,7 +792,7 @@ ordine, putem folosi si [`std::map`](https://en.cppreference.com/w/cpp/container
 Exemplu:
 ```c++
 #include <map>
-#include <unordered_map
+#include <unordered_map>
 #include <iostream>
 
 int main() {
