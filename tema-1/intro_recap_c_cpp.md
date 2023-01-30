@@ -74,8 +74,9 @@ Dezavantajul este că C++ este _prea_ general. Evident, e mai greu să înveți 
 chiar un pic în creștere față de anul trecut. Continuă să fie în top 5 în mai multe
 clasamente. Versiunile de C++ moderne (>=11) sunt relevante.
 
-Dacă e să ne luăm după anumite [sondaje](https://www.jetbrains.com/lp/devecosystem-2021/cpp/),
-doar 6% mai folosesc versiuni vechi de C++ vechi și nu vor să treacă pe versiuni mai noi.
+Dacă e să ne luăm după anumite sondaje ([2021](https://www.jetbrains.com/lp/devecosystem-2021/cpp/),
+[2022](https://www.jetbrains.com/lp/devecosystem-2022/cpp/)),
+doar ~~6%~~ 3.4% mai folosesc versiuni vechi de C++ vechi și nu vor să treacă pe versiuni mai noi.
 
 ### Noțiuni de bază din C și C++
 
@@ -726,6 +727,8 @@ int main() {
 
 Pentru a parcurge elementele unui `std::array`/`std::vector`, avem următoarele variante:
 ```c++
+#include <array>
+#include <vector>
 #include <iostream>
 
 int main() {
@@ -769,6 +772,54 @@ de modificat codul dacă ulterior avem nevoie să trecem la `std::vector`. De as
 Pentru bucle repetitive mai simple, compilatorul poate memoiza unele apeluri de funcții dacă poate
 demonstra că rezultatul apelului ar fi același la fiecare iterație. Ca să fim siguri că se fac aceste
 optimizări, ar trebui să ne uităm în codul de asamblare generat.
+
+#### Tablouri asociative
+
+Tablourile asociative se mai numesc maps, dicționare sau hashes (tabele de dispersie).
+Sunt la fel ca vectorii, doar că pot fi indexați după orice tip de date, nu doar după întregi.
+
+Pentru a putea indexa după un alt tip de date, variabilele de acel tip trebuie să poată fi
+comparate prin egalitate `(operator==`) și/sau prin relații de ordine (`operator<`).
+
+Pentru un tip de date definit de noi, începând cu C++20, putem folosi definire implicită (cu `=default`)
+și compilatorul va defini operațiile în mod natural. Pentru a defini ambele operații, avem `operator<=>`.
+Detalii la tema 1.
+
+Dacă tipul de date nu are o relație de ordine, atunci folosim
+[`std::unordered_map`](https://en.cppreference.com/w/cpp/container/unordered_map). Dacă avem relație de
+ordine, putem folosi si [`std::map`](https://en.cppreference.com/w/cpp/container/map).
+
+Exemplu:
+```c++
+#include <map>
+#include <unordered_map
+#include <iostream>
+
+int main() {
+    std::map<std::string, int> note;
+    note["POO"] = 10;
+    note["A&G"] = 9;
+    note["LFA"] = 9;
+    note["BD"] = 10;
+    note["TW"] = 8;
+    for(const auto& [materie, nota] : note) {
+        std::cout << materie << ": " << nota << "\n";
+    }
+
+    std::cout << "---------------\n";
+
+    std::unordered_map<std::string, int> note;
+    note["POO"] = 10;
+    note["A&G"] = 9;
+    note["LFA"] = 9;
+    note["BD"] = 10;
+    note["TW"] = 8;
+    for(const auto& [materie, nota] : note) {
+        std::cout << materie << ": " << nota << "\n";
+    }    
+}
+
+```
 
 #### Șiruri de caractere
 
