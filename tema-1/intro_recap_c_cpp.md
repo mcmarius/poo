@@ -1295,7 +1295,7 @@ class Facultate {
 ```
 
 Dacă în clasa `Student` avem nevoie doar de o referință sau de un pointer la `Facultate`, atunci este suficient
-să pre-declarăm clasa sau să precizăm explicit că este vorba e o clasă:
+să pre-declarăm clasa sau să precizăm explicit că este vorba de o clasă:
 ```c++
 // student.h
 #ifndef STUDENT_H
@@ -1322,6 +1322,10 @@ class Student {
 
 #endif // STUDENT_H
 ```
+
+Ca fapt divers, este antipattern să avem (de obicei) atribute de tip referință.
+Detalii [aici](https://lesleylai.info/en/const-and-reference-member-variables/).
+Eventual de citit și de [aici](https://quuxplusone.github.io/blog/2022/01/23/dont-const-all-the-things/) despre `const`.
 
 În schimb, dacă dorim să construim un obiect complet, atunci trebuie să includem header-ul:
 ```c++
@@ -1362,7 +1366,7 @@ fișierul header `<iosfwd>`.
 Chiar dacă pe unele compilatoare se include indirect `<iosfwd>` când includem `<string>`
 (sau se include indirect `<string>`când includem `<iostream>`), este recomandat să punem include-uri
 explicite pentru toate definițiile/declarațiile necesare și să nu ne bazăm pe detaliile de implementare
-ale unor compilatoare.
+ale unor compilatoare (sau pe include-uri indirecte pentru dependențe directe în fișierul curent).
 
 C++ nu are extrem de multe [fișiere header predefinite](https://en.cppreference.com/w/cpp/header), iar
 editorul ne ajută de obicei cu ce trebuie sau ne putem uita pe cppreference când avem nevoie.
@@ -1373,6 +1377,8 @@ toate fișierele header din biblioteca standard), deoarece creștem aiurea timpu
 
 Într-un viitor mai mult sau mai puțin îndepărtat vom putea folosi
 [IWYU](https://github.com/include-what-you-use/include-what-you-use). Momentan (2022) are prea multe bug-uri.
+
+Într-un viitor probabil la fel de îndepărtat, vom putea folosi module de C++20.
 
 #### Regula unei singure definiții (ODR - One definition rule)
 
