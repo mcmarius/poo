@@ -110,6 +110,10 @@ conflicte de nume cu alte componente din alt spațiu de nume.
 această separare logică și favorizează apariția conflictelor de nume. În acest caz, degeaba mai avem namespaces
 dacă punem totul la grămadă.
 
+**Toți** identificatorii din [această listă](https://en.cppreference.com/w/cpp/symbol_index) devin
+vizibili în fișierul în care scriem `using namespace std` și în **toate fișierele** care includ acest fișier
+în mod direct sau **indirect**.
+
 Din acest motiv, nu voi folosi `using namespace std;`. Nu vreau să îmi pierd timpul cu erori ușor de prevenit.
 
 Singurele excepții sunt namespace-urile mici, de exemplu `using namespace std::literals;`.
@@ -141,6 +145,7 @@ O variabilă este caracterizată de:
 - tip de date: `int`, `double`, definit de noi [etc.](https://en.cppreference.com/w/c/language/type)
 - valoarea reținută
 - adresa de memorie unde se află variabila
+- `sizeof`
 - scop: blocul de acolade cel mai aproape de definiția variabilei
 - durată: "locală", "globală" (în ghilimele pentru că nu e prea corect, dar lăsăm așa momentan)
 
@@ -333,6 +338,8 @@ int main() {
     std::cout << "Pe acest mediu de lucru, sizeof(double*) este " << sizeof(double*) << "\n";
 }
 ```
+
+Mai multe detalii despre sizeof-uri [aici](https://en.cppreference.com/w/cpp/language/types#Data_models).
 
 #### Funcții
 
