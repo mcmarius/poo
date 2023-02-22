@@ -690,6 +690,12 @@ la pointeri la primul element atunci când vectorii sunt transmiși unei funcți
 fixă, cunoscută la momentul compilării. De asemenea, avem
 [`std::vector`](https://en.cppreference.com/w/cpp/container/vector) dacă nu știm numărul (maxim) de elemente.
 
+Din C++17 avem funcția [`std::size`](https://en.cppreference.com/w/cpp/iterator/size) prin care putem afla
+numărul de elemente și dintr-un vector clasic stil C.
+Părerile sunt împărțite dacă `std::array` mai prezintă avantaje în acest context,
+însă tot avem anumite limitări la vectorii stil C:
+nu putem transmite unei funcții vectorul fără să specificăm numărul de elemente și nu îi putem compara cu `==`.
+
 `std::vector` se ocupă automat de gestiunea memoriei la runtime.
 
 ```c++
