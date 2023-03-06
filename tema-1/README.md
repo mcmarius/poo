@@ -1066,9 +1066,9 @@ minim 2 compilatoare diferite
   - fără memory leaks
 
 #### Termen limită
-- săptămâna 3 (23 octombrie/5 martie): stabilirea claselor și implementarea parțială a acestora
-- **săptămâna 4 (30 octombrie/12 martie): tema 1 gata**
-- săptămâna 5 (6 noiembrie/19 martie): (eventuale) modificări în urma feedback-ului
+- săptămâna 3 (23 octombrie/12 martie): stabilirea claselor și implementarea parțială a acestora
+- **săptămâna 4 (30 octombrie/19 martie): tema 1 gata**
+- săptămâna 5 (6 noiembrie/26 martie): (eventuale) modificări în urma feedback-ului
 
 
 ### Cum putem testa funcțiile membru speciale?

@@ -5925,6 +5925,6 @@ Cerințe specifice:
   funcții virtuale specifice temei; ar trebui modificat codul doar în funcția main și în fișierul cu noua derivată
 
 #### Termen limită
-- săptămâna 7 (20 noiembrie/2 aprilie): progres parțial
-- **săptămâna 8 (27 noiembrie/9 aprilie): tema 2 gata**
-- săptămâna 9 (4 decembrie/16 aprilie): (eventuale) modificări în urma feedback-ului
+- săptămâna 7 (20 noiembrie/9 aprilie): progres parțial
+- **săptămâna 8 (27 noiembrie/16 aprilie): tema 2 gata**
+- săptămâna 9 (4 decembrie/29 aprilie): (eventuale) modificări în urma feedback-ului
