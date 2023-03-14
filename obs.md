@@ -356,7 +356,7 @@ Vom avea memory leak în operator= din vector și vom avea bușit nr_max. Ce am 
 
         try {
             for (int i = 0; i < other.nr; ++i)
-            tmp[i] = other.v[i];
+                tmp[i] = other.v[i];
         } catch(std::exception& err) {
             // log error
             delete[] tmp;
@@ -457,9 +457,9 @@ nu este specifică C++.
 de mici dimensiuni pentru a reduce fragmentarea. O optimizare pentru șiruri de
 caractere de foarte mici dimensiuni este implementată de bibliotecile standard
 prin utilizarea (cu sens!) a uniunilor:
-[small string optimization](https://tc-imba.github.io/posts/cpp-sso). O generalizare
-a acestei optimizări este folosită în mașinile virtuale pentru diverse limbaje
-pentru stocarea obiectelor de mici dimensiuni.
+[small string optimization](https://stackoverflow.com/questions/10315041).
+O generalizare a acestei optimizări este folosită în mașinile virtuale pentru
+diverse limbaje pentru stocarea obiectelor de mici dimensiuni.
 
 ## Despre supraîncărcarea `new` și `delete`
 
