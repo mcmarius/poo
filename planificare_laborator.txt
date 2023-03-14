@@ -5,9 +5,9 @@ L4 recapitulare cerințe tema 1, depanare/ajutor teme
 L5 moșteniri
 L6 excepții, id const static
 L7 recapitulare cerințe tema 2, depanare teme
-L8 SOLID, design patterns
+L8/L10 SOLID, design patterns
 L9 depanare teme (săpt cu 1 Decembrie 2022/săpt cu Paștele 2023)
-L10 rezolvare parțială colocviu + discuții, depanare teme
+L10/L8 rezolvare parțială colocviu + discuții, depanare teme
 L11 templates
 L12 depanare
 L13 depanare/subiecte de examen
