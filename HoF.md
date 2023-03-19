@@ -1,5 +1,7 @@
 ## Hall of Fame
 
+**2022-2023**: _Coming soon_ | ?
+
 **2021-2022**:
 [Digital Banking](https://github.com/laurentiucretu68/Digital_Banking) |
 [Modern Chess](https://github.com/Robyss/Modern-Chess) |
@@ -23,6 +25,8 @@
 [Game of Life](https://github.com/Stefan-Radu/Predator-and-Prey)
 
 ## Runner-ups
+
+**2022-2023**: _Coming soon_ | ?
 
 **2021-2022**:
 [Magazin ceasuri](https://github.com/xSuly/Proiect-POO) |
@@ -48,6 +52,8 @@
 [Fitness](https://github.com/alexbrinza2001/Tema1-POO)
 
 ## Other mentions
+
+**2022-2023**: _Coming soon_ | ?
 
 **2021-2022**:
 [Agenda++](https://github.com/ReluSt13/Agenda-plus-plus) |
