@@ -115,5 +115,9 @@ Se poate observa că avem (mult) mai multe resurse de evitat decât resurse de �
 #### [Erori frecvente](erori.md)
 #### [Biblioteci externe](libs)
 
+---
+
+[![Star History Chart](https://api.star-history.com/svg?repos=mcmarius/poo&type=Date)](https://star-history.com/#mcmarius/poo&Date)
+
 [//]: # (reference-style link)
 [cppreference-url]: https://en.cppreference.com/w/cpp
