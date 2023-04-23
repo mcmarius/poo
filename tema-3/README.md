@@ -318,15 +318,15 @@ mai ales pentru biblioteci este de preferat o variantă header-only.
 În varianta 1 (vezi mai jos), putem păstra organizarea în fișiere separate, iar din perspectiva
 compilatorului e ca și cum ar fi header-only. Avantajul este că nu trebuie să declarăm în avans
 tipurile concrete (ar putea fi o infinitate). Dezavantajul este că fiecare funcție/clasă este
-(re)compilată de fiecare dată când instanțiem template-ul și trebuie să
-recompilăm toate fișierele atunci când modificăm ceva la implementare.
+(re)compilată de fiecare dată când instanțiem template-ul și trebuie să recompilăm toate
+fișierele care includ header-ul atunci când modificăm ceva la implementarea template-ului.
 
 În varianta 2 (vezi mai jos), împărțirea este la fel ca înainte, însă dezavantajul este acela că trebuie
 să declarăm în mod explicit funcțiile/clasele toate tipurile de date pentru care avem nevoie de templates. 
 Avantajul de la varianta 2 este acela că dacă modificăm implementarea, nu trebuie să recompilăm
 fișierele care includ header-ul.
 
-Așadar, avem de ales între flexibilitate (varianta 1) și timp de compilare (varianta 2).
+Așadar, avem de ales între mai multă flexibilitate (varianta 1) și timp mai mic de compilare (varianta 2).
 
 Pentru situațiile întâlnite aici, putem folosi fie `<class T>`, fie `<typename T>`, este același lucru.
 La versiuni mai vechi ale limbajului există situații când merge doar cu `typename` sau doar cu `class`,
