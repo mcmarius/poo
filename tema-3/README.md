@@ -308,21 +308,85 @@ Clase ajutătoare în C++: [`std::optional`](https://en.cppreference.com/w/cpp/u
 Pentru motivație etc, citiți cursul. Această secțiune conține câteva exemple care mi s-au părut
 relevante/utile și arată modul în care putem folosi fișiere separate pentru templates.
 
-Dezavantajul atunci când folosim fișiere separate este acela că trebuie să declarăm în mod explicit
-funcțiile/clasele toate tipurile de date pentru care avem nevoie de templates. De aceea, pentru biblioteci
-poate să fie de preferat varianta header-only.
+Atunci când instanțiem o clasă template, trebuie să fie generată definiția concretă a funcției/clasei
+pentru tipul instanțiat. Din acest motiv, în locul în care instanțiem cu un tip concret o funcție sau
+o clasă template este necesar să avem definiția completă, nu doar declarația.
 
-Avantajul pentru împărțirea în fișiere este acela că dacă modificăm implementarea, nu trebuie să recompilăm
-toate clasele care includ header-ul.
+Cu alte cuvinte, avem nevoie de ce aveam până acum în .cpp, nu doar ce aveam în header. De aceea,
+mai ales pentru biblioteci este de preferat o variantă header-only.
+
+În varianta 1 (vezi mai jos), putem păstra organizarea în fișiere separate, iar din perspectiva
+compilatorului e ca și cum ar fi header-only. Avantajul este că nu trebuie să declarăm în avans
+tipurile concrete (ar putea fi o infinitate). Dezavantajul este că fiecare funcție/clasă este
+(re)compilată de fiecare dată când instanțiem template-ul și trebuie să
+recompilăm toate fișierele atunci când modificăm ceva la implementare.
+
+În varianta 2 (vezi mai jos), împărțirea este la fel ca înainte, însă dezavantajul este acela că trebuie
+să declarăm în mod explicit funcțiile/clasele toate tipurile de date pentru care avem nevoie de templates. 
+Avantajul de la varianta 2 este acela că dacă modificăm implementarea, nu trebuie să recompilăm
+fișierele care includ header-ul.
+
+Așadar, avem de ales între flexibilitate (varianta 1) și timp de compilare (varianta 2).
 
 Pentru situațiile întâlnite aici, putem folosi fie `<class T>`, fie `<typename T>`, este același lucru.
 La versiuni mai vechi ale limbajului există situații când merge doar cu `typename` sau doar cu `class`,
 însă nu ne vom întâlni cu ele (sper).
 Important este să le folosim pe cât posibil în mod consistent, peste tot la fel.
 
-[//]: # (TODO de adăugat erori de linker, ce trebuie pus în CMakeLists.txt)
 
 ### Funcții template
+
+#### Varianta 1
+
+O variantă organizată ca header și cpp, dar dpdv al compilatorului tot header-only:
+```c++
+// sursa.h
+#ifndef SURSA_H
+#define SURSA_H
+
+template <typename T>
+void f(T x);
+
+#include "sursa.cpp"
+#endif
+
+/////////////////////////
+
+// sursa.cpp
+// ATENȚIE: FĂRĂ #include "sursa.h"
+#include <iostream>
+
+template <typename T>
+void f(T x) {
+    std::cout << x;
+}
+
+/////////////////////////
+
+// main.cpp
+#include "sursa.h"
+
+int main() {
+    f<int>(5);
+}
+```
+
+Iar în CMakeLists.txt avem:
+```cmake
+# ...
+add_executable(oop main.cpp)
+# ...
+```
+
+**ATENȚIE!** În această variantă **nu** trebuie să punem `sursa.cpp` în sistemul de build (Makefile/CMakeLists.txt etc.)!
+
+**ATENȚIE!** Nu includem sursa.h în sursa.cpp dacă alegem această abordare. De ce?
+
+Pentru fiecare loc unde includem `sursa.h`, se va include automat și implementarea, iar în fișierul respectiv există
+definiția completă a clasei/funcției template și se face de fiecare dată instanțiere de templates. Acesta este și
+motivul pentru care codul de C++ care folosește multe templates durează mult de compilat.
+
+#### Varianta 2
 
 Dacă alegem să împărțim codul ca până acum în header și cpp, este **obligatoriu** să adăugăm la sfârșitul
 fișierului cpp declarații cu **toate** tipurile concrete folosite în restul surselor.
@@ -380,38 +444,18 @@ int main() {
 }
 ```
 
+Iar în CMakeLists.txt avem:
+```cmake
+# ...
+add_executable(oop main.cpp sursa_impl.cpp)
+# add_executable(oop main.cpp sursa.cpp) # sau așa dacă punem declarațiile pentru tipuri concrete tot în sursa.cpp
+# ...
+```
+
 Observații:
 - în `sursa_impl.cpp` trebuie să adăugăm declarații pentru **toate** tipurile pe care le folosim peste tot unde includem `sursa.h`
 - este suficient să adăugăm `sursa_impl.cpp` în sistemul de build (Makefile/CMakeLists.txt etc.), nu și `sursa.cpp`
 
-O variantă organizată ca header și cpp, dar dpdv al compilatorului tot header-only:
-```c++
-// sursa.h
-#ifndef SURSA_H
-#define SURSA_H
-
-template <typename T>
-void f(T x);
-
-#include "sursa.cpp"
-#endif
-
-/////////////////////////
-
-// sursa.cpp
-#include <iostream>
-
-template <typename T>
-void f(T x) {
-    std::cout << x;
-}
-```
-
-**ATENȚIE!** În această variantă **nu** trebuie să punem `sursa.cpp` în sistemul de build (Makefile/CMakeLists.txt etc.)!
-
-Pentru fiecare loc unde includem `sursa.h`, se va include automat și implementarea, iar în fișierul respectiv există
-definiția completă a clasei/funcției template și se face de fiecare dată instanțiere de templates. Acesta este și
-motivul pentru care codul de C++ care folosește multe templates durează mult de compilat.
 
 #### Funcție de afișat colecții din STL
 
@@ -677,6 +721,53 @@ Observații:
 
 ### Clase template
 
+#### Varianta 1
+
+```c++
+// sursa.h
+#ifndef SURSA_H
+#define SURSA_H
+
+template <typename T>
+class cls {
+public:
+    void f(T x);
+};
+
+#include "sursa.cpp"
+#endif
+
+/////////////////////////
+
+// sursa.cpp
+// ATENȚIE: FĂRĂ #include "sursa.h"
+#include <iostream>
+
+template <typename T>
+void cls<T>::f(T x) {
+    std::cout << x;
+}
+
+/////////////////////////
+
+// main.cpp
+#include "sursa.h"
+
+int main() {
+    cls<int> c;
+    c.f(5);
+}
+```
+
+Iar în CMakeLists.txt avem:
+```cmake
+# ...
+add_executable(oop main.cpp)
+# ...
+```
+
+#### Varianta 2
+
 ```c++
 // sursa.h
 #ifndef SURSA_H
@@ -719,6 +810,14 @@ int main() {
     cls<int> c;
     c.f(5);
 }
+```
+
+Iar în CMakeLists.txt avem:
+```cmake
+# ...
+add_executable(oop main.cpp sursa_impl.cpp)
+# add_executable(oop main.cpp sursa.cpp) # sau așa dacă punem declarațiile pentru tipuri concrete tot în sursa.cpp
+# ...
 ```
 
 Observații:
