@@ -4990,6 +4990,60 @@ mult mai urât de extins și mai fragil. Fără verificare de `typeid`, `static_
 **Exercițiu:** comparați `dynamic_cast` cu `typeid`! Adăugați o subclasă pentru `curs_obligatoriu`,
 creați un obiect și apelați funcțiile de test.
 
+Dacă folosim smart pointers:
+- în cazul std::shared_ptr putem folosi `std::dynamic_pointer_cast` pentru a obține
+un std::shared_ptr de clasă derivată
+- în cazul std::unique_ptr nu putem face cast la pointer pentru că s-ar încerca crearea uneo copii a pointerului
+- în ambele cazuri putem face cast către o referință la obiectul dereferențiat
+```c++
+#include <iostream>
+#include <memory>
+
+class curs { public: virtual ~curs() = default; };
+class curs_obligatoriu : public curs {
+public:
+    void f() { std::cout << "f curs obligatoriu\n"; }
+};
+class curs_facultativ : public curs {
+public:
+    void g() { std::cout << "g curs facultativ\n"; }
+};
+
+int main() {
+    std::shared_ptr<curs> ptr1;
+    ptr1 = std::make_shared<curs_obligatoriu>();
+
+    // cast la shared ptr
+    if(auto ptr_curs_obl = std::dynamic_pointer_cast<curs_obligatoriu>(ptr1)) {
+        ptr_curs_obl->f();
+    }
+
+    // cast la referință
+    try {
+        auto curs_obl = dynamic_cast<curs_obligatoriu&>(*ptr1);
+        curs_obl.f();
+    } catch(std::bad_cast& err) {
+        std::cout << "err: " << err.what() << "\n";
+    }
+
+    std::unique_ptr<curs> ptr2;
+    ptr2 = std::make_unique<curs_obligatoriu>();
+
+    // nu putem face cast la unique ptr deoarece nu putem crea un nou pointer
+    // în plus, pot apărea probleme dacă acel cast nu reușește
+    // (dacă am vrea de exemplu cu std::move către noul pointer)
+    // vezi și https://stackoverflow.com/questions/11002641
+
+    // cast la referință merge, nu obținem un nou pointer
+    try {
+        auto curs_obl = dynamic_cast<curs_obligatoriu&>(*ptr2);
+        curs_obl.f();
+    } catch(std::bad_cast& err) {
+        std::cout << "err: " << err.what() << "\n";
+    }
+}
+```
+
 Dacă observăm că avem nevoie de multe cast-uri de la bază către derivată, este un semn că nu ne-am definit
 corect clasele și/sau funcțiile virtuale. Nevoia de hard-codare a unui tip de date derivat/dynamic_cast/typeid
 este un **anti-pattern**: un asemenea cod devine din ce în ce mai greu de extins și de întreținut.
