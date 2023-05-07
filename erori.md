@@ -199,6 +199,12 @@ valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./vars
 [1]    31391 segmentation fault (core dumped)  valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./vars </pre>
 </details>
 
+**Soluții posibile**
+- alocări dinamice cu `new`; trebuie șters la un moment dat cu `delete` tot ce am alocat cu `new`
+- trecere la smart pointers; alocare cu `std::make_shared` sau `std::make_unique`
+
+Indiferent de tipul de pointeri, trebuie suprascriși (sau șterși) cc/op= în clasele unde avem atribute pointeri pentru ca funcțiile membru speciale să funcționeze corect.
+
 #### Am o funcție virtuală, iar compilatorul meu (nu) face automat și destructorul virtual.
 
 **De ce pe alt compilator/alt sistem de operare (nu) îmi crapă programul?**
