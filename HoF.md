@@ -16,7 +16,7 @@
 [MarbleCrypt](https://github.com/radubig/MarbleCrypt) |
 [MineSweeper](https://github.com/EHollower/MSOOP) |
 [Platformer](https://github.com/fortasteaua/oop) |
-[Pokémon](https://github.com/Apostol-Alin/proiectpoo) | 
+[Pokémon Arcade Fighting](https://github.com/Apostol-Alin/proiectpoo) | 
 [Cross the Road](https://github.com/Cristiana-Cocheci/oop_v2) |
 [TicTacToe](https://github.com/Andrei137/Tic-Tac-Toe) |
 [Space invaders](https://github.com/vladc15/OOP) |
@@ -42,7 +42,7 @@
 [Reddit++](https://github.com/MaximTiberiu/OOProject) |
 [Sep7ica](https://github.com/VictorAndreiCotescu/Sep7ica) |
 [fantasyCraft](https://github.com/meemknight/fantasyCraft) |
-[Muzeu](https://github.com/DianaIfrosa/OOP-Virtual-Museum-Project) |
+[Virtual Museum](https://github.com/DianaIfrosa/OOP-Virtual-Museum-Project) |
 [Webshop backend API](https://github.com/Andrei0872/webshop-backend-api-oop)
 
 **2019-2020**:
@@ -64,7 +64,7 @@
 [Randomizer!](https://github.com/Nubaz/Randomizer_Game) |
 [Rezervări cinema](https://github.com/radustefan2311/Proiect---OOP) |
 [UtilityIT](https://github.com/nicugnm/poo-cpp-proj) |
-[Chess AI](https://github.com/vladciocoiu/proiect-poo) |
+~[Chess AI](https://github.com/vladciocoiu/proiect-poo)~ (dead link) |
 [RPG](https://github.com/alin090402/OOP-RPG-project) |
 [FIFA Pack Opening Simulator](https://github.com/valentinvale/OOP_VS) |
 [WORDTYPER](https://github.com/ImCataG/poop)
@@ -72,22 +72,22 @@
 **2020-2021**:
 [Clash Royale](https://github.com/TIPYexe/POO_ClashRoyale) |
 [F1 Arcade Game](https://github.com/DragosBalmau/Formula-1-Arcade-Game) |
-[Trasee montane](https://github.com/VMadalina/OOP) |
+[Trasee montane](https://github.com/VMadalina/Mountain-trail-guide) |
 [Simulation game](https://github.com/Al-Th-Ionescu/OOP_simulation_game) |
-[Reminders&Alarms](https://github.com/cimuletz/lab-poo) |
+[Reminders&Alarms](https://github.com/cimuletz/organizer) |
 [Bancă](https://github.com/alexandra-udristoiu/lab-oop) |
 [Formație muzicală](https://github.com/Ionescu-Ioan/Laborator-POO) |
 [Task tracker](https://github.com/deeaanghelache/POO_Laborator) |
-[Drinkeer](https://github.com/radu-filipescu/Drinkeer) |
+~[Drinkeer](https://github.com/radu-filipescu/Drinkeer)~ (dead link) |
 [Fitness](https://github.com/alexbrinza2001/Tema1-POO)
 
 ## Other mentions
 
 **2022-2023**: [FlashScore](https://github.com/stefanbrb10/temaOOP) |
-[Bibliotecă](https://github.com/AncaaO/Tema1) |
+[Library](https://github.com/AncaaO/Tema3) |
 [Total C War](https://github.com/GeorgePopescu318/Total-C-War) |
 [Hay Day](https://github.com/dariapirvulescu18/proiect1) |
-[Șeptică românească](https://github.com/bogdanvladmihai/oop-project) |
+[Gestiunea unui local pentru evenimente](https://github.com/bogdanvladmihai/oop-second-project) |
 [Gestiunea unui lanț de hoteluri](https://github.com/Razvan48/Gestiunea-unui-lant-de-hoteluri) |
 [Temple Stones](https://github.com/emtu5/proiectOOP) |
 [RPG Boss Rush](https://github.com/Bagsylina/RPG-Boss-Rush)
@@ -118,22 +118,21 @@
 
 **Care sunt criteriile pentru ca un proiect să fie inclus în `Hall of Fame`?**
 
-Complexitatea proiectului, efortul depus, readme/documentație, originalitate, CI (continuous integration),
-cod portabil.
+Complexitatea proiectului, efortul depus, readme/documentație, originalitate, bife,
+cod portabil. Există și un mic grad de subiectivitate.
 
 **Care sunt criteriile pentru ca un proiect să fie inclus în lista `Runner-ups`?**
 
-Aceleași criterii ca mai sus, însă efortul depus mi s-a părut ceva mai mic.
+Aceleași criterii ca mai sus, însă efortul depus mi s-a părut ceva mai mic și/sau nu au fost făcute toate temele.
 
 **Care sunt criteriile pentru ca un proiect să fie inclus în lista `Other mentions`?**
 
-Distincția față de rubrica anterioară a fost făcută pe baza efortului, a readme-ului și a bibliotecilor
-externe folosite.
-
-2020-2021: Ideea proiectului este foarte bună, dar nu a fost dezvoltată suficient pentru a fi inclusă în
-listele de mai sus.
+Aceleași criterii ca mai sus, însă efortul depus mi s-a părut ceva mai mic și/sau nu au fost făcute toate temele.
 
 **De ce în 2019-2020 nu sunt mai multe proiecte?**
 
-Din vina mea. Deoarece nu am avut inspirație pentru alte idei de proiecte și am folosit lista de proiecte
-din anii anteriori.
+Ideea de hall of fame a apărut în anul următor.
+
+**De ce în 2022-2023 sunt așa multe proiecte?**
+
+🙂
