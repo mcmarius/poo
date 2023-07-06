@@ -52,7 +52,10 @@
 
 **2022-2023**: [Jocul cuvintelor](https://github.com/Smaranda02/PROJECT_OOP) |
 [Unilator](https://github.com/leviaici/tema1-poo) |
-[Clicker game](https://github.com/Bucovina/ProjectOOP) | []() | []() | []() | []() | []() 
+[Clicker game](https://github.com/Bucovina/ProjectOOP) | [Maze game](https://github.com/DavidB2703/proiect-poo) |
+[Revolut copy](https://github.com/VoicilaIonut/revolut-copy) |
+[Train Switch Saga](https://github.com/Giulian617/Proiect_poo) |
+[2D Physics Simulator WannaBe](https://github.com/grig95/proiect_poo)
  
 
 **2021-2022**:
@@ -82,8 +85,12 @@
 
 **2022-2023**: [FlashScore](https://github.com/stefanbrb10/temaOOP) |
 [Bibliotecă](https://github.com/AncaaO/Tema1) |
-[Total C War](https://github.com/GeorgePopescu318/Total-C-War) | []() | []() | []() | []() | 
-[]() | []() | []() | []() | []() | []() | []() | 
+[Total C War](https://github.com/GeorgePopescu318/Total-C-War) |
+[Hay Day](https://github.com/dariapirvulescu18/proiect1) |
+[Șeptică românească](https://github.com/bogdanvladmihai/oop-project) |
+[Gestiunea unui lanț de hoteluri](https://github.com/Razvan48/Gestiunea-unui-lant-de-hoteluri) |
+[Temple Stones](https://github.com/emtu5/proiectOOP) |
+[RPG Boss Rush](https://github.com/Bagsylina/RPG-Boss-Rush)
  
 
 **2021-2022**:
