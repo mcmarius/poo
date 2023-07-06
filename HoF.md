@@ -1,6 +1,12 @@
 ## Hall of Fame
 
-**2022-2023**: _Coming soon_ | ?
+**2022-2023**: [Holocron-UI](https://github.com/i2002/Holocron-UI) |
+[Super Mario](https://github.com/danitns/oop-project) |
+[Pac-Man](https://github.com/M-Podi/PacMan-ILMF) |
+[]() | []() | []() | []() | []() | []() | []() | 
+[]() | []() | []() | []() | []() | []() | []() | 
+[]() | []() | []() | []() | []() | []() | []() | 
+
 
 **2021-2022**:
 [Digital Banking](https://github.com/laurentiucretu68/Digital_Banking) |
@@ -26,7 +32,10 @@
 
 ## Runner-ups
 
-**2022-2023**: _Coming soon_ | ?
+**2022-2023**: [Jocul cuvintelor](https://github.com/Smaranda02/PROJECT_OOP) |
+[Unilator](https://github.com/leviaici/tema1-poo) |
+[Clicker game](https://github.com/Bucovina/ProjectOOP) | []() | []() | []() | []() | []() 
+ 
 
 **2021-2022**:
 [Magazin ceasuri](https://github.com/xSuly/Proiect-POO) |
@@ -53,7 +62,11 @@
 
 ## Other mentions
 
-**2022-2023**: _Coming soon_ | ?
+**2022-2023**: [FlashScore](https://github.com/stefanbrb10/temaOOP) |
+[Bibliotecă](https://github.com/AncaaO/Tema1) |
+[Total C War](https://github.com/GeorgePopescu318/Total-C-War) | []() | []() | []() | []() | 
+[]() | []() | []() | []() | []() | []() | []() | 
+ 
 
 **2021-2022**:
 [Agenda++](https://github.com/ReluSt13/Agenda-plus-plus) |
