@@ -3,10 +3,28 @@
 **2022-2023**: [Holocron-UI](https://github.com/i2002/Holocron-UI) |
 [Super Mario](https://github.com/danitns/oop-project) |
 [Pac-Man](https://github.com/M-Podi/PacMan-ILMF) |
-[]() | []() | []() | []() | []() | []() | []() | 
-[]() | []() | []() | []() | []() | []() | []() | 
-[]() | []() | []() | []() | []() | []() | []() | 
-
+[Asteroids](https://github.com/theo543/asteroids) |
+[Evolution simulator](https://github.com/annna7/proiect-poo) |
+[Unravelling Unknowns](https://github.com/SadCarrotMaru/OOP_Project_slime) |
+[Catran](https://github.com/VSebastian8/obiecte) |
+[Q++ Quantum SDK](https://github.com/mario-deaconescu/quantum-sdk) |
+[Sokoban](https://github.com/tudormiu/proiect-poo) |
+[Quiz Game](https://github.com/mariapreda19/proiect-oop-QuizApp) |
+[Stratego Extended](https://github.com/StefanPopescu078/OOPProject) |
+[Top down shooter](https://github.com/DumitruIlie/TopDownShooterPOO) |
+[2048](https://github.com/biancapopa31/oop) |
+[MarbleCrypt](https://github.com/radubig/MarbleCrypt) |
+[MineSweeper](https://github.com/EHollower/MSOOP) |
+[Platformer](https://github.com/fortasteaua/oop) |
+[Pokémon](https://github.com/Apostol-Alin/proiectpoo) | 
+[Cross the Road](https://github.com/Cristiana-Cocheci/oop_v2) |
+[TicTacToe](https://github.com/Andrei137/Tic-Tac-Toe) |
+[Space invaders](https://github.com/vladc15/OOP) |
+[Snake](https://github.com/beingsebi/snake) |
+[Snake with Power-ups](https://github.com/dragosc1/Snake-with-POWER-UPS) |
+[Slay the Spire](https://github.com/sebimih13/POO-Proiect) |
+[Travel Planner](https://github.com/radumsk/TravelPlanner) | 
+[Airline Management System](https://github.com/marius004/oop-project)
 
 **2021-2022**:
 [Digital Banking](https://github.com/laurentiucretu68/Digital_Banking) |
