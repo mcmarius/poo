@@ -66,6 +66,8 @@ GCC minim versiunea 10 sau Clang minim versiunea 10.
 
 #### Windows
 
+Dacă folosiți CLion, puteți trece direct la [acest pas](#configurarea-și-utilizarea-programului-git).
+
 Este necesar să adăugăm compilatorul în cale (variabila de mediu numită `%PATH%`)
 dacă vrem să îl accesăm mai ușor din linia de comandă.
 
@@ -82,9 +84,36 @@ Ar fi de preferat să dezarhivați arhiva într-un loc unde calea absolută nu c
 
 **Adăugarea compilatorului în cale**
 
-🚧
+Căutăm folder-ul `bin` al compilatorului nostru și verificăm să existe executabilul `g++.exe`:
 
-[//]: # (TODO)
+![](img/win_env_path_p1.png)
+
+Copiem calea absolută a folder-ului `bin`:
+
+![](img/win_env_path_p2.png)
+
+Mergem în setările pentru variabile de mediu:
+
+![](img/win_env_path_p3.png)
+
+Selectăm opțiunea `Environment Variables...`:
+
+![](img/win_env_path_p4.png)
+
+Modificăm variabila numită `Path` (sau `PATH`) la nivel de user sau de sistem (nu ar trebui să conteze):
+întâi selectăm variabila cu un click, apoi apăsăm pe `Edit...`:
+
+![](img/win_env_path_p5.png)
+
+Apăsăm pe `New` pentru a adăuga o nouă intrare în variabila de cale:
+
+![](img/win_env_path_p6.png)
+
+Punem calea copiată la primul pas (în cazul meu, `C:\Users\marius\Downloads\gcc-11.3.0\mingw64\bin`):
+
+![](img/win_env_path_p7.png)
+
+Apăsăm pe `OK`, apoi închidem celelalte ferestre deschise.
 
 #### Linux
 
@@ -94,8 +123,8 @@ Pe Ubuntu (sau alte derivate din Debian), ar trebui să fie suficiente următoar
 (pentru GCC 11):
 ```
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-sudo apt-get update
-sudo apt-get install gcc-11 g++-11
+sudo apt update
+sudo apt install gcc-12 g++-12
 ```
 
 Ar trebui să găsiți instrucțiuni asemănătoare pentru alte distribuții de Linux.
@@ -115,29 +144,26 @@ Compilatorul ar trebui să fie deja adăugat în cale (cred că variabila se num
 Dacă folosiți CLion, vedeți acest pas la secțiunea următoare.
 
 Indiferent de sistemul de operare, deschideți un terminal și introduceți comanda
-`g++ --version` sau `clang++ --version` sau `g++-11 --version` etc. (după caz).
+`g++ --version` sau `clang++ --version` sau `g++-12 --version` etc. (după caz).
 
 Exemple de terminal: Command Prompt/Powershell/Windows Terminal/Terminal/sh/bash/zsh.
 
 Ar trebui să vă apară ceva de felul următor:
 
-🚧
-
-[//]: # (TODO)
+![](img/compiler_ver_linux.png)
 
 Dacă nu vă apare versiunea corespunzătoare, încercați să schimbați ordinea căilor către
-compilatoare în `PATH`. Pentru a vedea unde se află compilatorul vechi, folosiți comanda
+compilatoare în `PATH` (butonul `Move up` pentru prioritate mai mare). Pentru a vedea unde se află compilatorul vechi,
+folosiți comanda
 `where` sau `whereis`.
 
 Exemplu pe Windows:
 
-🚧
-
-[//]: # (TODO)
+![](img/where_g++_windows.png)
 
 Exemplu pe Linux:
 
-![](img/whereis_g++-11_linux.png)
+![](img/whereis_g++_linux.png)
 
 ## Configurarea editorului
 
@@ -208,19 +234,19 @@ Dacă folosiți CLion, editorul vă poate ajuta să instalați Git cu un singur 
 
 🚧
 
-Pentru Windows, cel mai simplu este să folosiți [Git for Windows](https://gitforwindows.org).
-NU vă recomand să vă setați ca editor implicit `vim`. După pasul cu editorul puteți da next/next
-până la sfârșit.
+Alternativ, pe Windows, cel mai simplu este să folosiți [Git for Windows](https://gitforwindows.org).
+NU vă recomand să vă setați ca editor implicit `vim` (selectați orice altceva).
+După pasul cu editorul puteți da next/next până la sfârșit.
 
 Pe Linux probabil e suficient cu `sudo apt install git` sau ceva asemănător.
 
-Pe macOS, Git ar trebui să fie deja instalat.
+Pe macOS, Git ar trebui să fie deja instalat. Dacă vă trebuie o versiune mai nouă, folosiți brew.
 
 Verificați dintr-un terminal că programul este instalat corect cu `git --version`:
 
-🚧
+![](img/git_version.png)
 
-[//]: # (TODO)
+Observație: pe Windows, terminalul trebuie deschis după ce ați instalat git.
 
 ### Crearea unui repository remote
 
@@ -230,6 +256,8 @@ puteți folosi și alte servicii care lucrează cu repository-uri de git.
 Pentru proiectul de POO, vă recomand să folosiți sau să vă inspirați din
 [acest repository template](https://github.com/mcmarius/oop-template) (chiar dacă nu folosiți GitHub).
 Apăsați pe butonul "Use this template". Dacă alegeți această variantă, puteți trece la pasul următor.
+
+[**Mai multe detalii despre repository-ul template găsiți aici.**](setup.md)
 
 Dacă nu folosiți repository-ul template, va trebui să vă configurați voi CMakeLists ca să vă apară
 warnings. De asemenea, va trebui să vă configurați voi serviciul de CI (GitHub Actions sau ceva similar).
@@ -300,6 +328,75 @@ schimbă la fiecare recompilare și sunt specifice unui anumit sistem de operare
 
 ## Comenzi uzuale de Git
 
+### TL;DR
+
+#### Prima dată o singură dată pe calculator
+
+```shell
+git config --global user.name "mcmarius"
+git config --global user.email "mcmarius@users.noreply.github.com"
+```
+
+#### Prima dată pentru fiecare proiect
+
+```shell
+git clone https://github.com/mcmarius/oop-template.git
+```
+
+#### De fiecare dată
+
+```shell
+git pull  # sau git pull origin main
+# opțional: git diff
+git add main.cpp laborator.h laborator.cpp
+# sau dacă vrem să adăugăm tot: git add .
+# opțional: git status
+# opțional: git diff --cached
+git commit -m "Reparat bug la formula de notare de laborator"
+# sau git commit
+# și se va deschide un editor pentru un mesaj mai detaliat
+# opțional: git status
+# opțional: git show  # pentru a vedea la ce am făcut commit
+git push  # sau git push origin main
+```
+
+#### TL;DR din interfața grafică
+
+Avem 3 butoane în dreapta sus pe care le vom apăsa în ordine:
+
+- săgeata albastră este echivalentă cu `git pull`
+- bifa este pentru commit
+- săgeata verde este pentru `git push`
+
+![](img/gui_git_p1.png)
+
+Folosim opțiunea de "merge". Pentru "rebase" este mai complicat.
+
+![](img/gui_git_p2.png)
+
+Pentru a adăuga fișierele la care să facem commit, se va deschide un panou în stânga.
+
+Bifăm fișierele pe care vrem să le adăugăm:
+
+![](img/gui_git_p3.png)
+
+Scriem un mesaj de commit care să reflecte modificările făcute (eventual detaliat):
+
+![](img/gui_git_p4.png)
+
+Dăm pe rotița din dreapta butonului "Commit and Push..." și bifăm
+"Reformat code" și "Rearrange code". După aceea, apăsăm pe "Commit"
+sau "Commit and Push...":
+
+![img.png](img/gui_git_p5.png)
+
+Opțional, dacă dorim să vedem ce s-a modificat (înainte sau după ce am făcut commit),
+apăsăm pe butonul cu 2 săgeți albastre:
+
+![](img/gui_git_p6.png)
+
+### Detaliat
+
 De cele mai multe ori, vom folosi `git` dintr-o interfață grafică. Totuși, este bine să avem o vagă
 idee despre modul de utilizare din linia de comandă, deoarece interfețele grafice mai dau rateuri
 și atunci tot din linia de comandă va trebui să remediem situația.
@@ -311,6 +408,14 @@ Pentru explicații, vedeți mai sus. Exemple:
 - `git clone git@github.com:mcmarius/oop-template.git` clonează folosind SSH
 - `git clone https://github.com/mcmarius/oop-template.git folder` clonează în folderul `folder`
 - `git clone --depth 2 https://github.com/mcmarius/oop-template.git` ia doar ultimele 2 commit-uri
+
+Dacă am configurat o cheie de SSH într-o locație non-standard, comanda de clonare va fi următoarea:
+
+```shell
+# -c sau --config
+# -i de la identity
+git clone -c core.sshCommand="ssh -i ~/.ssh/gh_ed25519" git@github.com:user/repo.git
+```
 
 ### `git status`
 
@@ -538,6 +643,9 @@ simplu este să folosim aliasuri. În fișierul .gitconfig din folderul home mi-
 Vă puteți configura ce (alte) aliasuri doriți. Pentru modificări mici, mi se pare mult mai rapid
 din linia de comandă decât dintr-o interfață grafică.
 
+Pentru a scrie și mai puțin, la nivel de terminal am configurat aliasul `g` pentru `git`,
+dar este un pic mai complicat de configurat dacă vreți să vă meargă și sugestiile cu <kbd>Tab</kbd>.
+
 ### `git remote`
 
 Adăugăm/modificăm/eliminăm repositories remote.
@@ -607,9 +715,3 @@ Problematic pentru fișiere binare mici care nu se prea schimbă, deoarece fiși
 trebuie clonate din altă parte.
 
 Găsiți instrucțiunile necesare [aici](https://git-lfs.github.com/).
-
-### Din interfața grafică
-
-🚧
-
-[//]: # (TODO)

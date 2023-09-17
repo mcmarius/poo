@@ -1,0 +1,2 @@
+# Configurarea proiectului
+
