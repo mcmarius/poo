@@ -230,13 +230,23 @@ dorită de voi.
 
 ### Instalare
 
-Dacă folosiți CLion, editorul vă poate ajuta să instalați Git cu un singur buton.
+Dacă folosiți CLion, editorul vă poate ajuta să instalați Git cu un singur buton, după care
+puteți merge la [pasul următor](#crearea-unui-repository-remote).
 
-🚧
+![](img/setup_p3_install_git.png)
 
 Alternativ, pe Windows, cel mai simplu este să folosiți [Git for Windows](https://gitforwindows.org).
 NU vă recomand să vă setați ca editor implicit `vim` (selectați orice altceva).
 După pasul cu editorul puteți da next/next până la sfârșit.
+
+Dacă ați dat next/next/next fără să vă uitați sau ați instalat `git` cu ajutorul CLion,
+puteți modifica editorul folosit de `git` modificând fișierul `.gitconfig` din folder-ul home.
+De exemplu:
+
+```
+[core]
+	editor = \"C:\\\\Program Files\\\\Notepad++\\\\notepad++.exe\" -multiInst -notabbar -nosession -noPlugin
+```
 
 Pe Linux probabil e suficient cu `sudo apt install git` sau ceva asemănător.
 
@@ -309,7 +319,7 @@ Așadar, un repository este un folder normal, dar care conține acest folder spe
 
 Repository-ul template ar trebui să fie deja configurat cu un fișier `.gitignore`.
 
-Dacă l-ați creat separat, dar ați pus bifa de .gitignore când ați creat repository-ul,
+Dacă l-ați creat separat, dar ați pus bifa de `.gitignore` când ați creat repository-ul,
 atunci aveți deja creat acest fișier.
 
 Altfel, va trebui să creați fișierul cu ajutorul editorului sau din linia de comandă. Pe Windows, din
@@ -622,10 +632,10 @@ Cu `git branch` vedem branches locale. Cu opțiunea `-r` vedem branches remote
 (apărute până la ultimul pull/fetch). Cu opțiunea `-m nume-nou` redenumim branch-ul curent.
 Cu opțiunea `-d` ștergem un branch.
 
-### gitconfig din nou
+### .gitconfig din nou
 
 Pentru a lucra mai repede din linia de comandă, putem să configurăm Git în diverse feluri. Un pas
-simplu este să folosim aliasuri. În fișierul .gitconfig din folderul home mi-am adăugat următoarele:
+simplu este să folosim aliasuri. În fișierul `.gitconfig` din folderul home mi-am adăugat următoarele:
 ```
 [alias]
 	co = checkout
@@ -696,7 +706,7 @@ ssh -T git@github.com
 Ar trebui să primiți un răspuns de felul
 "Hi mcmarius! You've successfully authenticated, but GitHub does not provide shell access."
 
-Dacă aveți cheia într-un loc nestandard sau cu o denumire nestandard, puteți furniza
+Dacă aveți cheia într-un loc non-standard sau cu o denumire non-standard, puteți furniza
 calea absolută către cheia privată cu `-i`:
 ```sh
 ssh -i /home/marius/.ssh/cheia_mea -T git@github.com
