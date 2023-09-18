@@ -640,16 +640,24 @@ Pentru a lucra mai repede din linia de comandă, putem să configurăm Git în d
 simplu este să folosim aliasuri. În fișierul `.gitconfig` din folderul home mi-am adăugat următoarele:
 ```
 [alias]
+	a  = add
+	br = branch
+	ca = commit --amend
+	cm = commit --message
 	co = checkout
-	s  = status
 	d  = diff
 	dc = diff --cached
-	a  = add
-	cm = commit -m
+	dh = diff --check
+	dk = diff --cached --check
+	l  = log
+	lg = log --graph --oneline
+	lo = log --oneline
+	s  = status
 	sh = stash
 	sp = stash pop
+	ss = stash show
 	sv = stash save
-	sw = stash show
+	sw = show
 ```
 
 Vă puteți configura ce (alte) aliasuri doriți. Pentru modificări mici, mi se pare mult mai rapid
@@ -657,6 +665,13 @@ din linia de comandă decât dintr-o interfață grafică.
 
 Pentru a scrie și mai puțin, la nivel de terminal am configurat aliasul `g` pentru `git`,
 dar este un pic mai complicat de configurat dacă vreți să vă meargă și sugestiile cu <kbd>Tab</kbd>.
+
+Pe lângă `alias g='git'`, în `.bashrc` am următoarele linii:
+```bash
+source /usr/share/bash-completion/completions/git
+__git_complete g __git_main
+source /etc/bash_completion.d/git-prompt
+```
 
 ### `git remote`
 
