@@ -118,7 +118,7 @@ Pentru a doua variantă, dăm pe butonul de "Browse", apoi pe al treilea buton d
 ---
 
 Pentru continuare, după ce e gata o parte din temă, vezi
-[comenzile uzuale de git](README.md#comenzi-uzuale-de-git).
+[comenzile uzuale de git](./#comenzi-uzuale-de-git).
 
 # Gata! 🎉
 

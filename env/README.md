@@ -342,12 +342,14 @@ schimbă la fiecare recompilare și sunt specifice unui anumit sistem de operare
 
 #### Prima dată o singură dată pe calculator
 
+**Atenție!** Schimbați cu datele voastre!
+
 ```shell
 git config --global user.name "mcmarius"
 git config --global user.email "mcmarius@users.noreply.github.com"
 ```
 
-#### Prima dată pentru fiecare proiect
+#### Prima dată pentru fiecare proiect (dacă nu am făcut asta deja)
 
 ```shell
 git clone https://github.com/mcmarius/oop-template.git
