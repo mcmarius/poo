@@ -17,7 +17,7 @@ Dacă selectați vizibilitatea proiectului privată, aveți cel mult 2000 de min
 partea de CI (compilat/rulat/memory leaks), deci trebuie să vă pese mai mult să nu ruleze la infinit.
 
 <sub>O rulare (un push de commit(s)) înseamnă cel mult 10 minute: 5 workflows rulează
-programul vostru, ceea ce înseamnă 150 de minute (30*1 + 10*2 + 10*10, detalii
+programul vostru, ceea ce înseamnă 150 de minute (`30*1 + 10*2 + 10*10`, detalii
 [aici](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#included-storage-and-minutes)).
 După vreo 13 commit-uri ați consumat tot pe luna respectivă.</sub>
 
