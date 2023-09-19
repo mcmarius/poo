@@ -415,7 +415,85 @@ Nu, deoarece compilatorul generează și un constructor de copiere, chiar dacă 
 de inițializare cu parametri. De ce? Pentru că este natural să putem copia obiecte.
 
 ### Constructori expliciți
-🚧
+
+Cu excepția constructorilor de copiere (vezi secțiunea următoare), toți constructorii cu un singur parametru
+ar trebui să îi declarăm cu specificatorul "explicit". Dacă nu facem asta, sunt posibile conversii implicite
+între diverse tipuri de date, iar asta ne va face să pierdem timp încercând să depanăm erori subtile.
+
+```c++
+#include <string>
+#include <iostream>
+
+class Student {
+private:
+    std::string nume;
+public:
+    Student(const std::string& nume_) : nume{nume_} {
+        std::cout << "Constr de inițializare Student\n";
+    }
+    const std::string& getNume() const { return nume; }
+};
+
+void f(std::string& st) {
+    std::cout << "f cu string: " << st << "\n";
+}
+
+void f(Student st) {
+    std::cout << "f cu student: " << st.getNume() << "\n";
+}
+
+int main() {
+    using namespace std::string_literals;
+    f("Nume"s);
+}
+```
+
+Comportamentul din exemplul de mai sus poate părea surprinzător: apelăm funcția `f` cu un argument de tip
+`std::string`, însă se apelează funcția care primește ca parametru un `Student`.
+
+Pentru a evita astfel de conversii nedorite, este recomandat (în cazul nostru obligatoriu - vezi tema 1)
+să folosim constructori expliciți:
+
+```c++
+#include <string>
+#include <iostream>
+
+class Student {
+private:
+    std::string nume;
+public:
+    explicit Student(const std::string& nume_) : nume{nume_} {
+        std::cout << "Constr de inițializare Student\n";
+    }
+    const std::string& getNume() const { return nume; }
+};
+
+void f(std::string& st) {
+    std::cout << "f cu string: " << st << "\n";
+}
+
+void f(Student st) {
+    std::cout << "f cu student: " << st.getNume() << "\n";
+}
+
+int main() {
+    using namespace std::string_literals;
+    f(Student{"Nume"s});
+}
+```
+
+Din C++20, există o sintaxă care ne permite să zicem că vrem în mod intenționat ca anumiți constructori să
+permită conversii implicite:
+```c++
+class Student {
+private:
+    std::string nume;
+public:
+    explicit(false) Student(const std::string& nume_) : nume{nume_} {
+        std::cout << "Constr de inițializare Student\n";
+    }
+};
+```
 
 ### Constructor de copiere
 
@@ -947,7 +1025,68 @@ int main() {
 ```
 
 ### Operatori de conversie
-🚧
+
+[Operatorii de conversie](https://en.cppreference.com/w/cpp/language/cast_operator) sunt specifici C++,
+nu prea au treabă cu OOP-ul și nu sunt foarte utili (dacă nu sunt expliciți) pentru că fac codul mai greu de urmărit
+(vezi de exemplu [aici](https://stackoverflow.com/questions/18547449/) și [aici](https://stackoverflow.com/questions/1384007/)).
+Sunt incluși aici pentru că sunt în curs/examen.
+
+Sintaxa este asemănătoare cu cea de la constructori:
+```c++
+#include <string>
+
+class Submarin {
+    std::string nume;
+    int nr_locuri;
+public:
+    Submarin(std::string nume_, int nr_locuri_) : nume(nume_), nr_locuri(nr_locuri_) {}
+};
+class Mașină {
+    std::string nume;
+    int nr_locuri;
+public:
+    Mașină(std::string nume_, int nr_locuri_) : nume(nume_), nr_locuri(nr_locuri_) {}
+    operator Submarin() { return Submarin(nume + " de baltă", nr_locuri / 2); }
+};
+
+int main() {
+    Mașină masina{"Logan", 5};
+    Submarin submarin = masina;
+}
+```
+
+Alternativa ar fi constructorii de conversie, dezavantajul fiind nevoia de getteri (sau clasă friend):
+```c++
+#include <string>
+
+class Mașină {
+    std::string nume;
+    int nr_locuri;
+public:
+    Mașină(std::string nume_, int nr_locuri_) : nume(nume_), nr_locuri(nr_locuri_) {}
+    const std::string get_nume() const { return nume; }
+    int get_nr_locuri() const { return nr_locuri; }
+};
+
+class Submarin {
+    std::string nume;
+    int nr_locuri;
+public:
+    // Submarin(std::string nume_, int nr_locuri_) : nume(nume_), nr_locuri(nr_locuri_) {}
+    Submarin(const Mașină& masina) :
+        nume(masina.get_nume() + " de baltă"),
+        nr_locuri(masina.get_nr_locuri() / 2) {}
+};
+
+int main() {
+    Mașină masina{"Logan", 5};
+    Submarin submarin = masina;
+}
+```
+
+Un exemplu de situație în care poate fi util acest operator este să scriem mai succint design pattern-ul "Builder" (vezi tema 3). Exercițiu.
+
+Alt exemplu ar fi să nu mai creăm obiecte în plus: vezi [aici](https://stackoverflow.com/a/6095954).
 
 ### Funcții membru, `*this`
 
@@ -1014,17 +1153,56 @@ membru speciale: cc, op=, destructor.
 
 Detalii [aici](https://en.cppreference.com/w/cpp/language/rule_of_three).
 
-[//]: # (- copy-and-swap)
-[//]: # (- excepții &#40;chiar sunt necesare?&#41;)
-[//]: # (- static)
-
-[//]: # (constructori/operatori de conversie)
-
 ### Referințe circulare
-🚧
+
+Detalii [aici](intro_recap_c_cpp.md#fișiere-de-tip-header-și-clase). Pe scurt, este imposibil ca următorul cod să compileze:
+```c++
+// facultate.h
+#pragma once
+#include "Student.h"
+
+class Facultate {
+    Student student;
+};
+
+
+// student.h
+#pragma once
+#include "Facultate.h"
+
+class Student {
+    Facultate facultate;
+};
+```
+
+Soluția este să avem doar pointer (sau referință) într-o direcție pentru a nu avea recurențe infinite la construirea obiectelor.
+
+Oul și găina: pentru a construi un obiect de tip facultate trebuie construit un obiect de tip student, iar pentru a construi un
+obiect de tip student trebuie construit întâi un obiect de tip facultate.
+
+Acolo unde avem pointer (sau referință) nu mai este nevoie de `include` întrucât nu este nevoie de definiția clasei (toți pointerii au același sizeof):
+```c++
+// facultate.h
+#pragma once
+#include "Student.h"
+
+class Facultate {
+    Student student;
+};
+
+
+// student.h
+#pragma once
+
+class Student {
+    Facultate* facultate;
+    // trebuie suprascrise cc, op= și destr
+};
+```
 
 ### Numere aleatoare
-🚧
+
+Detalii [aici](https://github.com/effolkronium/random) și pe [repo-ul template](https://github.com/mcmarius/oop-template/tree/common-libs).
 
 ## Cerințe tema 1
 
