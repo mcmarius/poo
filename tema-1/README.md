@@ -263,7 +263,7 @@ private:
     std::string nume;
     int an;
 public:
-    Student() { std::cout << "Constructor Student fără params;\n" }
+    Student() { std::cout << "Constructor Student fără params;\n"; }
 };
 
 int main() {
