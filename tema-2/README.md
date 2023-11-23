@@ -1467,13 +1467,29 @@ constructori, funcții ajutătoare etc.
 
 **Nu apelăm funcții virtuale în constructori și destructori!**
 
-Această regulă este specifică limbajului C++. Dacă apelăm funcții virtuale în constructori/destructori, avem
+Dacă funcțiile respective nu sunt virtuale pure, nu este o problemă dpdv al limbajului, dar poate fi sursă de confuzie.
+Această regulă este specifică limbajului C++. Dacă apelăm funcții virtuale pure în constructori/destructori, avem
 comportament nedefinit, deci 💥️
 
 Detalii [aici](https://en.cppreference.com/w/cpp/language/virtual#During_construction_and_destruction) și
 [aici](https://isocpp.org/wiki/faq/strange-inheritance#calling-virtuals-from-ctors).
 
-În limbaje interpretate se pot apela fără probleme funcții virtuale în constructori.
+În limbaje interpretate (dinamice) se pot apela fără probleme funcții virtuale în constructori.
+
+Dacă totuși dorim să apelăm implementarea respectivă, folosim sintaxa explicită de apel non-virtual:
+```c++
+class Baza {
+public:
+    virtual void f() {}
+    Baza() { Baza::f(); }
+};
+
+class Derivata : public Baza {
+public:
+    void f() override {}
+    Derivata() { Derivata::f(); }
+};
+```
 
 #### Funcții virtuale pure
 
