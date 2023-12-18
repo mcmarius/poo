@@ -872,6 +872,47 @@ int main() {
 }
 ```
 
+Exemplu de singleton cu CRTP:
+```c++
+#include <iostream>
+
+template <typename Derived>
+class Singleton {
+protected:
+    Singleton() = default;
+public:
+    Singleton(const Singleton&) = delete;
+    Singleton& operator=(const Singleton&) = delete;
+    static Derived& getInstance() {
+        static DerivedInstance instance;
+        return instance;
+    }
+private:
+    class DerivedInstance : public Derived{
+        public:
+        DerivedInstance() : Derived() {}
+    };
+};
+
+
+class Test : public Singleton<Test> {
+protected:
+    Test() = default;
+};
+class Test2 : public Singleton<Test2> {
+protected:
+    Test2() = default;
+};
+
+int main() {
+    //Test t1; // eroare
+    Test &t1 = Test::getInstance();
+}
+```
+
+
+
+
 Cu ajutorul CRTP, am eliminat duplicarea logicii gestionării unor identificatori. Exemplul este minimal,
 dar cred că se înțelege că putem scăpa de mult cod repetitiv cu CRTP.
 
