@@ -1,5 +1,6 @@
 Câteva sfaturi pentru colocviu
 - cel mai important este să trimiteți un cod în **C++** care **compilează**
+- **numele fișierului trebuie să înceapă cu numărul grupei!** exemple: `130_Popescu_Ion.cpp`, `260_Ionescu_Ion.zip`
 - **fără goto!**
 - **fără `#define N 5`! folosiți `const int N = 5`**
 - **fără câmpuri/atribute publice!**
@@ -8,6 +9,20 @@ Câteva sfaturi pentru colocviu
 - **fără binare/executabile în arhivă!**
 - **verificați că fișierele nu sunt atașate ca fișiere pe OneDrive!!!** Mailul de la Universitate (Outlook)
   are tendința să vă înlocuiască atașamentele în fișiere OneDrive, mare atenție!!
+
+![](img/colocviu_p0.png)
+
+Un fișier adăugat corect ca atașament va arăta astfel:
+![](img/colocviu_p1.png)
+
+**Atenție când atașați fișiere cu drag and drop!!!** Trebuie să vă arate "Attach files", nu "Upload to OneDrive".
+În exemplul de mai jos, ar veni să faceți drag&drop în partea dreaptă:
+
+![](img/colocviu_p2.png)
+
+Un fișier atașat **greșit** va arăta așa:
+![](img/colocviu_p3.png)
+
 - **verificați încă o dată că arhiva nu conține binare/executabile!**
 - **fără tot codul direct în clasă! folosiți "split into declaration and definition"**
 - **nu pierdeți timpul!** folosiți conceptele de oop care se scriu cel mai repede 😁

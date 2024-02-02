@@ -78,7 +78,8 @@ cu MSVCRT runtime (nu UCRT runtime).
 Pe Windows, vă recomand să folosiți GCC/Clang furnizate de [WinLibs](https://winlibs.com). Nu recomand
 compilatorul celor de la Microsoft dacă nu îl aveți deja instalat pentru că ocupă foarte mult spațiu
 pe disc. Celelalte variante cu MSYS2 și/sau Cygwin mi se par prea complicate pentru ce avem nevoie
-la acest laborator, iar binarele de la MinGW-w64 sunt mai vechi (GCC 8).
+la acest laborator (sunt overkill), iar binarele de la MinGW-w64 pot fi mai vechi (e.g. GCC 8)
+și au un overhead în plus din cauza emulării unui mediu Linux.
 
 Ar fi de preferat să dezarhivați arhiva într-un loc unde calea absolută nu conține spații.
 
@@ -374,6 +375,21 @@ git push  # sau git push origin main
 
 #### TL;DR din interfața grafică
 
+#### Interfața nouă
+
+Din partea de sus avem branch-ul pe care ne aflăm, apoi 3 butoane:
+
+![](img/gui_nou_git_p1.png)
+![](img/gui_nou_git_p2.png)
+
+- opțiunea "Update Project..." este echivalentă cu `git pull`
+- opțiunea "Commit..." are ca echivalent comenzile `git add` și `git commit`
+- opțiunea "Push..." este echivalentă cu `git push`
+
+Mai departe vezi pașii din interfața veche, doar primul screenshot diferă.
+
+#### Interfața veche
+
 Avem 3 butoane în dreapta sus pe care le vom apăsa în ordine:
 
 - săgeata albastră este echivalentă cu `git pull`
@@ -382,7 +398,7 @@ Avem 3 butoane în dreapta sus pe care le vom apăsa în ordine:
 
 ![](img/gui_git_p1.png)
 
-Folosim opțiunea de "merge". Pentru "rebase" este mai complicat.
+Folosim opțiunea de "merge". Pentru "rebase" este mai complicat, nu discutăm acum.
 
 ![](img/gui_git_p2.png)
 
@@ -391,6 +407,10 @@ Pentru a adăuga fișierele la care să facem commit, se va deschide un panou î
 Bifăm fișierele pe care vrem să le adăugăm:
 
 ![](img/gui_git_p3.png)
+
+Sau pe interfața nouă arată așa:
+
+![](img/gui_nou_git_p3.png)
 
 Scriem un mesaj de commit care să reflecte modificările făcute (eventual detaliat):
 
@@ -403,7 +423,7 @@ sau "Commit and Push...":
 ![img.png](img/gui_git_p5.png)
 
 Opțional, dacă dorim să vedem ce s-a modificat (înainte sau după ce am făcut commit),
-apăsăm pe butonul cu 2 săgeți albastre:
+apăsăm pe butonul cu 2 săgeți albastre (în interfața nouă - click dreapta pe fișier/changelist):
 
 ![](img/gui_git_p6.png)
 

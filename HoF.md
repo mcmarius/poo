@@ -1,6 +1,13 @@
 ## Hall of Fame
 
-**2022-2023**: [Holocron-UI](https://github.com/i2002/Holocron-UI) |
+Vezi și [**proiecte interzise**](repetitiv.md).
+
+**2023-2024**:
+[]() |
+[]() | ?
+
+**2022-2023**:
+[Holocron-UI](https://github.com/i2002/Holocron-UI) |
 [Super Mario](https://github.com/danitns/oop-project) |
 [Pac-Man](https://github.com/M-Podi/PacMan-ILMF) |
 [Asteroids](https://github.com/theo543/asteroids) |
@@ -50,9 +57,11 @@
 
 ## Runner-ups
 
-**2022-2023**: [Jocul cuvintelor](https://github.com/Smaranda02/PROJECT_OOP) |
+**2022-2023**:
+[Jocul cuvintelor](https://github.com/Smaranda02/PROJECT_OOP) |
 [Unilator](https://github.com/leviaici/tema1-poo) |
-[Clicker game](https://github.com/Bucovina/ProjectOOP) | [Maze game](https://github.com/DavidB2703/proiect-poo) |
+[Clicker game](https://github.com/Bucovina/ProjectOOP) |
+[Maze game](https://github.com/DavidB2703/proiect-poo) |
 [Revolut copy](https://github.com/VoicilaIonut/revolut-copy) |
 [Train Switch Saga](https://github.com/Giulian617/Proiect_poo) |
 [2D Physics Simulator WannaBe](https://github.com/grig95/proiect_poo)
@@ -83,7 +92,8 @@
 
 ## Other mentions
 
-**2022-2023**: [FlashScore](https://github.com/stefanbrb10/temaOOP) |
+**2022-2023**:
+[FlashScore](https://github.com/stefanbrb10/temaOOP) |
 [Library](https://github.com/AncaaO/Tema3) |
 [Total C War](https://github.com/GeorgePopescu318/Total-C-War) |
 [Hay Day](https://github.com/dariapirvulescu18/proiect1) |

@@ -75,8 +75,8 @@ chiar un pic în creștere față de anul trecut. Continuă să fie în top 5 î
 clasamente. Versiunile de C++ moderne (>=11) sunt relevante.
 
 Dacă e să ne luăm după anumite sondaje ([2021](https://www.jetbrains.com/lp/devecosystem-2021/cpp/),
-[2022](https://www.jetbrains.com/lp/devecosystem-2022/cpp/)),
-doar ~~6%~~ 3.4% mai folosesc versiuni vechi de C++ și nu vor să treacă pe versiuni mai noi.
+[2022](https://www.jetbrains.com/lp/devecosystem-2022/cpp/), [2023](https://www.jetbrains.com/lp/devecosystem-2023/cpp/)),
+doar ~~6%~~ ~~3.4%~~ 4.56% mai folosesc versiuni vechi de C++ și nu vor să treacă pe versiuni mai noi.
 
 ### Noțiuni de bază din C și C++
 

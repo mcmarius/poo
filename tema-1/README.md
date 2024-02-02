@@ -1274,17 +1274,9 @@ int main() {
 #### Teme propuse
 
 **Încercați să veniți cu propriile idei. Dacă nu aveți inspirație, uitați-vă pe
-[proiectele din anii trecuți](/HoF.md).**
-
-**Nu vă recomand temele propuse!**
-
-Schițele de teme propuse oferă niște clase pentru crearea unor compuneri și a unor ierarhii
-(pentru moșteniri - tema 2). Totuși, trebuie să stabiliți de la început o parte dintre funcționalitățile
-pe care vi le propuneți să le implementați.
+[proiectele din anii trecuți](/HoF.md), dar vă rog nu alegeți [proiecte care s-au tot făcut](/repetitiv.md).**
 
 **Nu vă apucați de implementat până nu ați primit OK-ul! Aș vrea să discut cu fiecare în parte.**
-
-Temele propuse sunt [aici](teme_propuse.md).
 
 ## Resurse
 - [cppreference.com](https://en.cppreference.com/w/cpp)
@@ -1294,5 +1286,6 @@ Temele propuse sunt [aici](teme_propuse.md).
 [HTML (neoficial)](https://github.com/timsong-cpp/cppwp) (sau
 [aici](https://stackoverflow.com/questions/81656/where-do-i-find-the-current-c-or-c-standard-documents#4653479))
   - faptul că nu (mai) găsim draft-uri disponibile pentru standardele C++98/C++03 ar trebui să ne transmită ceva 😉
-  - mai ales în contextul în care toate compilatoarele cunoscute au implementat C++11, C++14 și C++17
+  - mai ales în contextul în care toate compilatoarele cunoscute au implementat complet C++11, C++14 și C++17 (și
+    aproape complet C++20)
   - le-am adăugat mai mult ca să știți că există, nu e nevoie să vă uitați peste ele

@@ -19,7 +19,6 @@ Cu toate acestea... simpla prezență la ore **NU** vă garantează promovarea l
 
 <sup>Am făcut scrisul mai mare ca să nu mai aveți scuze.</sup>
 
-<!--
 Repet:
 
 ```                                                                            
@@ -57,7 +56,6 @@ Repet:
                      ▄                                                                          
                      ▘
 ```
--->
 
 Aveți libertatea să vă alegeți tema/temele de proiect.
 
