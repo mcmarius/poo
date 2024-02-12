@@ -3,8 +3,7 @@
 Vezi și [**proiecte interzise**](repetitiv.md).
 
 **2023-2024**:
-[]() |
-[]() | ?
+[Autodragan](https://github.com/badea-codrut-cti/proiect-poo) | ?
 
 **2022-2023**:
 [Holocron-UI](https://github.com/i2002/Holocron-UI) |
@@ -56,6 +55,9 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 [Game of Life](https://github.com/Stefan-Radu/Predator-and-Prey)
 
 ## Runner-ups
+
+**2023-2024**:
+[BlackJack One-on-one](https://github.com/superglovv/Project-OOP-Black) | ?
 
 **2022-2023**:
 [Jocul cuvintelor](https://github.com/Smaranda02/PROJECT_OOP) |
@@ -128,7 +130,7 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 
 **Care sunt criteriile pentru ca un proiect să fie inclus în `Hall of Fame`?**
 
-Complexitatea proiectului, efortul depus, readme/documentație, originalitate, bife,
+Complexitatea proiectului, efortul depus, readme/documentație, **originalitate**, bife,
 cod portabil. Există și un mic grad de subiectivitate.
 
 **Care sunt criteriile pentru ca un proiect să fie inclus în lista `Runner-ups`?**
@@ -146,3 +148,7 @@ Ideea de hall of fame a apărut în anul următor.
 **De ce în 2022-2023 sunt așa multe proiecte?**
 
 🙂
+
+**De ce în 2023-2024 sunt așa puține proiecte pe semestrul 1?**
+
+🙁
