@@ -227,6 +227,23 @@ Dacă nu folosiți CLion, vă puteți uita pe
 Dacă nu vreți să folosiți nici CMake, ne facem timp și configurăm CI-ul să funcționeze cu alternativa
 dorită de voi.
 
+Pe scurt, pentru a lucra cu CMake sunt necesare doar 2-3 comenzi:
+1. Configurare inițială: pas necesar doar o singură dată la început
+```sh
+# din directorul proiectului
+cmake -S . -B build
+```
+2. Compilare
+```sh
+# opțiunea -j este pentru a compila în paralel; în exemplul de mai jos, folosim 6 threads (fire de execuție)
+cmake --build build -j6
+```
+3. Instalare: pasul este necesar doar ca să verificăm că am configurat corect comenzile de instalare (copiere fișiere de configurare, assets etc)
+```sh
+# implicit, folder-ul din repository-ul template se numește install_dir
+cmake --install build
+```
+
 ## Configurarea și utilizarea programului Git
 
 ### Instalare
