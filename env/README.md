@@ -350,10 +350,12 @@ git config --global user.name "mcmarius"
 git config --global user.email "mcmarius@users.noreply.github.com"
 ```
 
+Dacă nu lucrați din IDE, trebuie configurat și [accesul prin SSH](#utilizarea-ssh).
+
 #### Prima dată pentru fiecare proiect (dacă nu am făcut asta deja)
 
 ```shell
-git clone https://github.com/mcmarius/oop-template.git
+git clone git@github.com:mcmarius/oop-template.git
 ```
 
 #### De fiecare dată
