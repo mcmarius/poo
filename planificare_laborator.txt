@@ -1,19 +1,19 @@
-L1 terminal, configurare compilator, recapitulare C, 30 min (?), intro OOP
-L2 configurare git, Code::Blocks, intro OOP
-L3 configurare CLion, cerințe tema 1
+L1 configurare compilator/editor/git, recapitulare C, intro C++
+L2 intro OOP: cc/op=/destr pentru tema 1; configurare proiect
+L3 op<<, cerințe tema 1
 L4 recapitulare cerințe tema 1, depanare/ajutor teme
-L5 moșteniri
-L6 excepții, id const static
-L7 recapitulare cerințe tema 2, depanare teme
-L8/L10 SOLID, design patterns
-L9 depanare teme (săpt cu 1 Decembrie 2022/săpt cu Paștele 2023)
-L10/L8 rezolvare parțială colocviu + discuții, depanare teme
-L11 templates
-L12 depanare
-L13 depanare/subiecte de examen
+L5 intro moșteniri
+L6 moșteniri detaliat, virtual
+L7 (const) static, intro excepții
+L8 excepții detaliat
+L9 rezolvare parțială colocviu + discuții, depanare teme
+L10 săpt cu 1 Mai, apoi vacanța de Paște (2024)
+L11 SOLID, design patterns
+L12 templates, CRTP
+L13 depanare teme, subiecte de examen
 L14 subiecte de examen
 
-De folosit utilitarul `script`.
+De folosit utilitarul `script` (?).
 
 Observațîe esențială! Repository-ul template folosește warnings as errors, dar pentru examen warnings nu contează, deci codul ar compila în acele situații.
 
@@ -21,10 +21,21 @@ Din explicațiile din laboratoare (în special t2), săriți peste ce nu înțel
 
 Nu vă bazați doar pe prezența de la curs/seminar/laborator. Simpla prezență nu este suficientă pentru promovare. Exersați pe cont propriu!
 
+
+
+
+
+
+
+
+
+
+Old (?) stuff:
+
 Din feedback (de găsit la ce laboratoare să le discutăm):
 - atenționare mai din timp referitor la promovarea laboratorului
   - nu știu ce să zic... nu este un semnal de alarmă faptul că la mai puțin de o lună până la încheierea semestrului nu ați primit nota pe prima temă?
-  - am făcut scrisul mai mare :) o să încerc să vă atenționez de mai multe ori...
+  - am făcut scrisul și mai mare :) o să încerc să vă atenționez de mai multe ori...
 - exemple concrete la moșteniri (de văzut dacă s-a rezolvat cu t2)
   - rezolvarea unui colocviu pentru înțelegerea moștenirilor:
     - nu sunt de acord să vin eu cu subiect de colocviu, așa e totul pe tavă
@@ -32,7 +43,7 @@ Din feedback (de găsit la ce laboratoare să le discutăm):
     - propunerea mea este să încercați voi să le rezolvați și discutăm pe marginea rezolvărilor
 - dificultăți în alegerea temelor (rezolvat cu temă separată pt t1? am scris deja în cel puțin 2 locuri, dar am mai pus links către teme din ani anteriori)
 - funcții și variabile `const` (am scris în cerințe cât mai multe `const`-uri și semnalează și cppcheck, but oh well)
-- pointeri simpli (acoperiți de t2??) și referințe
+- pointeri simpli (acoperiți de t2?? + 2 labs pt discutat subiecte de examen) și referințe
   - transmiterea parametrilor prin pointeri/refs const
   - conversii:
     - const int -> int
