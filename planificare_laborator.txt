@@ -13,7 +13,22 @@ L12 templates, CRTP
 L13 depanare teme, subiecte de examen
 L14 subiecte de examen
 
-De folosit utilitarul `script` (?).
+
+Teme pentru fiecare săptămână:
+S1: alegere proiect
+S2: identificare clase, compunere, constructori de inițializare, stabilit câteva funcționalități
+S3: constructor de copiere, operator=, destructor (regula celor 3), operator<<
+S4: funcționalități
+S5: predare tema 1
+S6: clase noi pentru moștenire, identificat funcționalitatea
+S7: virtual, cc/op=/destr pt clasele cu pointeri, copy&swap
+S8: ierarhie de excepții
+S9: predare tema 2
+S10: vacanță
+S11: design patterns
+S12: templates
+S13: predare tema 3
+S14: pregătire pentru colocviu/examen
 
 Observațîe esențială! Repository-ul template folosește warnings as errors, dar pentru examen warnings nu contează, deci codul ar compila în acele situații.
 
@@ -31,6 +46,8 @@ Nu vă bazați doar pe prezența de la curs/seminar/laborator. Simpla prezență
 
 
 Old (?) stuff:
+
+De folosit utilitarul `script` (?).
 
 Din feedback (de găsit la ce laboratoare să le discutăm):
 - atenționare mai din timp referitor la promovarea laboratorului
