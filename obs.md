@@ -51,8 +51,12 @@ Valgrind nu merge pe Windows, iar pe macOS nu merg sanitizers pentru memory leak
 (evident că nu merg nici pe Windows).
 Am decis să folosim GitHub Actions ca să nu fie nevoie să vă configurați nimic local.
 
-Pe Windows există într-adevăr [DrMemory](https://drmemory.org) (făcut de Google),
-însă nu am reușit să îl fac să detecteze ceva util. Dacă reușiți, să îmi spuneți și mie.
+Pe Windows există [DrMemory](https://drmemory.org) (făcut de Google). Pe cazuri
+simple pare să detecteze erori; nu l-am folosit pe exemple mai complicate.
+Dacă (nu) merge în aceste situații, vă rog să îmi spuneți și mie.
+
+Dacă folosiți MSVC, a fost adăugat
+[address sanitizer](https://docs.microsoft.com/en-us/cpp/sanitizers/asan) (ASan).
 
 Nu știu să existe alte astfel de instrumente care să fie gratuite și să mai și meargă.
 
