@@ -821,13 +821,13 @@ int main() {
 
     std::cout << "---------------\n";
 
-    std::unordered_map<std::string, int> note;
-    note["POO"] = 10;
-    note["A&G"] = 9;
-    note["LFA"] = 9;
-    note["BD"] = 10;
-    note["TW"] = 8;
-    for(const auto& [materie, nota] : note) {
+    std::unordered_map<std::string, int> alte_note;
+    alte_note["POO"] = 10;
+    alte_note["A&G"] = 9;
+    alte_note["LFA"] = 9;
+    alte_note["BD"] = 10;
+    alte_note["TW"] = 8;
+    for(const auto& [materie, nota] : alte_note) {
         std::cout << materie << ": " << nota << "\n";
     }    
 }
