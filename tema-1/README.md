@@ -556,14 +556,49 @@ corect!**
 
 Verificați că cc funcționează corect.
 
-În alte limbaje, cc poartă numele de "clone" (sau "deep copy"). Vom face și noi "deep copy" la tema 2 pentru
-că nu avem de ales.
 
 **Observație!** Dacă redefinim cc, trebuie să fim atenți când adăugăm noi atribute în clasă, deoarece acestea
 nu vor fi copiate dacă nu cerem asta în mod explicit. **Verificați!**
 
 Putem folosi `= default` și `= delete` și pentru a forța generarea/ștergerea constructorilor de copiere
 generați de compilator.
+
+#### Detalii shallow copy vs deep copy
+
+În alte limbaje orientate obiect, fie nu avem definite implicit operații de copiere, fie se face implicit
+shallow copy (din motive de performanță și pt că e mai simplu de implementat). Pentru anumite situații,
+avem nevoie de obiecte complet independente pentru prelucrări ulterioare și trebuie să facem "deep copy".
+
+C++ nu are nativ funcționalități de deep copy. Pentru clase uzuale, suprascriem constructorul de copiere,
+operator= și destructor (detalii mai jos).
+În cazul ierarhiilor de clase,
+o [convenție uzuală](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rh-copy) este să definim
+o funcție numită `clone` și să dezactivăm constructorul de copiere.
+Vom face și noi deep copy cu `clone` la tema 2 pentru că nu avem de ales.
+
+Deși unele limbaje oferă mecanisme de deep copy, este responsabilitatea noastră să le folosim sau să
+implementăm acest comportament dacă decidem că este necesar. Abordările din C++ nu diferă cu mult
+față de alte limbaje, ideile de bază sunt aceleași.
+
+Câteva exemple din alte limbaje (ordine alfabetică):
+- în C#, există o interfață `ICloneable` și o funcție
+  [`MemberwiseClone`](https://learn.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) cu probleme
+  similare cu cele din Java; alternativele sunt asemănătoare cu cele din Java - vezi mai jos
+- în Java, există o interfață `Cloneable` fără o funcție `clone` și _separat_ o funcție `clone` (din `Object`),
+  însă pare să aibă greșeli istorice; implicit,
+  [clone](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#clone()) face
+  shallow copy; pentru deep copy, se poate folosi tot clone (fiind conștienți de
+  [dezavantaje](https://stackoverflow.com/questions/1106102/)), constructor de copiere (ca în C++),
+  serializare (sunt (mici) similarități cu `operator<<` - vezi mai jos)/deserializare (lent),
+  reflexie (momentan fără echivalent nativ în C++) sau biblioteci specializate (probabil tot prin reflexie)
+- în JavaScript, implicit se face [shallow copy](https://developer.mozilla.org/en-US/docs/Glossary/Shallow_copy);
+  pentru deep copy, pare să existe [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone);
+  alternativ, cu serializare/deserializare; în particular, în JavaScript pot exista mai adesea multe structuri recursive sau
+  alte cazuri particulare, deci nu se poate face de fapt deep copy pentru orice obiect arbitrar
+- în Python, există modulul copy cu funcția [deepcopy](https://docs.python.org/3/library/copy.html#copy.deepcopy)
+- în Swift, nu pare să putem face [ușor](https://stackoverflow.com/a/66105234) deep copy deoarece limbajul încearcă
+  să facă numeroase optimizări tocmai pentru a nu copia obiecte
+
 
 ### Constructor de mutare
 
