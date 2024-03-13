@@ -32,6 +32,36 @@ După ce apăsăm pe "Create repository", avem 2 opțiuni:
 
 ## Configurare biblioteci externe
 
+**UPDATE 13.03.2024!**
+
+Se pare că GitHub face modificări majore fix după începutul fiecărui semestru 🙃
+
+Pentru conturile noi de GitHub, aparent este posibil să nu vă mai apară bifa de "Include all branches" din screenshot-ul de mai sus.
+În acest caz, trebuie să vă clonați proiectul local și să folosiți următoarele comenzi pentru a include acel branch, după care
+puteți urma instrucțiunile de mai jos în continuare.
+
+Pentru branch-ul common-libs:
+```sh
+git clone <proiectul vostru>
+git remote add origin2 https://github.com/mcmarius/oop-template.git
+git fetch origin2
+git checkout common-libs
+git push origin common-libs
+```
+
+Pentru branch-ul sfml:
+```sh
+git clone <proiectul vostru>
+git remote add origin2 https://github.com/mcmarius/oop-template.git
+git fetch origin2
+git checkout sfml
+git push origin sfml
+```
+
+End update 13.03.2024.
+
+---
+
 Ne ducem la setările proiectului ("Settings"), apoi apăsăm pe butonul de schimbat branch-ul principal
 cu 2 săgeți: "Switch to another branch" din cadrul rubricii "Default branch".
 
