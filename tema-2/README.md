@@ -3063,7 +3063,7 @@ v-ar ajuta mai mult o variantă de interfață non-virtuală.
 
 ---
 
-#### Exemplu
+#### Exemplu complet funcții virtuale
 
 Exemplul următor pune cap la cap toate conceptele prezentate în această secțiune referitoare la funcții virtuale.
 Poate fi folosit ca sursă de inspirație pentru partea de funcții virtuale din tema 2, însă nu este suficient,
@@ -4042,6 +4042,8 @@ utilizatorii claselor definite de noi să prindă neapărat aceste excepții par
 Pentru a combina beneficiile celor două abordări, rețeta la care ajungem este următoarea: ne creăm o
 ierarhie proprie, iar clasa cea mai de bază a acestei ierarhii trebuie să fie derivată direct sau
 indirect din `std::exception`. Vom deriva din `std::runtime_error`, deoarece are constructor cu mesaj.
+
+##### Exemplu ierarhie proprie
 ```c++
 #include <iostream>
 #include <stdexcept>
@@ -4400,6 +4402,8 @@ reușim să rezolvăm bug-urile. Dacă suntem motivați, ne descurcăm și repar
 esențială este că **pierdem mai mult timp cu depanarea** decât dacă am alege varianta cu excepții.
 
 Codul de mai sus rescris cu excepții este următorul:
+
+##### Exemplu throw în constructor și funcție non-void
 ```c++
 #include <iostream>
 #include <stdexcept>
@@ -4737,6 +4741,8 @@ cu excepția sau dacă tratăm eroarea direct în blocul `catch(...)`.
 `catch(...)` este recomandat atunci când încercăm să garantăm că nu aruncăm mai departe alte excepții, de
 exemplu în destructori.
 
+##### Exemplu handler erori comune
+
 Următorul exemplu **nu este un contraexemplu!** Sintaxa cu `catch(...)` ne mai poate ajuta să eliminăm
 duplicarea de cod dacă avem de tratat în mai multe locuri un grup de aceleași erori în același mod:
 ```c++
@@ -4794,6 +4800,16 @@ Discuții mai avansate despre excepții specifice C++ [aici](http://www.gotw.ca/
 [//]: # (#### Sintaxă aproape inutilă: https://en.cppreference.com/w/cpp/language/function-try-block)
 
 [//]: # (http://www.gotw.ca/gotw/066.htm)
+
+#### Exemplu complet excepții
+
+Puneți cap la cap exemplele anterioare:
+
+- vă definiți o [ierarhie proprie de excepții](#exemplu-ierarhie-proprie) cu bază derivată indirect (sau direct)
+  din `std::exception`, de exemplu din `std::runtime_error`
+- aruncați excepții **cu sens** în [constructori](#exemplu-throw-în-constructor-și-funcție-non-void)
+  sau în funcții care întorc obiecte/valori
+- opțional, vă definiți o [funcție de tratat erori comune](#exemplu-handler-erori-comune)
 
 ### Diverse
 #### Dynamic cast
