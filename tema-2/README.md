@@ -147,7 +147,7 @@ public:
 };
 
 int main() {
-    Baza b;
+    Baza b{1};
     std::cout << "main: După b, înainte de d\n";
     Derivata d;
     std::cout << "main: sfârșit\n";
@@ -290,8 +290,13 @@ Nu trebuie să rețineți acest tabel. Încercați să îl deduceți!
   - dacă nu folosim moștenire publică, derivata ar deveni implicit mai restrictivă decât baza,
     încălcând ideea de "Derivata _este un fel de_ Bază"
 - trebuie să știți despre celelalte tipuri de moșteniri pentru examen
+- este de preferat să folosim compuneri în loc de moșteniri private/protected deoarece prin compuneri
+  clasele depind mai puțin una de alta (vezi mai jos S-ul din SOLID)
 - moștenirile `private` și `protected` nu există în alte limbaje și se folosesc în situații rare; detalii
   [aici](https://isocpp.org/wiki/faq/private-inheritance)
+  - moștenirea privată este o moștenire de implementare, **nu de interfață**; faptul că folosim moștenire
+    este doar un detaliu de implementare
+  - dacă derivata moștenește privat baza, putem spune că derivata "reneagă" baza/interfața bazei
 
 **Observații**
 
@@ -435,7 +440,7 @@ int main() {
 ```
 
 <details>
-  <summary><code>g++ main_fara_destr.cpp -S -O0 -o -</code></summary>
+  <summary><code>g++ main_fara_destr.cpp -S -O0 -o -</code> (47 de linii de ASM)</summary>
   <pre lang='asm'>
 	.file	"main_fara_destr.cpp"
 	.text
@@ -487,7 +492,7 @@ main:
 </details>
 
 <details>
-  <summary><code>g++ main_cu_destr.cpp -S -O0 -o -</code></summary>
+  <summary><code>g++ main_cu_destr.cpp -S -O0 -o -</code> (100 de linii de ASM)</summary>
   <pre lang='asm'>
 	.file	"main_cu_destr.cpp"
 	.text
@@ -628,7 +633,7 @@ fac ce trebuie. Corect este să nu le scriem deloc pe niciunele sau să le scrie
 - destructorul este generat implicit în toate cazurile de mai sus
   - îl putem defini pentru simetrie doar dacă definim și copieri sau mutări
 
-Detalii și sursa de inspirație [aici](https://howardhinnant.github.io/bloomberg_2016.pdf).
+Detalii și sursa de inspirație [aici](https://howardhinnant.github.io/bloomberg_2016.pdf)/[aici](https://www.accu.org/conf-docs/PDFs_2014/Howard_Hinnant_Accu_2014.pdf).
 
 #### Constructor de copiere, `operator=` pentru derivate
 
