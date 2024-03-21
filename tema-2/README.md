@@ -5254,6 +5254,21 @@ int main() {
 }
 ```
 
+Atributele statice constante pot fi inițializate în interiorul clasei doar dacă sunt
+de tip întreg/char, constexpr pt tipuri simple non-integral (float, double) sau `inline`:
+```c++
+class test {
+    static const int attr1 = 1;
+    static constexpr float attr2 = 2;
+    inline static const std::string attr3{"test 3"};
+    static const std::string attr4;
+};
+
+const std::string test::attr4{"test 4"};  // nu este inline, deci nu merge inițializare direct în clasă
+// dacă nu facem inițializarea în afara clasei, primim undefined reference atunci când încercăm să folosim atributul
+// tipurile care nu sunt literali nu pot fi declarate (în prezent) cu constexpr
+```
+
 Funcțiile și atributele statice sunt aproape identice în restul limbajelor. Ca o încheiere specifică C++,
 avem și variabile statice locale. Acestea sunt tot la nivel de clasă, dar sunt vizibile doar în funcția `f`:
 ```c++
