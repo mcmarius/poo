@@ -301,8 +301,28 @@ Nu trebuie să rețineți acest tabel. Încercați să îl deduceți!
 **Observații**
 
 1. Specificatorii de acces din C++ sunt la nivel de clasă: putem accesa atributele private ale unui alt obiect
-   al aceleiași clase. Nu putem accesa atributele private sau protected ale unui obiect de tip bază,
-   deoarece este vorba de altă clasă.
+   al aceleiași clase. Nu putem accesa atributele private sau protected ale unui obiect de tip bază _din clasa
+   derivată_, deoarece este vorba de altă clasă. Modificați exemplul următor:
+```c++
+class Baza {
+protected;
+    int x;
+};
+
+class Derivata : public Baza {
+public:
+    void f(Baza b) {
+        x;
+        b.x;
+    }
+};
+
+int main() {
+    Baza b;
+    Derivata d;
+    d.f(b);
+}
+```
 
 2. În situații rare, putem modifica în derivate interfața din derivate folosind clauze `using`.
 În exemplul de mai jos, funcția `f1` este protected în bază și devine publică în derivată,
@@ -345,12 +365,14 @@ Totuși, dacă avem nevoie să facem asta, ar trebui să ne întrebăm de ce mai
 nu direct un obiect de tip bază. Motivul pentru care am creat clasa derivată este tocmai pentru că nu ne convenea
 implementarea din bază.
 
-Asemănător cu multe alte elemente de sintaxă din C++, și sintaxa de mai sus poate fi utilă în situații rare.
-Un exemplu ar fi la funcțiile virtuale pure (detalii în [secțiunea respectivă](#funcții-virtuale)).
-Dacă aflați alte exemple de situații, vă rog să îmi spuneți și mie.
+Asemănător cu multe alte elemente de sintaxă din C++, și sintaxa de mai sus ar putea fi utilă în situații rare,
+dar nu știu care sunt acelea în acest caz.
+Un exemplu ar fi la funcțiile virtuale pure (detalii în [secțiunea respectivă](#funcții-virtuale)), însă nici acolo
+nu prea are sens să facem acest apel al unei funcții din bază din afara clasei cu sintaxa de nume complet `obiect.Baza::functie()`.
+[S-a mai întrebat și altcineva](https://stackoverflow.com/questions/14288594/), dar tot nu am găsit utilitatea.
+Dacă aflați exemple de situații cu sens, vă rog să îmi spuneți și mie.
 
 [//]: # (Iar dacă tot am zis de situații rare, să vorbim despre moștenirea multiplă.)
-[//]: # (s-a mai întrebat și altcineva, dar tot nu am găsit utilitatea: https://stackoverflow.com/questions/14288594/)
 
 #### Constructor de copiere, `operator=` (recapitulare)
 
