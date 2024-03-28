@@ -5965,6 +5965,37 @@ Total: 24.
 Pe msvc, bănuiala mea este că ocupă mai mult din cauza unor bytes de padding. Cu directiva `#pragma pack(1)`
 obținem și pe msvc 24 pentru `der4`. Pentru `der1` am obține 12, deci și acolo pare să fie padding.
 
+##### Sidecast/crosscast
+
+La moștenirile multiple, putem face conversii cu dynamic_cast și lateral, nu doar downcasting.
+
+Dintr-un pointer de tip Der1 care arată de fapt către un obiect de tip DerM, putem obține un pointer de tip Der2 (frați/surori/siblings):
+```c++
+#include <iostream>
+
+class Baza {
+public:
+    virtual ~Baza() = default;
+};
+class Der1 : public virtual Baza {};
+class Der2 : public virtual Baza {};
+class DerM : public Der1, public Der2 {};
+
+int main() {
+    Baza *b = new DerM;
+    if(auto ptr1 = dynamic_cast<Der1*>(b)) {
+        std::cout << "downcast\n";
+        // ptr1 este de tip Der1*
+        if(auto ptr2 = dynamic_cast<Der2*>(ptr1)) {
+            std::cout << "sidecast\n";
+        }
+    }
+    delete b;
+}
+```
+
+##### Concluzii
+
 Moștenirea multiplă și virtuală complică multe alte aspecte ale limbajului (de exemplu, excepțiile și RTTI).
 Am omis acest lucru în secțiunile precedente. Ca să nu discredităm complet aceste facilități, menționez că
 ele sunt utile atunci când alternativele îngreunează și mai mult întreținerea și extinderea codului.
