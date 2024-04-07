@@ -45,7 +45,8 @@ Pentru branch-ul common-libs:
 git clone <proiectul vostru>
 git remote add origin2 https://github.com/mcmarius/oop-template.git
 git fetch origin2
-git checkout common-libs
+git checkout --orphan common-libs origin2/common-libs
+git commit -m "Initial commit"
 git push origin common-libs
 ```
 
@@ -54,11 +55,14 @@ Pentru branch-ul sfml:
 git clone <proiectul vostru>
 git remote add origin2 https://github.com/mcmarius/oop-template.git
 git fetch origin2
-git checkout sfml
+git checkout --orphan sfml origin2/sfml
+git commit -m "Initial commit"
 git push origin sfml
 ```
 
-End update 13.03.2024.
+Folosim opțiunea `--orphan` pentru a nu căra tot istoricul de pe repo-ul template.
+
+End update 13.03.2024 (actualizat 07.04.2024).
 
 ---
 
@@ -112,6 +116,8 @@ La următoarea fereastră nu avem (momentan) nimic de modificat, apăsăm "OK":
 ![](img/setup_p3_confirm_cmake.png)
 
 După câteva secunde (sau minute), proiectul ar trebui să fie configurat.
+
+### Configurare working directory
 
 Dacă avem fișiere pentru date de intrare, este necesar să configurăm directorul de lucru
 (working directory).
