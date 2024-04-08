@@ -716,7 +716,7 @@ constructorului din `Facultate`.
 
 **Exercițiu:** afișați numele studentului înainte și după rândul cu `stud = stud_;`.
 
-La rândurile `nume = nume_;` și `stud = stud;` se apelează funcțiile `operator=` de copiere (op= pe scurt)
+La rândurile `nume = nume_;` și `stud = stud_;` se apelează funcțiile `operator=` de copiere (op= pe scurt)
 generate de compilator în mod automat pentru a putea face atribuiri în mod natural.
 
 Diferența dintre cc și op= este aceea că în cazul cc noi **nu** avem deja construit un obiect (fix atunci îl
