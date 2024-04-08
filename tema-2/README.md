@@ -4122,10 +4122,12 @@ int main() {
         int medie;
         calcul_medie({2, 3, 4}, medie);
         învață("oop");
-    } catch(orar::eroare_student& err) {
+    } catch(eroare_student& err) {
         std::cout << "eroare student: " << err.what() << "\n";
     } catch(eroare_aplicatie& err) {
         std::cout << "eroare de la noi: " << err.what() << "\n";
+    } catch(orar::eroare_rezervare& err) {
+        std::cout << "eroare rezervare din orar: " << err.what() << "\n";
     } catch(orar::eroare_orar& err) {
         std::cout << "eroare din orar: " << err.what() << "\n";
     } catch(std::exception& err) {
