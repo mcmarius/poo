@@ -4837,7 +4837,7 @@ Puneți cap la cap exemplele anterioare:
 - vă definiți o [ierarhie proprie de excepții](#exemplu-ierarhie-proprie) cu bază derivată indirect (sau direct)
   din `std::exception`, de exemplu din `std::runtime_error`
 - aruncați excepții **cu sens** în [constructori](#exemplu-throw-în-constructor-și-funcție-non-void)
-  sau în funcții care întorc obiecte/valori
+  sau în funcții care întorc obiecte/valori și să le și prindeți (tot cu sens - minimal în funcția main)
 - opțional, vă definiți o [funcție de tratat erori comune](#exemplu-handler-erori-comune)
 
 ### Diverse
