@@ -5054,7 +5054,7 @@ creați un obiect și apelați funcțiile de test.
 Dacă folosim smart pointers:
 - în cazul std::shared_ptr putem folosi `std::dynamic_pointer_cast` pentru a obține
 un std::shared_ptr de clasă derivată
-- în cazul std::unique_ptr nu putem face cast la pointer pentru că s-ar încerca crearea uneo copii a pointerului
+- în cazul std::unique_ptr nu putem face cast la pointer pentru că s-ar încerca crearea unei copii a pointerului
 - în ambele cazuri putem face cast către o referință la obiectul dereferențiat
 ```c++
 #include <iostream>
