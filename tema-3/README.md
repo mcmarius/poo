@@ -997,6 +997,9 @@ la compilare prin definirea unei interfețe în bază (tot cu cast-uri în bază
 [copiere polimorfică](https://devblogs.microsoft.com/oldnewthing/20220721-00/?p=106879),
 evaluarea leneșă a expresiilor (expression templates).
 
+Exemplu de CRTP din biblioteca standard: [`std::enable_shared_from_this`](https://en.cppreference.com/w/cpp/memory/enable_shared_from_this).
+
+
 Un idiom complementar este cel de clasă **mixin** (sau mix-in). Dacă la CRTP aveam clasa de bază template,
 aici avem derivata template. În cazul CRTP, baza stabilea interfața. La mixin, derivata este un șablon
 și poate fi extins cu diverse interfețe.
