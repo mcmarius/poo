@@ -197,7 +197,7 @@ int main() {
   - Dacă facem funcții sau atribute `protected` sau `public` în bază, deși nu ar fi necesar, lăsăm posibilitatea
     ca aceste funcții și atribute să fie folosite în mod direct și în derivate.
   - Ulterior, dacă avem nevoie să modificăm baza, nu vom putea modifica atributele și funcțiile
-    `protected`/`public` fără să fie să modificăm și derivatele.
+    `protected`/`public` fără să modificăm și derivatele.
   - **Acesta este motivul pentru care dorim să folosim cât mai mult atribute și funcții `private`!**
 - Este bine să avem cât mai puține atribute/funcții `protected`, deoarece dacă este nevoie să modificăm
   atributele/detaliile de implementare din bază, aceste modificări nu vor afecta derivatele.
