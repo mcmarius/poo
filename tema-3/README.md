@@ -402,7 +402,7 @@ Avem această eroare deoarece compilatorul are nevoie de definiția completă a 
 atunci când are de instanțiat parametrul de template cu un tip concret (există o infinitate de
 tipuri concrete).
 
-O abordare echivalentă este să face un fișier sursă care să conțină doar declarațiile
+O abordare echivalentă este să facem un fișier sursă care să conțină doar declarațiile
 cu tipuri concrete (`sursa_impl.cpp` în exemplul de mai jos).
 
 ```c++
