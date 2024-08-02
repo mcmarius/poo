@@ -1,18 +1,24 @@
-## Hall of Fame
+## Hall of Fame 🥇
 
 Vezi și [**proiecte interzise**](repetitiv.md).
 
 **2023-2024**:
-[Autodragan](https://github.com/badea-codrut-cti/proiect-poo) | ?
+[Radar Contact](https://github.com/Bogdanctx/Radar-Contact) |
+[Ludo](https://github.com/RoxanaAsavei/Proiect-OOP1) |
+[Dune: Stellar Odyssey](https://github.com/MihneaAndreescu/proiectpoo) |
+[Poor Bunny](https://github.com/Andu9/Proiect-Tema-2-3-POO) |
+[The Curse of Transylvania](https://github.com/AleooTheGreat/The-Curse-of-Transylvania) |
+[Lupta Voievozilor](https://github.com/roisan13/proiect-poo) |
+[Autodragan](https://github.com/badea-codrut-cti/proiect-poo)
 
 **2022-2023**:
 [Holocron-UI](https://github.com/i2002/Holocron-UI) |
 [Super Mario](https://github.com/danitns/oop-project) |
 [Pac-Man](https://github.com/M-Podi/PacMan-ILMF) |
 [Asteroids](https://github.com/theo543/asteroids) |
-[Evolution simulator](https://github.com/annna7/proiect-poo) |
+[Evolution simulator](https://github.com/annna7/evolution-simulator) |
 [Unravelling Unknowns](https://github.com/SadCarrotMaru/OOP_Project_slime) |
-[Catran](https://github.com/VSebastian8/obiecte) |
+[Catran](https://github.com/VSebastian8/Catan-Board-Game-Simulation) |
 [Q++ Quantum SDK](https://github.com/mario-deaconescu/quantum-sdk) |
 [Sokoban](https://github.com/tudormiu/proiect-poo) |
 [Quiz Game](https://github.com/mariapreda19/proiect-oop-QuizApp) |
@@ -21,20 +27,20 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 [2048](https://github.com/biancapopa31/oop) |
 [MarbleCrypt](https://github.com/radubig/MarbleCrypt) |
 [MineSweeper](https://github.com/EHollower/MSOOP) |
-[Platformer](https://github.com/fortasteaua/oop) |
+[Platformer](https://github.com/MarcuDragosIonut/oop) |
 [Pokémon Arcade Fighting](https://github.com/Apostol-Alin/proiectpoo) | 
 [Cross the Road](https://github.com/Cristiana-Cocheci/oop_v2) |
 [TicTacToe](https://github.com/Andrei137/Tic-Tac-Toe) |
-[Space invaders](https://github.com/vladc15/OOP) |
+[Space invaders](https://github.com/vladc15/SpaceInvaders) |
 [Snake](https://github.com/beingsebi/snake) |
 [Snake with Power-ups](https://github.com/dragosc1/Snake-with-POWER-UPS) |
 [Slay the Spire](https://github.com/sebimih13/POO-Proiect) |
-[Travel Planner](https://github.com/radumsk/TravelPlanner) | 
-[Airline Management System](https://github.com/marius004/oop-project)
+[Travel Planner](https://github.com/radumcostache/TravelPlanner) | 
+~[Airline Management System](https://github.com/marius004/oop-project)~ (dead link)
 
 **2021-2022**:
 [Digital Banking](https://github.com/laurentiucretu68/Digital_Banking) |
-[Modern Chess](https://github.com/Robyss/Modern-Chess) |
+[Modern Chess](https://github.com/robys01/Modern-Chess) |
 [Sound synth](https://github.com/lmihaig/sound-synth) |
 [PiggyBank](https://github.com/vl4dio4n/PiggyBank) |
 [Inventory Management System](https://github.com/tudorcoman/oop-inventory-system) |
@@ -54,10 +60,13 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 **2019-2020**:
 [Game of Life](https://github.com/Stefan-Radu/Predator-and-Prey)
 
-## Runner-ups
+## Runner-ups 🥈
 
 **2023-2024**:
-[BlackJack One-on-one](https://github.com/superglovv/Project-OOP-Black) | ?
+[Surviland](https://github.com/izabelamaria24/Surviland) |
+[Poo's Musicaly Fight](https://github.com/mihaidanaila11/Poo-s-Musicaly-Fight) |
+[Platformer with enemies](https://github.com/raizojpg/POO) |
+[BlackJack One-on-one](https://github.com/superglovv/Project-OOP-Black)
 
 **2022-2023**:
 [Jocul cuvintelor](https://github.com/Smaranda02/PROJECT_OOP) |
@@ -72,12 +81,12 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 **2021-2022**:
 [Magazin ceasuri](https://github.com/xSuly/Proiect-POO) |
 [Fitness & Healthcare](https://github.com/AndreiLaurentiu/OOP_Project) |
-[Randomizer!](https://github.com/Nubaz/Randomizer_Game) |
+[Randomizer!](https://github.com/superBleep/Randomizer_Game) |
 [Rezervări cinema](https://github.com/radustefan2311/Proiect---OOP) |
-[UtilityIT](https://github.com/nicugnm/poo-cpp-proj) |
+[UtilityIT](https://github.com/sticknycu/poo-cpp-proj) |
 ~[Chess AI](https://github.com/vladciocoiu/proiect-poo)~ (dead link) |
 [RPG](https://github.com/alin090402/OOP-RPG-project) |
-[FIFA Pack Opening Simulator](https://github.com/valentinvale/OOP_VS) |
+[FIFA Pack Opening Simulator](https://github.com/valentinvale/FIFA-Pack-Opening-Simulator-OOP) |
 [WORDTYPER](https://github.com/ImCataG/poop)
 
 **2020-2021**:
@@ -90,15 +99,20 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 [Formație muzicală](https://github.com/Ionescu-Ioan/Laborator-POO) |
 [Task tracker](https://github.com/deeaanghelache/POO_Laborator) |
 ~[Drinkeer](https://github.com/radu-filipescu/Drinkeer)~ (dead link) |
-[Fitness](https://github.com/alexbrinza2001/Tema1-POO)
+[Fitness](https://github.com/alexbrinza2001/OOP-Project-C-)
 
-## Other mentions
+## Other mentions 🥉
+
+**2023-2024**:
+[Geometry library](https://github.com/ediardi/poo-151-2024/tree/sfml) |
+[Cats vs Boxes](https://github.com/Cosmin371/Plants-vs-Zombies)
+
 
 **2022-2023**:
 [FlashScore](https://github.com/stefanbrb10/temaOOP) |
-[Library](https://github.com/AncaaO/Tema3) |
+[Library](https://github.com/ancaao/LibraryProject-OOP) |
 [Total C War](https://github.com/GeorgePopescu318/Total-C-War) |
-[Hay Day](https://github.com/dariapirvulescu18/proiect1) |
+[Hay Day](https://github.com/dariapirvulescu18/POO) |
 [Gestiunea unui local pentru evenimente](https://github.com/bogdanvladmihai/oop-second-project) |
 [Gestiunea unui lanț de hoteluri](https://github.com/Razvan48/Gestiunea-unui-lant-de-hoteluri) |
 [Temple Stones](https://github.com/emtu5/proiectOOP) |
@@ -109,7 +123,7 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 [Agenda++](https://github.com/ReluSt13/Agenda-plus-plus) |
 [Aplicație bibliotecă](https://github.com/gabrielcatalin191200/OOP) |
 [Bază de date](https://github.com/radu-moraru/OOP-project) |
-[Cofetărie](https://github.com/andreeav19/Proiect_OOP) |
+[Cofetărie](https://github.com/andreeav19/Proiect-OOP) |
 [Săli de fitness](https://github.com/NastaseMarius19/baza_de_date_sali_fitness) |
 [SNAKE++](https://github.com/Antonioo-H/OOP-Project) |
 [Headball](https://github.com/andreihodoroaga/Headball) |
@@ -120,7 +134,7 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 [miniGame](https://github.com/AlecuMihai/miniGame) |
 [My Monopoly](https://github.com/alexandra-chivescu/Proiect-OOP) |
 [Șah](https://github.com/alexandru-peter/SAH_POO_1) |
-[Snake](https://github.com/Mihnea-Cristea/POO) |
+[Snake](https://github.com/Mihnea-Cristea/SnakeGameC) |
 [Tower defense](https://github.com/opreageorges/POO) |
 [AdventureIn10](https://github.com/Daria602/AdventureIn10)
 
