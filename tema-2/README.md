@@ -754,7 +754,7 @@ Indiferent de ordinea din lista de inițializare, ordinea inițializărilor este
 
 Dacă inversăm ordinea din lista de inițializare:
 ```c++
-    curs_obligatoriu(const curs_obligatoriu& other) :  st(other.st), curs(other) {
+    curs_obligatoriu(const curs_obligatoriu& other) : st(other.st), curs(other) {
         std::cout << "cc curs_obligatoriu: " << st << "\n";
     }
 ```
