@@ -42,27 +42,41 @@ puteți urma instrucțiunile de mai jos în continuare.
 
 Pentru branch-ul common-libs:
 ```sh
+# dacă nu aveți deja proiectul local
 git clone <proiectul vostru>
+cd <nume proiect>
+#
+# adăugăm ca sursă "remote" repository-ul template
 git remote add origin2 https://github.com/mcmarius/oop-template.git
+# preluăm local la noi repository-ul template
 git fetch origin2
+# creăm un nou branch numit common-libs din branch-ul common-libs provenit din origin2
 git checkout --orphan common-libs origin2/common-libs
+# facem commit cu fișierele preluate de pe acel branch
 git commit -m "Initial commit"
 git push origin common-libs
 ```
 
 Pentru branch-ul sfml:
 ```sh
+# dacă nu aveți deja proiectul local
 git clone <proiectul vostru>
+cd <nume proiect>
+#
+# adăugăm ca sursă "remote" repository-ul template
 git remote add origin2 https://github.com/mcmarius/oop-template.git
+# preluăm local la noi repository-ul template
 git fetch origin2
+# creăm un nou branch numit sfml din branch-ul sfml provenit din origin2
 git checkout --orphan sfml origin2/sfml
+# facem commit cu fișierele preluate de pe acel branch
 git commit -m "Initial commit"
 git push origin sfml
 ```
 
 Folosim opțiunea `--orphan` pentru a nu căra tot istoricul de pe repo-ul template.
 
-End update 13.03.2024 (actualizat 07.04.2024).
+End update 13.03.2024 (actualizat 05.11.2024, 07.04.2024).
 
 ---
 
