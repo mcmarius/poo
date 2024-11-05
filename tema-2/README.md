@@ -305,7 +305,7 @@ Nu trebuie să rețineți acest tabel. Încercați să îl deduceți!
    derivată_, deoarece este vorba de altă clasă. Modificați exemplul următor:
 ```c++
 class Baza {
-protected;
+protected:
     int x;
 };
 
