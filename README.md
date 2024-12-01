@@ -79,7 +79,7 @@ Ca să vă faceți o idee despre ce ați putea face, uitați-vă pe [proiectele 
 ### Resurse
 
 Singurele resurse pe care le consider de încredere sunt:
-- [cppreference][cppreference-url]
+- [cppreference][cppreference-url] ([link alternativ](https://devdocs.io/cpp/))
 - [ISO C++ FAQ](https://isocpp.org/faq/)
 - [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
 - mențiune onorabilă: [StackOverflow](https://stackoverflow.com/questions/tagged/cpp?tab=Votes)
