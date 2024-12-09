@@ -9,6 +9,7 @@ Câteva sfaturi pentru colocviu
 - **fără binare/executabile în arhivă!**
 - **verificați că fișierele nu sunt atașate ca fișiere pe OneDrive!!!** Mailul de la Universitate (Outlook)
   are tendința să vă înlocuiască atașamentele în fișiere OneDrive, mare atenție!!
+- mailul se trimite de pe adresa instituțională
 
 ![](img/colocviu_p0.png)
 
