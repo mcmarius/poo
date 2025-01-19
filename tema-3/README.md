@@ -872,7 +872,11 @@ int main() {
 }
 ```
 
-Exemplu de singleton cu CRTP:
+Cu ajutorul CRTP, am eliminat duplicarea logicii gestionării unor identificatori. Exemplul este minimal,
+dar cred că se înțelege că putem scăpa de mult cod repetitiv cu CRTP.
+
+
+##### Exemplu de singleton cu CRTP:
 ```c++
 #include <iostream>
 
@@ -889,8 +893,11 @@ public:
     }
 private:
     class DerivedInstance : public Derived{
-        public:
-        DerivedInstance() : Derived() {}
+        // avem nevoie de clasa DerivedInstance pentru
+        // a putea construi un obiect de tip Derived aici
+        // constr implicit generat de compilator este:
+        // public:
+        // DerivedInstance() : Derived() {}
     };
 };
 
@@ -910,11 +917,40 @@ int main() {
 }
 ```
 
+##### Exemplu de Counter cu CRTP:
+```c++
+#include <iostream>
 
+template <typename Derived>
+class Countable {
+    static int nrObiecte;
+protected:  // nu dorim să creăm direct obiecte de tip Counter
+    Countable() {
+        nrObiecte++;
+    }
+    ~Countable() {
+        nrObiecte--;
+    }
+public:
+    static int getNr() { return nrObiecte; }
+};
 
+class User : public Countable<User> {};
 
-Cu ajutorul CRTP, am eliminat duplicarea logicii gestionării unor identificatori. Exemplul este minimal,
-dar cred că se înțelege că putem scăpa de mult cod repetitiv cu CRTP.
+class Admin : public Countable<Admin> {};
+
+template<typename Derived>
+int Countable<Derived>::nrObiecte;
+
+int main() {
+    User u1, u2;
+    std::cout << u1.getNr() << "\n";
+    Admin a1;
+    std::cout << a1.getNr() << "\n";
+}
+```
+
+##### Alte exemple de CRTP
 
 Alt exemplu este să înlănțuim apeluri de funcții în mod polimorfic, adică atât din bază, cât și din derivată.
 
