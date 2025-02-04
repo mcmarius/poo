@@ -2,6 +2,13 @@
 
 Vezi și [**proiecte interzise**](repetitiv.md).
 
+**2024-2025**:
+[DumbHack :: Survival](https://github.com/Ursusz/DumbHack-Survival) |
+[Music Manager](https://github.com/Tache-Stefan/OOP-Project) |
+[Formula 1 Manager](https://github.com/Mdl44/F1-Manager) |
+[Inscryption](https://github.com/noobix45/Inscryption) | ?
+
+
 **2023-2024**:
 [Radar Contact](https://github.com/Bogdanctx/Radar-Contact) |
 [Ludo](https://github.com/RoxanaAsavei/Proiect-OOP1) |
@@ -62,6 +69,9 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 
 ## Runner-ups 🥈
 
+**2024-2025**:
+[GDash](https://github.com/OldEys/GDash) | ?
+
 **2023-2024**:
 [Surviland](https://github.com/izabelamaria24/Surviland) |
 [Poo's Musicaly Fight](https://github.com/mihaidanaila11/Poo-s-Musicaly-Fight) |
@@ -102,6 +112,9 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 [Fitness](https://github.com/alexbrinza2001/OOP-Project-C-)
 
 ## Other mentions 🥉
+
+**2024-2025**:
+[Memory Game: Two by two](https://github.com/andralorr/Two-by-two) | ?
 
 **2023-2024**:
 [Geometry library](https://github.com/ediardi/poo-151-2024/tree/sfml) |
