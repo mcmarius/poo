@@ -6,7 +6,8 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 [DumbHack :: Survival](https://github.com/Ursusz/DumbHack-Survival) |
 [Music Manager](https://github.com/Tache-Stefan/OOP-Project) |
 [Formula 1 Manager](https://github.com/Mdl44/F1-Manager) |
-[Inscryption](https://github.com/noobix45/Inscryption) | ?
+[Inscryption](https://github.com/noobix45/Inscryption) |
+[Papers, please:: Cats Apocalypse](https://github.com/popescu-maria/Game-OOP) | ?
 
 
 **2023-2024**:
