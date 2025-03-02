@@ -6,15 +6,27 @@
 Înainte de a parcurge aceste materiale, ar trebui să aveți configurat
 [mediul de lucru](/env).
 
-Pentru proiect, voi presupune că ați făcut un repository nou pe baza
-[acestui repository template](https://github.com/mcmarius/oop-template) și că v-ați clonat local
-repository-ul vostru. Dacă nu doriți să folosiți acest template, trebuie să ajungeți la o configurație
+Pentru proiect, voi presupune că ați făcut un repository nou pe baza repository-ului template corespunzător grupei
+voastre și că v-ați clonat local
+repository-ul vostru.
+
+### Template proiect
+
+| Laborant  | Link template                                |
+|-----------|----------------------------------------------|
+| Dragoș B  | https://github.com/Ionnier/oop-template      |
+| Tiberiu M | https://github.com/MaximTiberiu/oop-template |
+| Marius MC | https://github.com/mcmarius/oop-template     |
+
+Dacă nu doriți să folosiți template-ul, trebuie să ajungeți la o configurație
 echivalentă:
-- gitignore
+
+- gitignore, gitattributes
 - CMakelists.txt (sau un fișier pentru alt sistem de build portabil)
 - flags pentru warnings (de asemenea trebuie să fie portabile)
 - eventualele configurații pentru biblioteci externe de asemenea trebuie să fie portabile
 - serviciu de integrare continuă (pe scurt CI = continuous integration)
+- distribuire fișiere binare (executabile) cu toate fișierele auxiliare necesare
 - fișier README cu o scurtă descriere
 
 Pentru diverse exerciții, este suficient să vă configurați afișarea de warnings. Desigur, trebuie să
@@ -1237,46 +1249,40 @@ class Student {
 
 ### Numere aleatoare
 
-Detalii [aici](https://github.com/effolkronium/random) și pe [repo-ul template](https://github.com/mcmarius/oop-template/tree/common-libs).
+Detalii [aici](https://github.com/effolkronium/random) și pe repo-ul template (vezi pe branch-ul common-libs).
 
 ## Cerințe tema 1
 
 Scopul primei teme este familiarizarea cu limbajul C++ și cu unele noțiuni OOP de bază. La sfârșitul
-săptămânii 4 ar trebui să aveți implementate minim 3 funcționalități pe care le considerați esențiale.
+săptămânii 4 ar trebui să aveți implementate minim 3 funcționalități **netriviale** pe care le considerați esențiale.
 
 **Nu vă apucați de implementat până nu ați primit OK-ul! Aș vrea să discut cu fiecare în parte pentru
 a stabili interfața.**
 
-Cerințe comune:
-- minim 3-4 clase folosind compunere; puteți adăuga și clase pentru moștenire,
-dar vor fi în plus față de acele prime 3-4 clase
+Pentru lista completă a cerințelor, vezi [template-ul de proiect](#template-proiect).
+
+Cerințe comune pe scurt:
+
+- compunere
 - constructori (expliciți) de inițializare pentru fiecare clasă
 - regula celor trei pentru o clasă: constructor de copiere, `operator=` de copiere și destructor
-- `operator<<` pentru **toate** clasele
-- minim 3 funcții membru publice **în afară de** getters/citiri/afișări/adăugări triviale de elemente în vectori
-  - nu ar trebui să aveți nevoie de setters; cât mai puțini getters
-----
-- atribute și alte funcții vor fi obligatoriu `private`; **fără variabile globale**
-- cât mai multe `const`
-- ⚠ obiectele trebuie să fie create în main sau citite dintr-un fișier: cât mai puține citiri de la tastatură
-deoarece e pierdere de timp (discutăm excepțiile)
-- apelarea/testarea *tuturor* funcțiilor publice în `main`; dacă nu le apelăm, la ce le-am mai definit?
-  - apelarea se va face direct sau indirect: din `main` se pot apela funcții care construiesc obiecte
-  cu clasele definite și folosesc aceste obiecte
-- ideal, implementarea unei funcționalități mai dificile/complexe
+- `operator<<` pentru **toate** clasele cu compunere
+- minim 3 funcții membru publice **netriviale**
+- scenariu de utilizare cu sens: apelarea/testarea *tuturor* funcțiilor publice în `main`; dacă nu le apelăm, la ce
+  le-am mai definit?
 
 Cerințe comune (organizatorice):
 - codul trebuie să fie pe un repository de `git` la care să am acces (nu e obligatoriu să fie github dpmdv)
 - obligatoriu `.gitignore`
 - **NU faceți commit prin upload la fișiere din browser** deoarece nu se ia în considerare fișierul `.gitignore`;
 nu fiți leneși!
-- un tag de git pe un commit cu cod stabil
+- un tag de git pe un commit cu cod stabil și toate bifele
 - obligatoriu un serviciu de integrare continuă (CI) cu minim 2 sisteme de operare diferite și
 minim 2 compilatoare diferite
   - recomand să folosiți GitHub Actions deoarece e inclus în repository-ul template
   - fără warnings din partea compilatoarelor
   - fără warnings din partea instrumentelor de analiză statică
-  - fără memory leaks
+  - fără erori de memorie
 
 #### Termen limită
 - săptămâna 3 (23 octombrie/12 martie): stabilirea claselor și implementarea parțială a acestora
@@ -1305,8 +1311,6 @@ int main() {
     assert((std::cout << "op=: Modificarea copiei nu modifică obiectul inițial\n", st1 != st2));
 }
 ```
-
-#### Teme propuse
 
 **Încercați să veniți cu propriile idei. Dacă nu aveți inspirație, uitați-vă pe
 [proiectele din anii trecuți](/HoF.md), dar vă rog nu alegeți [proiecte care s-au tot făcut](/repetitiv.md).**

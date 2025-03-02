@@ -223,3 +223,42 @@ prin pointer la baza respectivă (întrucât destructorul nu e accesibil/public)
 [aici](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rc-dtor-virtual).
 
 Totuși, în acele situații nu am folosi polimorfism, deci tot nu avem un răspuns complet la întrebare.
+
+#### Am redenumit proiectul și nu mai merg bifele, primesc erori ciudate
+
+Soluție: șterge cache-urile din browser. Pe tab-ul Actions în stânga la Management - Caches. Trebuie șterse unul
+câte unul. Accept pull requests pentru a simplifica acest proces.
+
+Cu `gh` CLI se poate: https://cli.github.com/manual/gh_cache_delete
+
+#### Folosesc fișiere externe (imagini, sunete etc.) și nu sunt găsite local sau pe acțiuni
+
+Vezi cu funcția `copy_files` la sfârșit în CMakeLists.txt. Sunt exemple de apeluri în comentarii.
+
+Dacă ai multe fișiere, este mai simplu să ai grupate fișierele în foldere deoarece așa adaugi în
+apelul de `copy_files` doar folder-ul, nu fiecare fișier individual.
+
+#### Codul rulează la nesfârșit pe bife/acțiuni
+
+Verifică datele din fișierul `tastatura.txt`. De asemenea, vezi să nu confunzi citirile simple (`std::cin`)
+cu citiri la nivel de rând (`std::getline`).
+
+#### Pe Windows nu găsește definiție pentru `min`/`max`/`abs` etc
+
+Problema este din cauză că `Windows.h` definește `min`/`max` etc sub formă de macros, deci nu mai poți scăpa de ele.
+
+Soluție: schimbă ordinea include-urilor astfel încât `Windows.h` să fie inclus la urmă.
+
+Alternativ, definește constanta `NOMINMAX` înainte de a include `Windows.h`. Vezi și `WIN32_LEAN_AND_MEAN`.
+Vezi și cum am făcut pe branch-ul common-libs cu rlutil pentru a restaura valorile vechi ale macro-urilor.
+
+De asemenea, ai grijă să faci asta doar pentru Windows, altfel va crăpa pe celelalte medii.
+
+#### Nu am schimbat nimic și brusc sunt erori ciudate pe bife/acțiuni
+
+Erorile sunt din vina mea (mcmarius) sau din vina altora 🙂
+
+Pentru erorile din vina mea, vedeți dacă nu au apărut commit-uri noi pe repository-ul template.
+
+Pentru erorile din vina altora, vedeți în issues pe acțiunea care crapă, pe [GitHub Status](https://githubstatus.com)
+sau pe repo-ul de [runners](https://github.com/actions/runner-images/issues).

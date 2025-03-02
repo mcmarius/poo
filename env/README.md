@@ -16,7 +16,7 @@ Exemple de compilatoare: GCC (GNU Compiler Collection), (LLVM) Clang, Apple Clan
 MSVC (Microsoft Visual C++), Intel C++ Compiler, NVCC (Nvidia CUDA Compiler) etc.
 
 Exemple de editoare/IDE: Code::Blocks, CLion, VSCode, vim, emacs, nano, gedit, XCode,
-Visual Studio, Notepad etc.
+Visual Studio, Notepad++ etc.
 
 ---
 
@@ -62,7 +62,7 @@ avea versiuni de compilator diferite cu aceeași versiune de MinGW: puteți vede
 ## Configurarea compilatorului
 
 Indiferent de sistemul de operare, vă recomand să folosiți versiuni cât mai noi de compilator, ideal
-GCC minim versiunea 10 sau Clang minim versiunea 10.
+GCC minim versiunea 11 sau Clang minim versiunea 11.
 
 #### Windows
 
@@ -72,16 +72,16 @@ Este necesar să adăugăm compilatorul în cale (variabila de mediu numită `%P
 dacă vrem să îl accesăm mai ușor din linia de comandă.
 
 Dacă folosiți CLion ca IDE, versiunea de MinGW-w64/GCC inclusă este nouă și vine cu GCC >= 11.
-Totuși, dacă aveți probleme cu biblioteci externe, recomand să luați GCC >= 10 de pe WinLibs, varianta
+Totuși, dacă aveți probleme cu biblioteci externe, recomand să luați GCC >= 11 de pe WinLibs, varianta
 cu MSVCRT runtime (nu UCRT runtime).
 
 Pe Windows, vă recomand să folosiți GCC/Clang furnizate de [WinLibs](https://winlibs.com). Nu recomand
 compilatorul celor de la Microsoft dacă nu îl aveți deja instalat pentru că ocupă foarte mult spațiu
-pe disc. Celelalte variante cu MSYS2 și/sau Cygwin mi se par prea complicate pentru ce avem nevoie
-la acest laborator (sunt overkill), iar binarele de la MinGW-w64 pot fi mai vechi (e.g. GCC 8)
-și au un overhead în plus din cauza emulării unui mediu Linux.
+pe disc și nu poate fi dezinstalat complet. Celelalte variante cu MSYS2 și/sau Cygwin mi se par prea
+complicate pentru ce avem nevoie la acest laborator (sunt overkill), iar binarele de la MinGW-w64 pot
+fi mai vechi (e.g. GCC 8) și au un overhead în plus din cauza emulării unui mediu Linux.
 
-Ar fi de preferat să dezarhivați arhiva într-un loc unde calea absolută nu conține spații.
+Ar fi de preferat să dezarhivați arhiva într-un loc unde calea absolută **nu conține spații**.
 
 **Adăugarea compilatorului în cale**
 
@@ -118,12 +118,12 @@ Apăsăm pe `OK`, apoi închidem celelalte ferestre deschise.
 
 #### Linux
 
-Dacă aveți deja instalată o versiune relativ recentă de compilator, puteți sări momentan peste acest pas.
+Dacă aveți deja instalată o versiune relativ recentă de compilator, puteți sări peste acest pas.
 
 Pe Ubuntu (sau alte derivate din Debian), ar trebui să fie suficiente următoarele instrucțiuni
-(pentru GCC 11):
+(pentru GCC 12):
 ```
-sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test # pentru distribuții mai vechi sau versiuni mai noi
 sudo apt update
 sudo apt install gcc-12 g++-12
 ```
@@ -154,7 +154,8 @@ Ar trebui să vă apară ceva de felul următor:
 ![](img/compiler_ver_linux.png)
 
 Dacă nu vă apare versiunea corespunzătoare, încercați să schimbați ordinea căilor către
-compilatoare în `PATH` (butonul `Move up` pentru prioritate mai mare). Pentru a vedea unde se află compilatorul vechi,
+compilatoare în `PATH` (pe Windows, butonul `Move up` pentru prioritate mai mare, vezi mai sus). Pentru a vedea unde se
+află compilatorul vechi,
 folosiți comanda
 `where` sau `whereis`.
 
@@ -174,6 +175,11 @@ gata configurate și m-am obișnuit să-l folosesc.
 Pentru a primi licență gratuită pe perioada studiilor, completați
 [acest formular](https://www.jetbrains.com/shop/eform/students/) cu adresa instituțională
 (`@s.unibuc.ro`).
+
+Pentru modificări mici, este suficient un simplu editor.
+
+Dacă doriți să folosiți VS Code (nu recomand), am încercat [VSCodium](https://vscodium.com/) cu instrucțiuni
+separate [aici](./vscodium.md).
 
 Nu vă recomand CLion dacă nu aveți destul RAM. Se poate reduce consumul de RAM limitând valorile
 parametrilor de [aici](https://www.jetbrains.com/help/clion/performance-tuning-tips.html).
@@ -218,7 +224,7 @@ Multe biblioteci externe folosesc deja CMake.
 Las [aici](https://www.jetbrains.com/help/clion/quick-cmake-tutorial.html) un tutorial cu CLion și CMake.
 
 Dacă nu folosiți CLion, vă puteți uita pe
-[CMakeLists.txt din repository-ul template](https://github.com/mcmarius/oop-template/blob/main/CMakeLists.txt).
+fișierul `CMakeLists.txt` din repository-ul template.
 
 [//]: # (https://cliutils.gitlab.io/modern-cmake/)
 
@@ -231,7 +237,7 @@ Pe scurt, pentru a lucra cu CMake sunt necesare doar 2-3 comenzi:
 1. Configurare inițială: pas necesar doar o singură dată la început
 ```sh
 # din directorul proiectului
-cmake -S . -B build
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
 ```
 2. Compilare
 ```sh
@@ -281,9 +287,15 @@ Observație: pe Windows, terminalul trebuie deschis după ce ați instalat git.
 Dacă nu aveți deja cont, va trebui să vă creați unul. Cel mai la îndemână serviciu ar fi GitHub, însă
 puteți folosi și alte servicii care lucrează cu repository-uri de git.
 
-Pentru proiectul de POO, vă recomand să folosiți sau să vă inspirați din
-[acest repository template](https://github.com/mcmarius/oop-template) (chiar dacă nu folosiți GitHub).
+Pentru proiectul de POO, vă recomand să folosiți sau să vă inspirați din repository-ul template corespunzător grupei
+voastre (chiar dacă nu folosiți GitHub).
 Apăsați pe butonul "Use this template". Dacă alegeți această variantă, puteți trece la pasul următor.
+
+| Laborant  | Link template                                |
+|-----------|----------------------------------------------|
+| Dragoș B  | https://github.com/Ionnier/oop-template      |
+| Tiberiu M | https://github.com/MaximTiberiu/oop-template |
+| Marius MC | https://github.com/mcmarius/oop-template     |
 
 [**Mai multe detalii despre repository-ul template găsiți aici.**](setup.md)
 
@@ -312,6 +324,9 @@ Setările la nivel de repository sunt în fișierul `config` din folderul `.git`
 
 ### Clonarea unui repository
 
+Aici sunt pașii pentru terminal. Pentru clonare din interfața grafică,
+vezi [aici](setup.md#configurare-proiect-din-ide).
+
 Din browser, de pe pagina principală a repository-ului, apăsați pe butonul "Code", iar apoi copiați
 URL-ul din tab-ul HTTPS:
 
@@ -321,8 +336,6 @@ URL-ul din tab-ul HTTPS:
 git clone https://github.com/mcmarius/poo.git
 ```
 
-[//]: # (TODO clonare din interfața grafică)
-
 Comanda `clone` face mai multe lucruri: inițializează un repository local, face legătura dintre
 repository-ul local și cel remote (de pe GitHub) și aduce local conținutul de pe remote. Dacă
 nu specificăm și alte opțiuni, vom prelua local tot istoricul modificărilor.
@@ -331,7 +344,8 @@ După aceasta, veți avea un folder cu numele repository-ului - `poo` pe exemplu
 Dacă vă uitați la fișierele ascunse din acest folder, veți observa un folder `.git`. Aici își ține
 programul Git toate fișierele de care are nevoie.
 
-Așadar, un repository este un folder normal, dar care conține acest folder special `.git`.
+Așadar, un repository este un folder normal, dar care conține acest folder special `.git`,
+un fel de bază de date cu tot istoricul fișierelor gestionate de `git`.
 
 ### gitignore
 
@@ -354,6 +368,9 @@ configurare ale editorului și alte fișiere care nu sunt de interes pentru altc
 să folosească repository-ul respectiv. De exemplu, executabilele nu sunt de interes deoarece se
 schimbă la fiecare recompilare și sunt specifice unui anumit sistem de operare.
 
+Dacă vreți să ignorați niște căi doar local, fără să actualizați în `gitignore`-ul la care faceți commit,
+adăugați intrările necesare în fișierul `.git/info/exclude`.
+
 ## Comenzi uzuale de Git
 
 ### TL;DR
@@ -372,7 +389,9 @@ Dacă nu lucrați din IDE, trebuie configurat și [accesul prin SSH](#utilizarea
 #### Prima dată pentru fiecare proiect (dacă nu am făcut asta deja)
 
 ```shell
-git clone git@github.com:mcmarius/oop-template.git
+git clone git@github.com:mcmarius/poo-bife-suta-la-suta-reale.git
+# înlocuiți cu userul și numele proiectului vostru
+cd poo-bife-suta-la-suta-reale/
 ```
 
 #### De fiecare dată
@@ -409,6 +428,8 @@ Mai departe vezi pașii din interfața veche, doar primul screenshot diferă.
 
 #### Interfața veche
 
+Pentru interfața veche, momentan există un [plugin](https://plugins.jetbrains.com/plugin/24468-classic-ui).
+
 Avem 3 butoane în dreapta sus pe care le vom apăsa în ordine:
 
 - săgeata albastră este echivalentă cu `git pull`
@@ -442,7 +463,7 @@ sau "Commit and Push...":
 ![img.png](img/gui_git_p5.png)
 
 Opțional, dacă dorim să vedem ce s-a modificat (înainte sau după ce am făcut commit),
-apăsăm pe butonul cu 2 săgeți albastre (în interfața nouă - click dreapta pe fișier/changelist):
+apăsăm pe butonul cu 2 săgeți orizontale (în interfața nouă - click dreapta pe fișier/changelist):
 
 ![](img/gui_git_p6.png)
 
@@ -670,8 +691,8 @@ Cu `git checkout -b branch-nou` creăm un nou branch și apoi ne mutăm pe acel 
 Cu `git checkout alt-branch` ne mutăm pe un branch deja existent.
 
 Cu `git branch` vedem branches locale. Cu opțiunea `-r` vedem branches remote
-(apărute până la ultimul pull/fetch). Cu opțiunea `-m nume-nou` redenumim branch-ul curent.
-Cu opțiunea `-d` ștergem un branch.
+(apărute până la ultimul pull/fetch). Cu opțiunea `-m nume-nou` redenumim branch-ul curent, iar
+cu opțiunea `-d` ștergem un branch.
 
 ### .gitconfig din nou
 
@@ -776,8 +797,12 @@ Vedeți mai sus cu `git remote set-url <noul_url>`, apoi cu `git remote -v` și 
 
 LFS = Large File Storage
 
-Util pt fișiere mari (de la câțiva MB în sus) și pt fișiere binare (medii/mari) care se schimbă des.
+În teorie, util pentru fișiere mari (de la câțiva MB în sus) și pentru fișiere binare (medii/mari) care se schimbă des.
 Problematic pentru fișiere binare mici care nu se prea schimbă, deoarece fișierele stocate cu LFS
 trebuie clonate din altă parte.
+
+Practic, poate cauza mai multe probleme decât încearcă să rezolve. Trebuie să aveți grijă să nu ajungeți să vă cloneze
+local tot istoricul fișierelor mari. În acest caz, este mai simplu să NU configurați git-lfs, să nu puneți fișiere mari
+pe repo și să descărcați manual fișierele mari.
 
 Găsiți instrucțiunile necesare [aici](https://git-lfs.github.com/).

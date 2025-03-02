@@ -3293,6 +3293,93 @@ Astfel, am demonstrat că moștenirea ne ajută să extindem codul existent _foa
 Partea dificilă este definirea adecvată a unei clase de bază. Întrucât cerințele se pot schimba pe parcurs,
 proiectarea claselor se învață cel mai bine prin exercițiu și în timp.
 
+#### Ce să NU faceți cu funcții virtuale
+
+Dată fiind următoarea ierarhie:
+
+```c++
+class Baza {
+public:
+  virtual void f() = 0; 
+  virtual ~Baza() = default;
+};
+
+class D1 : public Baza {
+public: void f() override() { /* ... */ }
+};
+
+class D2 : public Baza {
+public: void f() override() { /* ... */ }
+};
+```
+
+1. Apel prin obiecte derivate
+
+```c++
+class Aplicatie {
+  D1 d1;
+  D2 d2;
+public:
+  void g() { d1.f(); d2.f(); }
+};
+```
+
+De ce e greșit? Sunt apeluri normale de funcții, nu folosim cu nimic virtualizarea.
+
+2. Apel prin obiecte separate explicite
+
+```c++
+class Aplicatie {
+  Baza* d1;  // arată către un D1
+  Baza* d2;  // arată către un D2
+public:
+  void g() { d1->f(); d2->f(); }
+};
+```
+
+De ce e greșit? Avem nevoie de câte un obiect separat pentru fiecare nouă derivată.
+
+Asta înseamnă că avem de modificat în foarte multe locuri dacă vrem să extindem sau să schimbăm codul.
+În plus, pierdem în mod inutil informație despre tip dacă ne interesează doar anumite derivate concrete.
+
+Soluția ar fi să ținem obiectele într-o colecție (de exemplu un vector).
+
+3. Poluarea interfețelor
+
+```c++
+class Aplicatie {
+public:
+  void f1() {
+    // folosește f() din D1
+  }
+  void f2() {
+    // folosește f() din D2
+  }
+};
+```
+
+De ce e greșit? Nu ar trebui să schimbăm interfața _altei_ clase atunci când adăugăm/schimbăm derivate.
+
+Tocmai asta ar fi ideea, să **nu** modificăm deloc codul în `Aplicatie` sau ce clasă se folosește de
+interfața definită de noi.
+
+Variație a acestei greșeli: adăugăm câte o nouă funcție în clasa de bază.
+
+Altă variație: necesitatea adăugării unor "else if"-uri în `Aplicatie` sau în clasa de bază atunci când adăugăm o nouă
+derivată.
+
+4. Dynamic casts pentru fiecare derivată
+
+De ce e greșit? Dacă trebuie să tratăm în mod diferit fiecare derivată, înseamnă că de fapt acele clase
+nu prea au nimic în comun, deci ar putea fi clase independente una de alta.
+
+Pe de altă parte, este posibil să ne fi definit interfața clasei de bază greșit și de fapt să putem veni
+cu o abstractizare uniformă pentru majoritatea derivatelor.
+
+Care e problema? În timp, sigur vom uita să adăugăm pe undeva o ramură de "else if" cu o nouă derivată
+și nu vom sesiza greșeala decât după mult timp, iar apoi pierdem timp să depanăm în loc să fi folosit în
+mod corespunzător funcții virtuale și problema să nu existe deloc.
+
 ### Excepții
 
 Excepțiile sunt un mecanism de tratare a erorilor. Cel mai simplu exemplu de eroare este să știm dacă execuția
@@ -4544,6 +4631,9 @@ dar nu putem actualiza codul din clasa obiectului sau nu putem întoarce un cod 
 invalidă. Dacă aruncăm excepții într-o funcție care întoarce un rezultat prin tipul de retur, execuția
 codului nu mai ajunge la vreo instrucțiune `return`, ci sare de la `throw` la primul bloc `catch` care
 se potrivește.
+
+**ATENȚIE! Nu facem catch în constructor!** Dacă facem catch în constructor, degeaba mai aruncăm excepții:
+obiectul va fi construit și va fi într-o stare invalidă.
 
 #### Contraexemple
 
@@ -6004,51 +6094,6 @@ ele sunt utile atunci când alternativele îngreunează și mai mult întreține
 Detalii, explicații și exemple [aici](https://isocpp.org/wiki/faq/multiple-inheritance) și
 [aici](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rh-kind).
 
-### Principiile SOLID
-
-Principiile SOLID sintetizează câteva recomandări pentru a scrie cod OOP ușor de întreținut și de extins.
-
-- **S**: Single responsibility principle
-- **O**: Open-closed principle
-- **L**: Liskov substitution principle
-- **I**: Interface segregation principle
-- **D**: Dependency inversion principle
-
-Să le luăm pe rând.
-
-**S**-ul din SOLID ne spune că nu trebuie să avem o clasă care face prea multe lucruri. Este de preferat să
-avem mai multe clase mici decât o singură clasă mare cu multe funcții și atribute. Prin izolarea diverselor
-funcționalități în clase separate, codul este mai ușor de depanat, de refactorizat și de testat.
-
-Dacă o clasă are mai mult de 5-10 funcții publice (în aplicații mai mari 1-3 funcții publice), cel mai
-probabil clasa face prea multe și ar trebui restructurat codul în mai multe clase/module ajutătoare. Dacă o
-funcție are mai mult de ~60-100 de rânduri (să încapă pe un ecran fără să facem prea mult scroll), probabil
-trebuie împărțită în funcții mai mici. Trebuie găsit un echilibru ca să nu ajungem în extrema cealaltă cu
-multe funcții foarte mici (over-engineering).
-
-**O**-ul din SOLID se referă la faptul că ce implementăm ar trebui să fie "open for extension, closed for
-modification". Partea cu "open" înseamnă că este ușor să adăugăm noi funcționalități. Partea cu "closed"
-înseamnă că nu ar trebui să schimbăm codul/comportamentul existent dacă o funcție/clasă/modul depinde de
-acest cod.
-
-Cu alte cuvinte, să nu stricăm ce merge deja. Atunci când adăugăm o nouă derivată, nu ar trebui să avem
-nevoie să schimbăm codul în clasa de bază sau în derivate.
-
-**L**-ul din SOLID zice că orice obiect de tip clasă de bază ar trebui să poată fi substituit (înlocuit) cu
-un obiect din orice derivată a acelei clase de bază fără ca funcționalitatea să fie alterată. Un obiect de
-clasă derivată _este un fel de_ obiect de clasă de bază.
-
-Derivatele noi nu ar trebui să fie complet diferite de clasa de bază. O încălcare a acestui principiu este
-problema cu [cercul și elipsa](https://en.wikipedia.org/wiki/Circle%E2%80%93ellipse_problem).
-
-**I**-ul din SOLID seamănă într-un fel cu **S**-ul. Ideea ar fi să nu avem interfețe prea complicate sau
-prea generale ca să avem cât mai puține situații de felul "unde dai și unde crapă". Dacă interfețele sunt
-cât de cât specifice, defectele sunt ușor de identificat pentru că afectează o mică parte din cod.
-
-**D**-ul din SOLID ne spune să ne bazăm pe interfețe, nu pe detalii de implementare. Am respectat acest
-principiu când am vorbit despre interfețe non-virtuale. Clasele derivate lasă clasa de bază să definească
-interfața. Poate să fie dificil la început să ne "inversăm" modul de gândire de până acum, dar ideea de
-interfață non-virtuală ar trebui să ne ghideze.
 
 [//]: # (### Fișiere header și fișiere sursă)
 
@@ -6056,34 +6101,23 @@ interfață non-virtuală ar trebui să ne ghideze.
 
 Continuăm familiarizarea cu limbajul C++ (din nou) și învățăm alte noțiuni OOP de bază: moșteniri și excepții.
 
+Pentru lista completă a cerințelor, vezi [template-ul de proiect](../tema-1/README#template-proiect).
+
 Cerințe comune:
 - separarea codului din clase în fișiere header (`.h`/`.hpp` etc.) și surse (`.cpp` etc.)
   - clasele mici și legate între ele se pot afla în aceeași pereche de fișiere header-sursă
   - FĂRĂ `using namespace std` în fișiere `.h`/`.hpp` la nivel global
-    - pot fi declarații locale
+    - pot fi declarații locale în cpp-uri
 - moșteniri
   - funcții virtuale (pure), constructori virtuali (clone)
     - funcțiile virtuale vor fi apelate prin pointeri la clasa de bază
     - pointerii la clasa de bază vor fi atribute ale altei clase, nu doar niște pointeri/referințe în main
-  - apelarea constructorului din clasa de bază
-  - fără erori de memorie; recomandare: smart pointers
   - `dynamic_cast`
-- suprascris cc/op= pentru copieri/atribuiri corecte, copy and swap
+  - suprascris cc/op= pentru copieri/atribuiri corecte, copy and swap
 - excepții
   - ierarhie proprie cu baza `std::exception` sau derivată din `std::exception`
   - utilizare cu sens: de exemplu, `throw` în constructor, `try`/`catch` în `main`
 - funcții și atribute statice
-- STL
-- un tag de git pe un commit cu cod stabil și toate bifele
-- fără variabile globale
-- cât mai multe `const`
-- testat/apelat tot codul public din `main`, altfel nu trece de cppcheck
-
-Cerințe specifice:
-- implementarea a două funcționalități noi specifice temei; pentru minim o funcționalitate **trebuie**
-  folosite funcții virtuale apelate prin pointeri de bază
-- **după** rezolvarea discuțiilor, de făcut un commit cu adăugarea unei noi derivate și suprascrierea unei
-  funcții virtuale specifice temei; ar trebui modificat codul doar în funcția main și în fișierul cu noua derivată
 
 #### Termen limită
 - săptămâna 7 (20 noiembrie/9 aprilie): progres parțial
