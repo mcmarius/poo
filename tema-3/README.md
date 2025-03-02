@@ -1,6 +1,7 @@
 # Tema 3
 
-Scopul ultimei teme este utilizarea unor noțiuni mai avansate de OOP (design patterns) și a programării generice.
+Scopul ultimei teme este utilizarea unor noțiuni mai avansate de OOP (principii SOLID, design patterns) și a programării
+generice.
 
 [//]: # (nitpick: ar fi mai corect să spunem șabloane de funcții și șabloane de clase; este abuz de limbaj)
 
@@ -20,6 +21,8 @@ Observații:
 - puteți folosi și alte design patterns pe lângă cele prezentate aici
 - aceste patterns se pot combina între ele și au numeroase variațiuni
 
+Pentru lista completă a cerințelor, vezi [template-ul de proiect](../tema-1/README#template-proiect).
+
 #### Termen limită
 - săptămâna 11 (18 decembrie/14 mai): progres parțial
 - **săptămâna 12 (22 decembrie/21 mai): tema 3 gata**
@@ -29,6 +32,52 @@ Orice funcționalitate în plus e luată în considerare pentru puncte bonus, in
 Nota maximă este 12.
 
 -----
+
+## Principiile SOLID
+
+Principiile SOLID sintetizează câteva recomandări pentru a scrie cod OOP ușor de întreținut și de extins.
+
+- **S**: Single responsibility principle
+- **O**: Open-closed principle
+- **L**: Liskov substitution principle
+- **I**: Interface segregation principle
+- **D**: Dependency inversion principle
+
+Să le luăm pe rând.
+
+**S**-ul din SOLID ne spune că nu trebuie să avem o clasă care face prea multe lucruri. Este de preferat să
+avem mai multe clase mici decât o singură clasă mare cu multe funcții și atribute. Prin izolarea diverselor
+funcționalități în clase separate, codul este mai ușor de depanat, de refactorizat și de testat.
+
+Dacă o clasă are mai mult de 5-10 funcții publice (în aplicații mai mari 1-3 funcții publice), cel mai
+probabil clasa face prea multe și ar trebui restructurat codul în mai multe clase/module ajutătoare. Dacă o
+funcție are mai mult de ~60-100 de rânduri (să încapă pe un ecran fără să facem prea mult scroll), probabil
+trebuie împărțită în funcții mai mici. Trebuie găsit un echilibru ca să nu ajungem în extrema cealaltă cu
+multe funcții foarte mici (over-engineering).
+
+**O**-ul din SOLID se referă la faptul că ce implementăm ar trebui să fie "open for extension, closed for
+modification". Partea cu "open" înseamnă că este ușor să adăugăm noi funcționalități. Partea cu "closed"
+înseamnă că nu ar trebui să schimbăm codul/comportamentul existent dacă o funcție/clasă/modul depinde de
+acest cod.
+
+Cu alte cuvinte, să nu stricăm ce merge deja. Atunci când adăugăm o nouă derivată, nu ar trebui să avem
+nevoie să schimbăm codul în clasa de bază sau în derivate.
+
+**L**-ul din SOLID zice că orice obiect de tip clasă de bază ar trebui să poată fi substituit (înlocuit) cu
+un obiect din orice derivată a acelei clase de bază fără ca funcționalitatea să fie alterată. Un obiect de
+clasă derivată _este un fel de_ obiect de clasă de bază.
+
+Derivatele noi nu ar trebui să fie complet diferite de clasa de bază. O încălcare a acestui principiu este
+problema cu [cercul și elipsa](https://en.wikipedia.org/wiki/Circle%E2%80%93ellipse_problem).
+
+**I**-ul din SOLID seamănă într-un fel cu **S**-ul. Ideea ar fi să nu avem interfețe prea complicate sau
+prea generale ca să avem cât mai puține situații de felul "unde dai și unde crapă". Dacă interfețele sunt
+cât de cât specifice, defectele sunt ușor de identificat pentru că afectează o mică parte din cod.
+
+**D**-ul din SOLID ne spune să ne bazăm pe interfețe, nu pe detalii de implementare. Am respectat acest
+principiu când am vorbit despre interfețe non-virtuale. Clasele derivate lasă clasa de bază să definească
+interfața. Poate să fie dificil la început să ne "inversăm" modul de gândire de până acum, dar ideea de
+interfață non-virtuală ar trebui să ne ghideze.
 
 ## Design patterns
 
@@ -916,6 +965,121 @@ int main() {
     Test &t1 = Test::getInstance();
 }
 ```
+
+##### Exemplu mai complicat de singleton cu CRTP
+
+Dacă dintr-un motiv sau altul avem nevoie și de constructor de inițializare cu parametru
+lucrurile se complică. Va trebui să facem inițializare explicită pentru clasele care au
+nevoie de transmitere prin parametri și să distrugem explicit obiectele pentru toate
+clasele singleton.
+
+Alternativele ar fi:
+
+- renunțăm la singleton pentru acele clase cu inițializare cu parametri
+- duplicăm logica de singleton în acele clase
+- CRTP separate
+- inițializare pentru toate clasele singleton (interfață uniformă)
+
+Fiecare variantă are avantaje și dezavantaje, nu există o soluție perfectă.
+
+Varianta propusă este următoarea:
+
+```c++
+#include <iostream>
+
+template <typename Derived, bool has_default_constructor=true>
+class Singleton {
+protected:
+    Singleton() = default;
+public:
+    Singleton(const Singleton&) = delete;
+    Singleton& operator=(const Singleton&) = delete;
+    
+    static Derived& getInstance() { return getInstance_(std::bool_constant<has_default_constructor>{}); }
+    ~Singleton() {}
+    template <typename... Args>
+    static void init(Args&&... args) {
+        if(!instance)
+            instance = new DerivedInstance(std::forward<Args>(args)...);
+    }
+    static void destroyInstance() {
+        if (instance) {
+            delete instance;
+            instance = nullptr;
+        }
+    }
+private:
+    class DerivedInstance : public Derived{
+        // avem nevoie de clasa DerivedInstance pentru
+        // a putea construi un obiect de tip Derived aici
+        // constr implicit generat de compilator este:
+        // public: DerivedInstance : Derived() {}
+        // noi vrem și argumente, deci vom face astfel:
+        public:
+        template <typename... Args>
+        explicit DerivedInstance(Args&&... args) : Derived(std::forward<Args>(args)...) {}
+    };
+    // cazul cu constructor fără parametri
+    static Derived& getInstance_(std::true_type) {
+        if(!instance) {
+            instance = new DerivedInstance;
+        }
+        return *instance;
+    }
+    // cazul cu constructor cu parametri
+    static Derived& getInstance_(std::false_type) {
+        return *instance;
+    }
+    static Derived* instance;
+};
+
+template<typename Derived, bool has_default_constructor>
+Derived* Singleton<Derived, has_default_constructor>::instance = nullptr;
+
+
+class Test : public Singleton<Test> {
+protected:
+    Test() = default;
+};
+class Test2 : public Singleton<Test2> {
+protected:
+    Test2() = default;
+};
+class NoCopy {
+public:
+    NoCopy() = default;
+    NoCopy(const NoCopy&) = delete;
+    NoCopy& operator=(const NoCopy&) = delete;
+};
+
+class Test3 : public Singleton<Test3, false> {
+    int x;
+    float y;
+    NoCopy& nc;
+protected:
+    Test3(int param1, float param2, NoCopy& n) : x(param1), y(param2), nc(n) {}
+};
+
+int main() {
+    //Test t1; // eroare
+    Test &t1 = Test::getInstance();
+    Test2 &t2 = Test2::getInstance();
+    NoCopy nc1;
+    auto& nc2 = nc1;
+    Test3::init(2, 3.4, nc2);
+    auto& inst = Test3::getInstance();
+    Test::destroyInstance();
+    Test2::destroyInstance();
+    Test3::destroyInstance();
+}
+```
+
+În varianta de mai sus, trebuie să specificăm explicit pentru o clasă pe care vrem să o facem singleton
+dacă are constructor de inițializare cu parametri. Nu avem un mecanism din limbaj (folosind funcții
+de metaprogramare - `type_traits`) care să ne ofere această informație. În exemplul de mai sus,
+clasa `Test3` are nevoie de această precizare.
+
+Pentru a alege implementarea potrivită de `getInstance_`, folosim tag dispatch.
 
 ##### Exemplu de Counter cu CRTP:
 ```c++

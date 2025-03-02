@@ -3,10 +3,15 @@
 ### Mod de notare
 
 La alegere:
-- un proiect format din 3 teme/părți
+
+- un proiect format din 3 teme/părți (recomandat)
 - un proiect pentru prima temă și un alt proiect pentru temele 2 și 3
 
-Nota maximă este 12 (2p bonus).
+Nota maximă este 12 (2p bonus). Punctele bonus se acordă doar după îndeplinirea tuturor cerințelor.
+
+Evitați codul generat pe care nu îl înțelegeți. Proiectele cu cod adăugat "ca să fie" sau care complică logica inutil *
+*nu vor fi punctate**.
+
 **Evaluarea se face _pe tot parcursul semestrului_.**
 
 ### Prezența este obligatorie pentru minim 3-6 laboratoare ca să primiți note pe teme!
@@ -107,7 +112,8 @@ Se poate observa că avem (mult) mai multe resurse de evitat decât resurse de �
 ---
 
 ### Diverse
-#### [Despre colocviu](colocviu.md)
+
+#### [Despre colocviu](colocviu/README)
 #### [Proiecte din anii trecuți](HoF.md)
 #### [Diverse exerciții](exercitii)
 #### [Erori frecvente](erori.md)

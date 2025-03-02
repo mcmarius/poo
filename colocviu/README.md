@@ -10,19 +10,21 @@ Câteva sfaturi pentru colocviu
 - **verificați că fișierele nu sunt atașate ca fișiere pe OneDrive!!!** Mailul de la Universitate (Outlook)
   are tendința să vă înlocuiască atașamentele în fișiere OneDrive, mare atenție!!
 - mailul se trimite de pe adresa instituțională
+- dacă aveți sub 50 de cuvinte pe minut ca viteză de scris, e grav (de exemplu vezi [aici](https://monkeytype.com));
+  trebuie să începeți să exersați de ieri
 
-![](img/colocviu_p0.png)
+![](../img/colocviu_p0.png)
 
 Un fișier adăugat corect ca atașament va arăta astfel:
-![](img/colocviu_p1.png)
+![](../img/colocviu_p1.png)
 
 **Atenție când atașați fișiere cu drag and drop!!!** Trebuie să vă arate "Attach files", nu "Upload to OneDrive".
 În exemplul de mai jos, ar veni să faceți drag&drop în partea dreaptă:
 
-![](img/colocviu_p2.png)
+![](../img/colocviu_p2.png)
 
 Un fișier atașat **greșit** va arăta așa:
-![](img/colocviu_p3.png)
+![](../img/colocviu_p3.png)
 
 - **verificați încă o dată că arhiva nu conține binare/executabile!**
 - **fără tot codul direct în clasă! folosiți "split into declaration and definition"**
@@ -41,7 +43,9 @@ Un fișier atașat **greșit** va arăta așa:
     - dacă id-ul simplu este const, trebuie suprascris cc/op= pt că altfel compilatorul nu generează cc/op=
 - folosiți `std::string` în loc de `char*`, folosiți `std::vector` în loc de `A *vec = new A[nr]` (și `delete[]`)
 - recomandarea mea e să folosiți `std::shared_ptr`: așa pot să dau puncte bonus pe smart pointeri și nu sunteți depunctați pt eventuale memory leaks
-- nu folosiți citiri de la tastatură/nu pierdeți timpul să testați dacă merge citirea; dacă faceți cu citire de la tastatură și chiar vreți să testați dacă merge, salvați-vă undeva într-un notepad/comentariu datele de intrare, pentru ca apoi să faceți doar "paste"
+- nu folosiți citiri de la tastatură/nu pierdeți timpul să testați dacă merge citirea; dacă faceți cu citire de la
+  tastatură și chiar vreți să testați dacă merge, salvați-vă undeva într-un fișier text/comentariu datele de intrare,
+  pentru ca apoi să faceți doar "paste"
   (ca să câștigați timp să nu scrieți aceleași date de fiecare dată când testați programul)
   - verificați dacă merge acest truc înainte de colocviu, nu atunci pe loc; nici mie nu îmi merge din prima
 
@@ -60,3 +64,7 @@ Shortcuts pentru CLion (și alte editoare de la JetBrains):
 - de 2 ori <kbd>Shift</kbd>: caută peste tot
 - <kbd>Ctrl</kbd>+<kbd>/</kbd> (de)comentează la nivel de linie
 - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>/</kbd> (de)comentează la nivel de bloc
+
+---
+
+[//]: # (TODO Links către comentarii cu subiecte din anii trecuți: ianuarie 2023, ianuarie 2025)
