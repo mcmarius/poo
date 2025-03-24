@@ -82,6 +82,7 @@ mici modificări pt a merge pe windows cu gcc
 - date calendaristice: [date](https://github.com/HowardHinnant/date)
 - ?? https://github.com/vincentlaucsb/csv-parser
 - ?? https://github.com/seleznevae/libfort
+- ?? https://github.com/p-ranav/tabulate
 - [cpp-terminal](https://github.com/jupyter-xeus/cpp-terminal/): terminal fancy; trebuie compilat, merge cu FetchContent; cam slab documentat
 
 De încercat:
