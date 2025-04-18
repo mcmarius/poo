@@ -10,6 +10,7 @@ Plus că devine și pentru mine din ce în ce mai greu de verificat similarită�
 - Șah
 - X și 0
 - Space invaders/chicken invaders
+- Poker și alte jocuri de cărți unde e plin de numere magice/constante hardcodate (4, 13, 52 etc)
 
 Fiți creativi, există suficient de multe alte idei de implementat.
 
