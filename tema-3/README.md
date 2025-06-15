@@ -1108,9 +1108,9 @@ int Countable<Derived>::nrObiecte;
 
 int main() {
     User u1, u2;
-    std::cout << u1.getNr() << "\n";
+    std::cout << User::getNr() << "\n";
     Admin a1;
-    std::cout << a1.getNr() << "\n";
+    std::cout << Admin::getNr() << "\n";
 }
 ```
 
