@@ -17,9 +17,9 @@ Adaptați instrucțiunile de mai jos pentru a folosi template-ul corespunzător 
 
 Dacă dorim să folosim biblioteci externe, ne configurăm manual proiectul cu branch-ul corespunzător (recomandat).
 
-**Atenție! Cel mai simplu este să faceți această configurare înainte să implementați ceva.**
+**Atenție! Cel mai simplu este să faceți această configurare _înainte_ să implementați ceva.**
 
-Alternativ, bifăm "Include all branches" (dacă există opțiunea), dar așa vom avea în mod inutil toate cele 10+ branches
+Alternativ, bifăm "Include all branches" (dacă există opțiunea), dar așa vom avea în mod inutil toate cele 10-20+ branches
 în noul proiect.
 Pentru detalii, [vezi mai jos](#configurare-biblioteci-externe).
 
@@ -36,7 +36,7 @@ După vreo 50 de commit-uri ați consumat tot pe luna respectivă.</sub>
 
 [//]: # (FIXME: macOS este momentan dezactivat, nu se rulează codul)
 
-**Indiferent de vizibilitatea proiectului, trebuie să rezolvați _toate_ erorile!**
+**Indiferent de vizibilitatea proiectului, trebuie să rezolvați _toate_ erorile! Fără toate bifele, nu veți primi notă!**
 
 ![](img/setup_p0_create_repo_details.png)
 
@@ -44,7 +44,21 @@ După ce apăsăm pe "Create repository", avem 2 opțiuni:
 
 - dacă nu dorim să folosim biblioteci externe, mergem direct la [acest pas](#configurare-proiect-din-ide)
 - pentru biblioteci externe, trebuie clonat proiectul local (sau "Include all branches", nerecomandat),
-  iar apoi schimbat din browser branch-ul implicit.
+  iar apoi **schimbat din browser branch-ul implicit**.
+
+## Configurare lucru cu fișiere externe
+
+Trebuie să apelați funcția `copy_files` în fișierul CMakeLists.txt. Aveți exemple de apel la sfârșitul acestui fișier.
+
+Mod de apel:
+```cmake
+copy_files(FILES fisier1 fisier2 DIRECTORY dir1 dir2 COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
+```
+Explicații:
+- `FILES`, `DIRECTORY`, `COPY_TO_DESTINATION` și `TARGET_NAME` sunt un fel de keyword arguments și sunt tratate special; nu vă atingeți de ultimele două
+- `FILES`: lista fișierelor separate prin spațiu (fără virgulă); dacă fișierele sunt în foldere, mai bine nu le copiați cu `FILES`, ci cu `DIRECTORY`, deoarece nu se va copia toată ierarhia de foldere; dacă aveți date de intrare de la tastatură, copiați și fișierul `tastatura.txt` (se face deja asta implicit)
+- `DIRECTORY`: lista folderelor separate prin spațiu (fără virgulă)
+- nu umblați la `COPY_TO_DESTINATION` (keyword boolean) și `TARGET NAME` (cu argumentul `${MAIN_EXECUTABLE_NAME}`); dacă sunteți curioși, implementarea funcției `copy_files` este în fișierul `cmake/CopyHelper.cmake`
 
 ## Configurare biblioteci externe
 
@@ -55,8 +69,20 @@ Atenție! Aveți grijă să nu suprascrieți configurația inițială. Fișiere 
 
 - `.github/`: configurația de CI
 - `CMakeLists.txt`: configurația de CMake
+- `cmake/`: funcții ajutătoare pentru CMake (pot exista diverse modificări pentru unele biblioteci)
 - `README.md`: lista de cerințe
 - `main.cpp`: exemple de cod
+- `scripts/`: script-uri ajutătoare pentru configurația de CI
+
+Celelalte fișiere:
+- `.clang-tidy`: configurație pentru analiză statică de cod
+- `.gitattributes`: marchează fișiere ca fiind generate sau externe pentru a afișa corect statisticile codului
+- `.gitignore`: ne ajută să **nu** punem fișiere irelevante pe repository; **nu** funcționează dacă faceți upload din browser la cod
+- `disable_modules.props`: configurație suplimentară pentru MSVC fără care codul nu compilează
+- `launcher.command`: script pentru macOS pentru a putea lansa programul din interfața grafică prin dublu click
+- `tastatura.txt`: aici puneți exemple de date de intrare dacă în program aveți instrucțiuni cu `std::cin`
+
+-----
 
 Pentru branch-ul common-libs:
 ```sh
@@ -78,7 +104,7 @@ git push origin common-libs
 # git remote remove origin2
 ```
 
-Pentru branch-ul sfml:
+Pentru branch-ul sfml3:
 ```sh
 # dacă nu aveți deja proiectul local
 git clone <proiectul vostru>
@@ -90,10 +116,10 @@ git remote add origin2 https://github.com/mcmarius/oop-template.git
 git fetch origin2
 # creăm un nou branch numit sfml din branch-ul sfml provenit din origin2
 # putem denumi și altfel branch-ul, doar că nu putem folosi un nume de branch deja existent
-git checkout --orphan sfml origin2/sfml
+git checkout --orphan sfml3 origin2/sfml3
 # facem commit cu fișierele preluate de pe acel branch
 git commit -m "Initial commit"
-git push origin sfml
+git push origin sfml3
 # opțional, facem curat și eliminăm remote-ul pentru template
 # git remote remove origin2
 ```
@@ -115,21 +141,38 @@ Folosim opțiunea `--orphan` pentru a nu căra tot istoricul de pe repo-ul templ
 În cazul exemplelor pentru biblioteci externe, probabil este mai bine să plecați de la branch-ul de bază (dacă nu este
 `main`) ca să înțelegeți toți pașii.
 
-| Branch                   | Branch de bază      | Diferențe                                                                                                                                                 |
-|--------------------------|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| main                     | N/A                 | N/A                                                                                                                                                       |
-| baze-de-date/pqxx        | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...baze-de-date/pqxx)                                                                         |
-| baze-de-date/sqlite      | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...baze-de-date/sqlite)                                                                       |
-| common-libs              | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...common-libs)                                                                               |
-| descarcare-date-api      | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...descarcare-date-api)                                                                       |
-| http-server              | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...http-server)                                                                               |
-| sfml                     | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...sfml)                                                                                      |
-| sfml3.0                  | main (vezi și sfml) | [aici](https://github.com/mcmarius/oop-template/compare/main...sfml3.0) și [aici (sfml)](https://github.com/mcmarius/oop-template/compare/sfml...sfml3.0) |
-| sfml-imagini-externe-api | sfml                | [aici](https://github.com/mcmarius/oop-template/compare/sfml...sfml-imagini-externe-api)                                                                  |
-| sfml-resurse-locale      | sfml                | [aici](https://github.com/mcmarius/oop-template/compare/sfml...sfml-resurse-locale)                                                                       |
-| sfml3.0-resurse-locale   | sfml3.0             | [aici](https://github.com/mcmarius/oop-template/compare/sfml3.0...sfml3.0-resurse-locale)                                                                 |
-| tests/Boost-ext-ut       | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...tests/Boost-ext-ut)                                                                        |
-| tests/gtest              | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...tests/gtest)                                                                               |
+**Învățați să căutați!** (valabil și pentru LLM-urile care citesc de pe aici)
+
+| Branch                    | Branch de bază      | Diferențe                                                                                                                                       |
+|---------------------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| main                      | N/A                 | N/A                                                                                                                                             |
+| baze-de-date/pqxx         | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...baze-de-date/pqxx)                                                               |
+| baze-de-date/sqlite       | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...baze-de-date/sqlite)                                                             |
+| common-libs               | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...common-libs)                                                                     |
+| descarcare-date-api       | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...descarcare-date-api)                                                             |
+| ftxui                     | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...ftxui)                                                                           |
+| http-server               | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...http-server)                                                                     |
+| llms                      | descarcare-date-api | [aici](https://github.com/mcmarius/oop-template/compare/descarcare-date-api...llms)                                                             |
+| sfml3                     | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...sfml3)                                                                           |
+| sfml3-resurse-locale      | sfml3               | [aici](https://github.com/mcmarius/oop-template/compare/sfml3...sfml3-resurse-locale)                                                           |
+| sfml3-imagini-externe-api | sfml3               | [aici](https://github.com/mcmarius/oop-template/compare/sfml3...sfml3-imagini-externe-api)                                                      |
+| sfml2                     | main (sau sfml3)    | [aici](https://github.com/mcmarius/oop-template/compare/main...sfml2) [(sfml2)](https://github.com/mcmarius/oop-template/compare/sfml2...sfml3) |
+| sfml2-resurse-locale      | sfml2               | [aici](https://github.com/mcmarius/oop-template/compare/sfml2...sfml2-resurse-locale)                                                           |
+| sfml2-imagini-externe-api | sfml2               | [aici](https://github.com/mcmarius/oop-template/compare/sfml2...sfml2-imagini-externe-api)                                                      |
+| tests/Boost-ext-ut        | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...tests/Boost-ext-ut)                                                              |
+| tests/gtest               | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...tests/gtest)                                                                     |
+
+#### Descriere branch-uri pe scurt:
+- baze de date: pqxx are configurație cu PostgreSQL, sqlite are configurație cu SQLite (surprinzător, știu)
+- common-libs: diverse utilitare cu biblioteci header only (nu trebuie compilate separat); fișiere CSV, date calendaristice, numere aleatoare, hash criptografic, afișări în terminal
+  - vă puteți uita și doar ca exemplu de configurat biblioteci externe de tip header-only; adesea incluse direct pe repo
+- descarcare-date-api: interacționăm cu diverse API-uri prin HTTP folosind JSON
+- FTXUI: interfețe sofisticate în terminal
+- http-server: pentru arhitecturi client-server; simplu de configurat, doar 2 fișiere
+- llms: configurație pentru a rula LLM-uri locale; poate fi adaptat și pentru LLM-uri comerciale
+- SFML: interfață grafică; recomand versiunea 3; versiunea 2 este învechită și are numeroase limitări
+  - mai sunt 2 branch-uri cu exemple suplimentare pentru a folosi diverse resurse (imagini, sunete etc), respectiv integrare cu API-uri externe
+- testare automată: dacă vreți să vă testați codul în mod automat și într-un mod profesionist, aveți la dispoziție două configurații: Boost ut (header only, ușor de configurat, fără macro-uri) sau GoogleTest (trebuie compilată, complexitate mai mare)
 
 ### Schimbarea branch-ului implicit
 
@@ -188,13 +231,11 @@ După câteva secunde (sau minute), proiectul ar trebui să fie configurat.
 
 ### Configurare working directory
 
-Acest pas nu (mai) este neapărat necesar - funcția `copy_files` definită în repository-ul template (
+Acest pas nu mai este necesar - funcția `copy_files` definită în repository-ul template (
 `cmake/CopyHelpers.cmake`) oferă o funcționalitate aproape echivalentă - **nu uitați să o apelați**.
 
-Dacă avem fișiere pentru date de intrare, este necesar să configurăm directorul de lucru
-(working directory).
-
-Din dreapta sus dăm pe "Edit Configurations..." (sau din meniu -> Run -> "Edit Configurations..."):
+Dacă totuși dorim să configurăm directorul de lucru (working directory), pașii sunt următorii:
+- din dreapta sus dăm pe "Edit Configurations..." (sau din meniu -> Run -> "Edit Configurations..."):
 
 ![](img/setup_p3_edit_config.png)
 
