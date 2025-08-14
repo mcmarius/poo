@@ -21,6 +21,8 @@ Cu toate acestea... simpla prezență la ore **NU** vă garantează promovarea l
 
 # NU veniți cu temele la sfârșitul semestrului pentru că nu veți intra în examen!
 
+Dacă întârziați cu temele sau folosiți cod generat fără sens, îmi rezerv dreptul să nu trimit feedback înainte de acordarea notei.
+
 <sup>Am făcut scrisul mai mare ca să nu mai aveți scuze.</sup>
 
 Repet:
