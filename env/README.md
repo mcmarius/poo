@@ -66,12 +66,16 @@ GCC minim versiunea 11 sau Clang minim versiunea 11.
 
 #### Windows
 
-Dacă folosiți CLion, puteți trece direct la [acest pas](#configurarea-și-utilizarea-programului-git).
+Dacă folosiți CLion, trebuie să adăugați compilatorul în cale, apoi puteți trece direct la [acest pas](#configurarea-și-utilizarea-programului-git).
 
 Este necesar să adăugăm compilatorul în cale (variabila de mediu numită `%PATH%`)
-dacă vrem să îl accesăm mai ușor din linia de comandă.
+dacă vrem să îl accesăm mai ușor din linia de comandă și dacă vrem să putem rula programul și din afara IDE-ului (de exemplu cu dublu click).
 
-Dacă folosiți CLion ca IDE, versiunea de MinGW-w64/GCC inclusă este nouă și vine cu GCC >= 11.
+**Dacă nu adăugați compilatorul în cale, veți primi tot felul de erori dubioase.**
+
+**Dacă aveți un compilator mai vechi adăugat în cale, DLL-urile cu diferite versiuni intră în conflict, iar programul va crăpa!**
+
+Dacă folosiți CLion ca IDE, versiunea de MinGW-w64/GCC inclusă este nouă și vine cu GCC >= 11, însă poate fi o versiune un pic mai veche și trebuie actualizată calea de fiecare dată când faceți un update mai mare la IDE (teoretic nu ar trebui, practic sunt bug-uri).
 Totuși, dacă aveți probleme cu biblioteci externe, recomand să luați GCC >= 11 de pe WinLibs, varianta
 cu MSVCRT runtime (nu UCRT runtime).
 
