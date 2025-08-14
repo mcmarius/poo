@@ -245,14 +245,25 @@ cu citiri la nivel de rând (`std::getline`).
 
 #### Pe Windows nu găsește definiție pentru `min`/`max`/`abs` etc
 
+_Problemă echivalentă: primesc erori ciudate pe Windows (cu MSVC) într-un proiect în care am și biblioteca `nlohmann/json`, ceva cu eroare de sintaxă._
+
 Problema este din cauză că `Windows.h` definește `min`/`max` etc sub formă de macros, deci nu mai poți scăpa de ele.
 
 Soluție: schimbă ordinea include-urilor astfel încât `Windows.h` să fie inclus la urmă.
 
 Alternativ, definește constanta `NOMINMAX` înainte de a include `Windows.h`. Vezi și `WIN32_LEAN_AND_MEAN`.
 Vezi și cum am făcut pe branch-ul common-libs cu rlutil pentru a restaura valorile vechi ale macro-urilor.
+Se poate defini constanta și global din CMakeLists, dar există riscul să strice alte biblioteci.
 
 De asemenea, ai grijă să faci asta doar pentru Windows, altfel va crăpa pe celelalte medii.
+
+#### Pe Windows programul se încheie cu un cod de eroare ciudat (de exemplu -1073741701)
+
+Cauza problemei: lipsește un DLL sau este încărcat un DLL cu o versiune greșită.
+
+Soluția: verificați ce intrări aveți în cale - variabila de mediu `PATH`. Trebuie eliminate compilatoarele mai vechi pe care le aveți deja instalate, deoarece cel mai probabil se încarcă o versiune mai veche de `libstdc++-6.dll`, adică implementările pentru bibliotecile standard de C++.
+
+Pentru a afla exact ce DLL lipsește, nu merge rulat programul din IDE (pentru că windows). Din File Explorer sau din cmd, încercați să rulați programul și vă va apărea câte o fereastră de eroare pentru fiecare DLL lipsă. Windows insistă să afișeze aceste mesaje doar prin ferestre într-o interfață grafică 🙄
 
 #### Nu am schimbat nimic și brusc sunt erori ciudate pe bife/acțiuni
 
