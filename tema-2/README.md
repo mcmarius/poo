@@ -1273,7 +1273,7 @@ să suprascriem funcționalități existente. Acest `final` ne-ar pune bețe în
   - am folosi `virtual` într-o derivată doar pentru funcții din derivată care nu apar
     în bază și ar fi suprascrise de o clasă și mai derivată
 - dacă folosim doar `virtual` în derivată, nu este imediat evident care dintre aceste funcții suprascriu
-- dacă nu folosim nici `virtual`, nici `override` în derivate, riscăm să supraîncărcăm funcția în loc să o suprascriem
+- dacă nu folosim nici `virtual`, nici `override` în derivate, riscăm să supraîncărcăm funcția în loc să suprascriem
   ceva din bază și care sunt specifice doar derivatei
 - `final` implică `virtual` și `override` în derivate
   - totuși, nu are sens să facem funcție virtuală `final` în bază, deci am folosi `final` doar în derivate
