@@ -1274,7 +1274,10 @@ să suprascriem funcționalități existente. Acest `final` ne-ar pune bețe în
     în bază și ar fi suprascrise de o clasă și mai derivată
 - dacă folosim doar `virtual` în derivată, nu este imediat evident care dintre aceste funcții suprascriu
 - dacă nu folosim nici `virtual`, nici `override` în derivate, riscăm să supraîncărcăm funcția în loc să o suprascriem
-  ceva din bază și care sunt specifice doar derivatei
+  pe cea din bază, deoarece compilatorul nu știe ce intenție avem;
+  - prin suprascriere, înlocuim definiția din bază cu cea din derivată;
+  - prin supraîncărcare, derivata ar avea o nouă funcție specifică doar derivatei pe lângă funcția inițială din bază,
+    deci nu va putea fi apelată prin pointer de bază
 - `final` implică `virtual` și `override` în derivate
   - totuși, nu are sens să facem funcție virtuală `final` în bază, deci am folosi `final` doar în derivate
 
