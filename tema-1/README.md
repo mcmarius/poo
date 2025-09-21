@@ -15,7 +15,6 @@ repository-ul vostru.
 | Laborant  | Link template                                |
 |-----------|----------------------------------------------|
 | Dragoș B  | https://github.com/Ionnier/oop-template      |
-| Tiberiu M | https://github.com/MaximTiberiu/oop-template |
 | Marius MC | https://github.com/mcmarius/oop-template     |
 
 Dacă nu doriți să folosiți template-ul, trebuie să ajungeți la o configurație

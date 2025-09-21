@@ -176,9 +176,12 @@ Exemplu pe Linux:
 Alegerea editorului/IDE-ului este complet subiectivă. În cadrul laboratorului nu le putem încerca pe toate.
 Eu vă recomand [CLion](https://www.jetbrains.com/clion/download/) pentru că are multe shortcuts
 gata configurate și m-am obișnuit să-l folosesc.
-Pentru a primi licență gratuită pe perioada studiilor, completați
+~~Pentru a primi licență gratuită pe perioada studiilor, completați
 [acest formular](https://www.jetbrains.com/shop/eform/students/) cu adresa instituțională
-(`@s.unibuc.ro`).
+(`@s.unibuc.ro`)~~.
+
+Începând cu [mai 2025](https://blog.jetbrains.com/clion/2025/05/clion-is-now-free-for-non-commercial-use/)
+nu este necesar, este deja gratuit* (atât cât poate fi ceva gratuit în zilele noastre - tot se trimit diverse date).
 
 Pentru modificări mici, este suficient un simplu editor.
 
@@ -298,7 +301,6 @@ Apăsați pe butonul "Use this template". Dacă alegeți această variantă, put
 | Laborant  | Link template                                |
 |-----------|----------------------------------------------|
 | Dragoș B  | https://github.com/Ionnier/oop-template      |
-| Tiberiu M | https://github.com/MaximTiberiu/oop-template |
 | Marius MC | https://github.com/mcmarius/oop-template     |
 
 [**Mai multe detalii despre repository-ul template găsiți aici.**](setup.md)

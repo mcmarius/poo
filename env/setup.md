@@ -8,7 +8,6 @@ repository-ul template deoarece are configurat tot ce veți avea nevoie.
 | Laborant  | Link template                                |
 |-----------|----------------------------------------------|
 | Dragoș B  | https://github.com/Ionnier/oop-template      |
-| Tiberiu M | https://github.com/MaximTiberiu/oop-template |
 | Marius MC | https://github.com/mcmarius/oop-template     |
 
 Adaptați instrucțiunile de mai jos pentru a folosi template-ul corespunzător grupei voastre.
@@ -133,7 +132,6 @@ Folosim opțiunea `--orphan` pentru a nu căra tot istoricul de pe repo-ul templ
 | Proiect                   | Diferențe                                                                                      |
 |---------------------------|------------------------------------------------------------------------------------------------|
 | Ionnier/oop-template      | [aici](https://github.com/mcmarius/oop-template/compare/main...Ionnier:oop-template:main)      |
-| MaximTiberiu/oop-template | [aici](https://github.com/mcmarius/oop-template/compare/main...MaximTiberiu:oop-template:main) |
 | mcmarius/oop-template     | N/A                                                                                            |
 
 #### Diferențe între branches
