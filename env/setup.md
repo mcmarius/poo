@@ -8,6 +8,7 @@ repository-ul template deoarece are configurat tot ce veți avea nevoie.
 | Laborant  | Link template                                |
 |-----------|----------------------------------------------|
 | Dragoș B  | https://github.com/Ionnier/oop-template      |
+| Tiberiu M | https://github.com/MaximTiberiu/oop-template |
 | Marius MC | https://github.com/mcmarius/oop-template     |
 
 Adaptați instrucțiunile de mai jos pentru a folosi template-ul corespunzător grupei voastre.

@@ -301,6 +301,7 @@ Apăsați pe butonul "Use this template". Dacă alegeți această variantă, put
 | Laborant  | Link template                                |
 |-----------|----------------------------------------------|
 | Dragoș B  | https://github.com/Ionnier/oop-template      |
+| Tiberiu M | https://github.com/MaximTiberiu/oop-template |
 | Marius MC | https://github.com/mcmarius/oop-template     |
 
 [**Mai multe detalii despre repository-ul template găsiți aici.**](setup.md)

@@ -12,10 +12,7 @@ repository-ul vostru.
 
 ### Template proiect
 
-| Laborant  | Link template                                |
-|-----------|----------------------------------------------|
-| Dragoș B  | https://github.com/Ionnier/oop-template      |
-| Marius MC | https://github.com/mcmarius/oop-template     |
+Detalii [aici](/env/README.md#crearea-unui-repository-remote).
 
 Dacă nu doriți să folosiți template-ul, trebuie să ajungeți la o configurație
 echivalentă:

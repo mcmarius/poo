@@ -13,6 +13,9 @@ Evitați codul generat pe care nu îl înțelegeți. Proiectele cu cod adăugat 
 
 **Evaluarea se face _pe tot parcursul semestrului_.**
 
+**NOU!** Pe lângă proiect, trebuie să oferiți feedback și proiectelor colegilor (code review), câte 2 proiecte pentru
+fiecare temă (6 în total).
+
 ### Prezența este obligatorie pentru minim 3-6 laboratoare ca să primiți note pe teme!
 
 Cu toate acestea... simpla prezență la ore **NU** vă garantează promovarea laboratorului/colocviului/examenului!
