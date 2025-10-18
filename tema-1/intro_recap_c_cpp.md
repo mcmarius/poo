@@ -70,13 +70,13 @@ Dezavantajul este că C++ este _prea_ general. Evident, e mai greu să înveți 
 #### Încă mai este C++ un limbaj relevant în 202x?
 
 Încă este
-[folosit](https://survey.stackoverflow.co/2022/#most-popular-technologies-language-prof),
-chiar un pic în creștere față de anul trecut. Continuă să fie în top 5 în mai multe
+[folosit](https://survey.stackoverflow.co/2025/technology#most-popular-technologies-language-prof),
+chiar un pic în creștere față de anii trecuți (2022: 20.17%, 2023: 20.21%, 2024: 20.3%, 2025: 21.8%). Continuă să fie în top 5 în mai multe
 clasamente. Versiunile de C++ moderne (>=11) sunt relevante.
 
 Dacă e să ne luăm după anumite sondaje ([2021](https://www.jetbrains.com/lp/devecosystem-2021/cpp/),
-[2022](https://www.jetbrains.com/lp/devecosystem-2022/cpp/), [2023](https://www.jetbrains.com/lp/devecosystem-2023/cpp/)),
-doar ~~6%~~ ~~3.4%~~ 4.56% mai folosesc versiuni vechi de C++ și nu vor să treacă pe versiuni mai noi.
+[2022](https://www.jetbrains.com/lp/devecosystem-2022/cpp/), [2023](https://www.jetbrains.com/lp/devecosystem-2023/cpp/) - sursa Jetbrains; [2025](https://isocpp.org/files/papers/CppDevSurvey-2025-summary.pdf) - sursa IsoCPP),
+doar ~~6%~~ ~~3.4%~~ ~~4.56%~~ 2.9% mai folosesc versiuni vechi de C++ și nu vor să treacă pe versiuni mai noi.
 
 ### Noțiuni de bază din C și C++
 
