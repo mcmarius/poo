@@ -72,7 +72,8 @@ Windows... sau nu)
 [SOIL2](https://github.com/SpartanJ/SOIL2), [indicators](https://github.com/p-ranav/indicators) (bară de progres)
 - la SIGIL nu mi-a mers sunetul (și are nevoie de un DLL din MSYS2)
 - [portable-file-dialogs](https://github.com/samhocevar/portable-file-dialogs): pop-ups, notificări; e nevoie de
-mici modificări pt a merge pe windows cu gcc
+mici modificări pt a merge pe windows cu gcc (?)
+  - [acest fork](https://github.com/samangh/portable-file-dialogs) repară unele bug-uri la opțiunile de tip pop-up
 - [cpr](https://github.com/whoshuu/cpr)
 - json parsing:
   - [nlohmann/json](https://github.com/nlohmann/json) (am aflat de la
