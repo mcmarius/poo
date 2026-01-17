@@ -1254,6 +1254,8 @@ Tipurile de date de mai sus sunt utile de exemplu la înmulțiri de matrice: vre
 al primei matrice să fie egal cu nr de coloane al celei de-a doua matrice. Astfel, codificăm o valoare în
 tipul de date. `scaun<3>` și `scaun<4>` sunt două tipuri de date distincte!
 
+Din C++20, aceste tipuri pot fi și în virgulă mobilă (sau alte nebunii). Se numesc "non-type template parameters" sau, începând cu C++26, ["constant template parameters"](https://en.cppreference.com/w/cpp/language/template_parameters).
+
 ### Supraîncărcare operatori friend în clase template
 
 ```c++
