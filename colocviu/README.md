@@ -1,5 +1,7 @@
-Câteva sfaturi pentru colocviu
+### Câteva sfaturi pentru colocviu
+
 - cel mai important este să trimiteți un cod în **C++** care **compilează**
+- atașați rezolvarea de la subiectul din sesiunea curentă, nu din alte sesiuni/alți ani
 - **numele fișierului trebuie să înceapă cu numărul grupei!** exemple: `130_Popescu_Ion.cpp`, `260_Ionescu_Ion.zip`
 - **fără goto!**
 - **fără `#define N 5`! folosiți `const int N = 5`**
@@ -34,7 +36,7 @@ Un fișier atașat **greșit** va arăta așa:
 - nu pierdeți timpul cu comentarii evidente; dpmdv nu ajută la nimic
 - aveți voie cu `using namespace std;` (dar pot să dau puncte bonus dacă nu folosiți asta în fișiere header)
 - puteți scrie codul în fișiere separate sau într-un singur fișier, ce vi se pare mai rapid
-- pe ce ar trebui să luați multe puncte ușor:
+- pe ce ar trebui să luați puncte ușor:
   - constructori de inițializare
   - moșteniri (virtuale multiple - unde punem virtual?), funcții virtuale **pure**
   - excepții (cu moștenire din `std::exception`)
@@ -42,7 +44,7 @@ Un fișier atașat **greșit** va arăta așa:
   - id_max static
     - dacă id-ul simplu este const, trebuie suprascris cc/op= pt că altfel compilatorul nu generează cc/op=
 - folosiți `std::string` în loc de `char*`, folosiți `std::vector` în loc de `A *vec = new A[nr]` (și `delete[]`)
-- recomandarea mea e să folosiți `std::shared_ptr`: așa pot să dau puncte bonus pe smart pointeri și nu sunteți depunctați pt eventuale memory leaks
+- recomandarea mea e să folosiți `std::shared_ptr`: așa nu sunteți depunctați pt eventuale memory leaks
 - nu folosiți citiri de la tastatură/nu pierdeți timpul să testați dacă merge citirea; dacă faceți cu citire de la
   tastatură și chiar vreți să testați dacă merge, salvați-vă undeva într-un fișier text/comentariu datele de intrare,
   pentru ca apoi să faceți doar "paste"
@@ -67,4 +69,18 @@ Shortcuts pentru CLion (și alte editoare de la JetBrains):
 
 ---
 
-[//]: # (TODO Links către comentarii cu subiecte din anii trecuți: ianuarie 2023, ianuarie 2025)
+### Exemple de rezolvări
+
+Aveți [aici](ian2023.md) și [aici](ian2025.md) subiecte comentate din anii anteriori.
+
+Nu dorim să vă dăm rezolvări complete de subiecte deoarece nu ne interesează să învățați un tipar de rezolvare aplicat
+orbește.
+
+Rolul evaluării este să notăm capacitatea voastră de a interpreta cerințele și de a aplica noțiunile învățate în mod
+adecvat.
+
+Nu vă bazați pe faptul că subiectele au aceeași structură de la un an la altul.
+
+Nu există o singură soluție corectă. Baremul are mai mult de 10 puncte.
+Este (aproape) imposibil să rezolvați complet un subiect în 90 de minute,
+așadar trebuie să decideți ce prioritizați astfel încât să aplicați cât mai multe cunoștințe cu sens.
