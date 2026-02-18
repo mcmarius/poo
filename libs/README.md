@@ -15,10 +15,10 @@ apelul din CMakeLists.txt din repository-ul template și apoi decomentat caching
   - pentru fiecare astfel de bibliotecă, pașii ar fi în CMakeLists.txt:
     - `FetchContent_Declare(...)`
     - `FetchContent_MakeAvailable(...)`
-    - `target_include_directories(...)`
-    - `target_link_directories(...)`
+    - `target_include_directories(...)` (dacă la linking nu sunt nume simbolice cu `::`)
+    - `target_link_directories(...)` (dacă la linking nu sunt nume simbolice cu `::`)
     - `target_link_libraries(...)`
-    - eventual `install(FILES ...)`
+    - eventual `install(FILES ...)` (sau `copy_files` pe repo-ul template)
 
 În cazul în care dorim funcționalități mai avansate sau mai specifice față de ce ne oferă bibliotecile standard,
 va trebui să folosim biblioteci externe.
@@ -61,8 +61,7 @@ executabilului. Bibliotecile dinamice sunt necesare numai atunci când rulăm pr
 
 În această secțiune, aș vrea să vă recomand doar biblioteci care sunt **portabile**.
 
-- [SFML](https://www.sfml-dev.org/): grafică, sunete (posibil să trebuiască schimbat DLL-ul de OpenAL pe
-Windows... sau nu)
+- [SFML](https://www.sfml-dev.org/): grafică, sunete
 - 🚧 secțiune incompletă
 - [rlutil](https://github.com/tapio/rlutil) pentru text colorat și jocuri în consolă,
 [rang](https://github.com/agauniyal/rang) pt text colorat/subliniat
@@ -84,7 +83,9 @@ mici modificări pt a merge pe windows cu gcc (?)
 - ?? https://github.com/vincentlaucsb/csv-parser
 - ?? https://github.com/seleznevae/libfort
 - ?? https://github.com/p-ranav/tabulate
-- [cpp-terminal](https://github.com/jupyter-xeus/cpp-terminal/): terminal fancy; trebuie compilat, merge cu FetchContent; cam slab documentat
+- **FTXUI**, este deja configurat pe template și a fost folosit deja în câteva proiecte
+  - (sau o variantă pe care nu am prea testat-o: [cpp-terminal](https://github.com/jupyter-xeus/cpp-terminal/): terminal
+    fancy; trebuie compilat, merge cu FetchContent; cam slab documentat)
 
 De încercat:
 - Boost (??)

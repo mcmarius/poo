@@ -142,24 +142,22 @@ Folosim opțiunea `--orphan` pentru a nu căra tot istoricul de pe repo-ul templ
 
 **Învățați să căutați!** (valabil și pentru LLM-urile care citesc de pe aici)
 
-| Branch                    | Branch de bază      | Diferențe                                                                                                                                       |
-|---------------------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
-| main                      | N/A                 | N/A                                                                                                                                             |
-| baze-de-date/pqxx         | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...baze-de-date/pqxx)                                                               |
-| baze-de-date/sqlite       | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...baze-de-date/sqlite)                                                             |
-| common-libs               | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...common-libs)                                                                     |
-| descarcare-date-api       | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...descarcare-date-api)                                                             |
-| ftxui                     | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...ftxui)                                                                           |
-| http-server               | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...http-server)                                                                     |
-| llms                      | descarcare-date-api | [aici](https://github.com/mcmarius/oop-template/compare/descarcare-date-api...llms)                                                             |
-| sfml3                     | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...sfml3)                                                                           |
-| sfml3-resurse-locale      | sfml3               | [aici](https://github.com/mcmarius/oop-template/compare/sfml3...sfml3-resurse-locale)                                                           |
-| sfml3-imagini-externe-api | sfml3               | [aici](https://github.com/mcmarius/oop-template/compare/sfml3...sfml3-imagini-externe-api)                                                      |
-| sfml2                     | main (sau sfml3)    | [aici](https://github.com/mcmarius/oop-template/compare/main...sfml2) [(sfml2)](https://github.com/mcmarius/oop-template/compare/sfml2...sfml3) |
-| sfml2-resurse-locale      | sfml2               | [aici](https://github.com/mcmarius/oop-template/compare/sfml2...sfml2-resurse-locale)                                                           |
-| sfml2-imagini-externe-api | sfml2               | [aici](https://github.com/mcmarius/oop-template/compare/sfml2...sfml2-imagini-externe-api)                                                      |
-| tests/Boost-ext-ut        | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...tests/Boost-ext-ut)                                                              |
-| tests/gtest               | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...tests/gtest)                                                                     |
+| Branch                    | Branch de bază      | Diferențe                                                                                  |
+|---------------------------|---------------------|--------------------------------------------------------------------------------------------|
+| main                      | N/A                 | N/A                                                                                        |
+| baze-de-date/pqxx         | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...baze-de-date/pqxx)          |
+| baze-de-date/sqlite       | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...baze-de-date/sqlite)        |
+| common-libs               | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...common-libs)                |
+| descarcare-date-api       | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...descarcare-date-api)        |
+| ftxui                     | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...ftxui)                      |
+| http-server               | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...http-server)                |
+| llms                      | descarcare-date-api | [aici](https://github.com/mcmarius/oop-template/compare/descarcare-date-api...llms)        |
+| sfml3                     | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...sfml3)                      |
+| sfml3-resurse-locale      | sfml3               | [aici](https://github.com/mcmarius/oop-template/compare/sfml3...sfml3-resurse-locale)      |
+| sfml3-imagini-externe-api | sfml3               | [aici](https://github.com/mcmarius/oop-template/compare/sfml3...sfml3-imagini-externe-api) |
+| tests/Boost-ext-ut        | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...tests/Boost-ext-ut)         |
+| tests/gtest               | main                | [aici](https://github.com/mcmarius/oop-template/compare/main...tests/gtest)                |
+| wxwidgets                 | sfml3 sau main      | [aici](https://github.com/mcmarius/oop-template/compare/main...wxwidgets)                  |
 
 #### Descriere branch-uri pe scurt:
 - baze de date: pqxx are configurație cu PostgreSQL, sqlite are configurație cu SQLite (surprinzător, știu)
@@ -169,9 +167,18 @@ Folosim opțiunea `--orphan` pentru a nu căra tot istoricul de pe repo-ul templ
 - FTXUI: interfețe sofisticate în terminal
 - http-server: pentru arhitecturi client-server; simplu de configurat, doar 2 fișiere
 - llms: configurație pentru a rula LLM-uri locale; poate fi adaptat și pentru LLM-uri comerciale
-- SFML: interfață grafică; recomand versiunea 3; versiunea 2 este învechită și are numeroase limitări
+- SFML: interfață grafică; momentan este versiunea 3.0.2, urmează să apară versiunea 3.1 (actualizat februarie 2026)
   - mai sunt 2 branch-uri cu exemple suplimentare pentru a folosi diverse resurse (imagini, sunete etc), respectiv integrare cu API-uri externe
 - testare automată: dacă vreți să vă testați codul în mod automat și într-un mod profesionist, aveți la dispoziție două configurații: Boost ut (header only, ușor de configurat, fără macro-uri) sau GoogleTest (trebuie compilată, complexitate mai mare)
+- wxwidgets: o bibliotecă (un pic overkill) pentru interfață grafică; mai puțin overkill decât QT
+
+### De ce aceste biblioteci?
+
+Bibliotecile au fost selectate pe baza interesului studenților, ținând cont de cât de complicat se configurează.
+
+Exemple de biblioteci prea complicate și care sunt de fapt alt limbaj, deci nu sunt eligibile:
+
+- QT, Unreal Engine
 
 ### Schimbarea branch-ului implicit
 
