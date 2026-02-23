@@ -117,7 +117,7 @@ Se poate observa că avem (mult) mai multe resurse de evitat decât resurse de �
 
 ### Diverse
 
-#### [Despre colocviu](colocviu/README)
+#### [Despre colocviu](colocviu/README.md)
 #### [Proiecte din anii trecuți](HoF.md)
 #### [Diverse exerciții](exercitii)
 #### [Erori frecvente](erori.md)
