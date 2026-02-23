@@ -2,6 +2,19 @@
 
 Vezi și [**proiecte interzise**](repetitiv.md).
 
+**2025-2026**:
+[PicToCraft](https://github.com/Pencea-Flavius/PicToCraft) |
+[Operation Typhoon](https://github.com/Dlex925/Operation-Typhoon) |
+[Keyboard Master](https://github.com/panturudaniel121-blip/Keyboard-master) |
+[Hunter Fusion](https://github.com/rosuae/Hunter-Fusion) |
+[Find Rakis](https://github.com/Mach3tryhard/Find-Rakis) |
+[Bashtop 2](https://github.com/RolandTeslaru/Bashtop) |
+[Smart Home System](https://github.com/Jorj19/Smart-Home-System) |
+[Wukong](https://github.com/andrei706/Wukong) |
+[Partial Conflict: Legends](https://github.com/bBogdanLitu/PartialConflict-Legends) |
+[MalwareBits](https://github.com/myhneaa/malwarebits-antivirus) |
+?
+
 **2024-2025**:
 [DumbHack :: Survival](https://github.com/Ursusz/DumbHack-Survival) |
 [Music Manager](https://github.com/Tache-Stefan/OOP-Project) |
@@ -76,6 +89,17 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 
 ## Runner-ups 🥈
 
+**2025-2026**:
+[Flight Dispatcher](https://github.com/merlin32/flight-dispatcher) |
+[Defragmentor cu interfata grafica](https://github.com/Toma722/Defragmentor-cu-interfata-grafica) |
+[FMI Idle](https://github.com/mihaibalan123/FMI-idle-proiect) |
+[Bullet hell](https://github.com/icsd3/bullet-hell) |
+[Atom Simulator](https://github.com/VladCiobotenco/Atom_Simulator) |
+[FIFA 21 FUT DRAFT Simulator](https://github.com/teo2323/FIFA21FUTDRAFT) |
+[Survival Horror Game](https://github.com/FratilaMarius/ProiectOOPJoc) |
+[Luca Clicker](https://github.com/alexremus26/LucaClicker) |
+?
+
 **2024-2025**:
 [GDash](https://github.com/OldEys/GDash)
 
@@ -120,6 +144,11 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 
 
 ## Other mentions 🥉
+
+**2025-2026**:
+[Age of Empires Lite](https://github.com/smdavid16/Age_Of_Empires_Lite) |
+[Zooma](https://github.com/alexremus26/LucaClicker) |
+?
 
 **2024-2025**:
 [Memory Game: Two by two](https://github.com/andralorr/Two-by-two) |
