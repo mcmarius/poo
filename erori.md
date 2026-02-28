@@ -226,14 +226,17 @@ Totuși, în acele situații nu am folosi polimorfism, deci tot nu avem un răsp
 
 #### Am redenumit proiectul și nu mai merg bifele, primesc erori ciudate
 
-Soluție: șterge cache-urile din browser. Pe tab-ul Actions în stânga la Management - Caches. Trebuie șterse unul
-câte unul. Accept pull requests pentru a simplifica acest proces.
+Soluție: șterge cache-urile din browser. Există un workflow care șterge toate cache-urile:
 
-Cu `gh` CLI se poate: https://cli.github.com/manual/gh_cache_delete
+![](img/clear_cache.png)
+
+Cache-urile pot fi văzute pe tab-ul Actions în stânga la Management - Caches.
 
 #### Folosesc fișiere externe (imagini, sunete etc.) și nu sunt găsite local sau pe acțiuni
 
-Vezi cu funcția `copy_files` la sfârșit în CMakeLists.txt. Sunt exemple de apeluri în comentarii.
+TL;DR dacă pui tot în folderul `assets` nu mai este nimic suplimentar de configurat.
+
+Dacă vrei alte fișiere/foldere, vezi cu funcția `copy_files` la sfârșit în CMakeLists.txt. Sunt exemple de apeluri în comentarii.
 
 Dacă ai multe fișiere, este mai simplu să ai grupate fișierele în foldere deoarece așa adaugi în
 apelul de `copy_files` doar folder-ul, nu fiecare fișier individual.
