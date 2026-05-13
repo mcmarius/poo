@@ -115,7 +115,7 @@ Exemplu corect:
 ```c++
 class EroareBaza   : public std::runtime_error {};
 class EroareFisier : public EroareBaza {};
-class EroareCalcul : public Baza {};
+class EroareCalcul : public EroareBaza {};
 ```
 
 ### Atribute în loc de funcții
