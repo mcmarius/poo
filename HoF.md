@@ -2,6 +2,9 @@
 
 Vezi și [**proiecte interzise**](repetitiv.md).
 
+**2026-2027**:
+?
+
 **2025-2026**:
 [PicToCraft](https://github.com/Pencea-Flavius/PicToCraft) |
 [Operation Typhoon](https://github.com/Dlex925/Operation-Typhoon) |
@@ -9,11 +12,16 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 [Hunter Fusion](https://github.com/rosuae/Hunter-Fusion) |
 [Find Rakis](https://github.com/Mach3tryhard/Find-Rakis) |
 [Bashtop 2](https://github.com/RolandTeslaru/Bashtop) |
-[Smart Home System](https://github.com/Jorj19/Smart-Home-System) |
+[The Homey – Smart Home Monitoring System](https://github.com/Jorj19/Smart-Home-System) |
 [Wukong](https://github.com/andrei706/Wukong) |
 [Partial Conflict: Legends](https://github.com/bBogdanLitu/PartialConflict-Legends) |
 [MalwareBits](https://github.com/myhneaa/malwarebits-antivirus) |
-?
+[Network Traffic Monitor](https://github.com/MrBGD/fan_courier) |
+[Simulator NBA](https://github.com/CijuIanis/Simulator-NBA) |
+[The Branded Warrior](https://github.com/OmarSorin/The_Branded_Warrior) |
+[EvolutionTD](https://github.com/UrdaTeodor/EvolutionTD-OOP) |
+[Rule of Thirds Analyzer](https://github.com/10tenirina/proiectpoo) |
+[car_plus_plus](https://github.com/dimitrie-gheorghe/car_plus_plus)
 
 **2024-2025**:
 [DumbHack :: Survival](https://github.com/Ursusz/DumbHack-Survival) |
@@ -21,18 +29,18 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 [F1-Manager](https://github.com/Mdl44/F1-Manager) |
 [Inscryption](https://github.com/noobix45/Inscryption) |
 [Papers, please:: Cats Apocalypse](https://github.com/popescu-maria/Game-OOP) |
-[ETERNAL DOOM](https://github.com/ModernityRejecter/Proiect-POO) |
-[What Do Romanians Say? 🇷🇴](https://github.com/vali123-cmd/Cespunromanii-poo-1312-2025) |
-[Undertale:: Ribbit Edition](https://github.com/Oreo80/oop-game) |
+[ETERNAL DOOM](https://github.com/ModernityRejecter/Eternal-DOOM) |
+[🇷🇴 What Do Romanians Say?](https://github.com/vali123-cmd/Cespunromanii-poo-1312-2025) |
+[Undertale: Ribbit Edition](https://github.com/Oreo80/undertale-ribbit-edition) |
 [Eat and Save your Life](https://github.com/iuliahappy/POO_proiect) |
 [The Last Stand: Undead Uprising](https://github.com/vaidacutean-denisa/oop-project) |
-[Tag & Bag](https://github.com/alinavoro1/poo-alina-proiect-1311)
+[Tag & Bag](https://github.com/alinavoro1/TagAndBag-oop)
 
 **2023-2024**:
 [Radar Contact](https://github.com/Bogdanctx/Radar-Contact) |
 [Ludo](https://github.com/RoxanaAsavei/Proiect-OOP1) |
 [Dune: Stellar Odyssey](https://github.com/MihneaAndreescu/proiectpoo) |
-[Poor Bunny! 🐰](https://github.com/Andu9/Poor-Bunny) |
+[Poor Bunny! 🐰](https://github.com/Andu9/Poor-Bunny-Platformer) |
 [The Curse of Transylvania](https://github.com/AleooTheGreat/The-Curse-of-Transylvania) |
 [Lupta Voievozilor](https://github.com/roisan13/proiect-poo) |
 [Autodragan](https://github.com/badea-codrut-cti/proiect-poo)
@@ -48,15 +56,15 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 [Q++ Quantum SDK](https://github.com/mario-deaconescu/quantum-sdk) |
 [Sokoban](https://github.com/tudormiu/proiect-poo) |
 [Quiz Game](https://github.com/mariapreda19/proiect-oop-QuizApp) |
-[Stratego Extended](https://github.com/StefanPopescu078/OOPProject) |
+~[Stratego Extended](https://github.com/StefanPopescu078/OOPProject)~ (dead link) |
 [Top down shooter](https://github.com/DumitruIlie/TopDownShooterPOO) |
 [2048](https://github.com/biancapopa31/oop) |
 [MarbleCrypt](https://github.com/radubig/MarbleCrypt) |
-[MineSweeper](https://github.com/EHollower/MSOOP) |
+[MineSweeper](https://github.com/mihnea-vicentiu/minesweeper-cpp) |
 [Platformer](https://github.com/MarcuDragosIonut/PlatformerGame) |
 [Pokémon Arcade Fighting](https://github.com/Apostol-Alin/proiectpoo) |
 [Cross The Road](https://github.com/Cristiana-Cocheci/oop_v2) |
-[TicTacToe](https://github.com/Andrei137/Tic-Tac-Toe) |
+[TicTacToe](https://github.com/Andrei137/tic-tac-toe) |
 [Space Invaders](https://github.com/vladc15/SpaceInvaders) |
 [Snake game](https://github.com/beingsebi/snake) |
 [Snake with POWER-UPS](https://github.com/dragosc1/Snake-with-POWER-UPS) |
@@ -66,7 +74,7 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 
 **2021-2022**:
 [Digital Banking](https://github.com/laurentiucretu68/Digital_Banking) |
-[Modern Chess](https://github.com/robys01/Modern-Chess) |
+[Modern Chess](https://github.com/Robys01/Modern-Chess) |
 [Sound synth](https://github.com/lmihaig/sound-synth) |
 [🐖PiggyBank](https://github.com/vl4dio4n/PiggyBank) |
 [Inventory Management System](https://github.com/tudorcoman/oop-inventory-system) |
@@ -76,8 +84,8 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 [Escape the maze](https://github.com/popastefan10/Escape-the-maze)
 
 **2020-2021**:
-[ArcaneArts](https://github.com/AlexMincu/ArcaneArts) |
-[Reddit++](https://github.com/MaximTiberiu/OOProject) |
+[ArcaneArts](https://github.com/Zenkuro01/ArcaneArts) |
+[Reddit++](https://github.com/tibmax01/OOProject) |
 [Sep7ica](https://github.com/VictorAndreiCotescu/Sep7ica) |
 [fantasyCraft](https://github.com/meemknight/fantasyCraft) |
 [Virtual Museum](https://github.com/DianaIfrosa/OOP-Virtual-Museum-Project) |
@@ -89,16 +97,20 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 
 ## Runner-ups 🥈
 
+**2026-2027**:
+?
+
 **2025-2026**:
 [Flight Dispatcher](https://github.com/merlin32/flight-dispatcher) |
-[Defragmentor cu interfata grafica](https://github.com/Toma722/Defragmentor-cu-interfata-grafica) |
+[Virtual Disk Space Manager & Defragmenter](https://github.com/Toma722/Defragmentor-cu-interfata-grafica) |
 [FMI Idle](https://github.com/mihaibalan123/FMI-idle-proiect) |
-[Bullet hell](https://github.com/icsd3/bullet-hell) |
+[Bullet-Hell](https://github.com/icsd3/bullet-hell) |
 [Atom Simulator](https://github.com/VladCiobotenco/Atom_Simulator) |
 [FIFA 21 FUT DRAFT Simulator](https://github.com/teo2323/FIFA21FUTDRAFT) |
-[Survival Horror Game](https://github.com/FratilaMarius/ProiectOOPJoc) |
+[Expedition](https://github.com/FratilaMarius/Expedition) |
 [Luca Clicker](https://github.com/alexremus26/LucaClicker) |
-?
+[PaperSkyTactics](https://github.com/mariatuta/proiect_poo) |
+[Archer Duel](https://github.com/Victor-depanatorul/Archer-Duel-2)
 
 **2024-2025**:
 [GDash](https://github.com/OldEys/GDash)
@@ -140,19 +152,22 @@ Vezi și [**proiecte interzise**](repetitiv.md).
 [Formație muzicală](https://github.com/Ionescu-Ioan/Laborator-POO) |
 [Task tracker](https://github.com/deeaanghelache/POO_Laborator) |
 ~[Drinkeer](https://github.com/radu-filipescu/Drinkeer)~ (dead link) |
-[Fitness](https://github.com/alexbrinza2001/OOP-Project-C-)
+[Fitness](https://github.com/alexbrinza2001/OOP-Project-Cpp)
 
 
 ## Other mentions 🥉
 
+**2026-2027**:
+?
+
 **2025-2026**:
 [Age of Empires Lite](https://github.com/smdavid16/Age_Of_Empires_Lite) |
-[Zooma](https://github.com/alexremus26/LucaClicker) |
-?
+[Zooma](https://github.com/alexremus26/LucaClicker)
+
 
 **2024-2025**:
 [Memory Game: Two by two](https://github.com/andralorr/Two-by-two) |
-[Offline Games](https://github.com/AndreiLucaa/Proiect-POO) |
+[Offline Games](https://github.com/AndreiLucaa/Offline-Games) |
 [Worldshaper's Gambit](https://github.com/floron1337/worldshapers-gambit)
 
 **2023-2024**:
@@ -211,10 +226,6 @@ Aceleași criterii ca mai sus, însă efortul depus mi s-a părut ceva mai mic �
 
 Ideea de hall of fame a apărut în anul următor.
 
-**De ce în 2022-2023 sunt așa multe proiecte?**
+**De ce în unii ani sunt mai multe proiecte?**
 
-🙂
-
-**De ce în 2023-2024 sunt așa puține proiecte pe semestrul 1?**
-
-🙁
+Studenți mai motivați și/sau mai mulți.
