@@ -276,3 +276,30 @@ Pentru erorile din vina mea, vedeți dacă nu au apărut commit-uri noi pe repos
 
 Pentru erorile din vina altora, vedeți în issues pe acțiunea care crapă, pe [GitHub Status](https://githubstatus.com)
 sau pe repo-ul de [runners](https://github.com/actions/runner-images/issues).
+
+#### Eroare certificat la configurarea repo-ului
+
+Exemplu de eroare ciudată (vezi mai sus).
+
+Soluția: am rulat din nou și a mers. Se mai întâmplă să fie erori intermitente (în acest caz, probabil eroare de rețea). Pe măsură ce căpătați experiență, vă veți da seama dacă e vorba despre astfel de erori pentru care nu are rost să ne batem capul.
+
+<details>
+  <summary>Detalii</summary>
+  
+```
+Setting up auth
+Fetching the repository
+  /usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3045900269e72e26a32546ddaf4da3df65eb5be6:refs/remotes/origin/tests/Boost-ext-ut
+  Error: fatal: unable to access 'https://github.com/mcmarius/oop-template/': server certificate verification failed. CAfile: none CRLfile: none
+  The process '/usr/bin/git' failed with exit code 128
+  Waiting 15 seconds before trying again
+  /usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3045900269e72e26a32546ddaf4da3df65eb5be6:refs/remotes/origin/tests/Boost-ext-ut
+  Error: fatal: unable to access 'https://github.com/mcmarius/oop-template/': server certificate verification failed. CAfile: none CRLfile: none
+  The process '/usr/bin/git' failed with exit code 128
+  Waiting 11 seconds before trying again
+  /usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3045900269e72e26a32546ddaf4da3df65eb5be6:refs/remotes/origin/tests/Boost-ext-ut
+  Error: fatal: unable to access 'https://github.com/mcmarius/oop-template/': server certificate verification failed. CAfile: none CRLfile: none
+  Error: The process '/usr/bin/git' failed with exit code 128
+```
+
+</details>
