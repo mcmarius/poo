@@ -168,7 +168,7 @@ Folosim opțiunea `--orphan` pentru a nu căra tot istoricul de pe repo-ul templ
 - FTXUI: interfețe sofisticate în terminal
 - http-server: pentru arhitecturi client-server; simplu de configurat, doar 2 fișiere
 - llms: configurație pentru a rula LLM-uri locale; poate fi adaptat și pentru LLM-uri comerciale
-- raylib-cpp: interfață grafică cu raylib, mai orientată spre jocuri 2D/3D; raylib e scrisă în C, iar raylib-cpp îi pune haine de C++
+- raylib-cpp: interfață grafică folosind raylib, mai orientată spre jocuri 2D/3D; raylib e scrisă în C, iar raylib-cpp îi pune haine de C++
 - SFML: interfață grafică; momentan este versiunea 3.0.2, urmează să apară versiunea 3.1 (actualizat februarie 2026)
   - mai sunt 2 branch-uri cu exemple suplimentare pentru a folosi diverse resurse (imagini, sunete etc), respectiv integrare cu API-uri externe
 - testare automată: dacă vreți să vă testați codul în mod automat și într-un mod profesionist, aveți la dispoziție două configurații: Boost ut (header only, ușor de configurat, fără macro-uri) sau GoogleTest (trebuie compilată, complexitate mai mare)
